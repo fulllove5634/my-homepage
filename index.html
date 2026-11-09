@@ -3,60 +3,97 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>내 홈페이지</title>
+  <meta name="description" content="박여진의 개인 홈페이지">
+  <title>박여진 | Park Yeojin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header class="nav">
-    <a href="#" class="logo">MY HOME</a>
+    <a href="#top" class="logo">PARK YEOJIN</a>
     <nav>
-      <a href="#about">소개</a>
-      <a href="#projects">프로젝트</a>
-      <a href="#contact">연락처</a>
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
     </nav>
   </header>
 
-  <main>
+  <main id="top">
     <section class="hero">
-      <p class="eyebrow">안녕하세요 👋</p>
-      <h1>저는 <span class="accent">홍길동</span>입니다</h1>
-      <p class="lead">새로운 것을 만들고 배우는 것을 좋아합니다.</p>
-      <a href="#contact" class="btn">연락하기</a>
+      <p class="eyebrow">Personal Homepage</p>
+      <h1>박여진</h1>
+      <p class="name-en">Park Yeojin</p>
+      <div class="divider"></div>
+      <p class="lead">본질에 집중하고, 디테일로 완성합니다.</p>
+      <a href="#about" class="btn">More About Me</a>
     </section>
 
+    <!-- 소개: 문구는 자유롭게 수정하세요 -->
     <section id="about" class="section">
+      <p class="section-label">01 — About</p>
       <h2>소개</h2>
-      <p>여기에 자기소개를 적어 주세요. 하는 일, 관심사, 좋아하는 것 등을 자유롭게 쓰면 됩니다.</p>
-      <ul class="tags">
-        <li>HTML</li><li>CSS</li><li>JavaScript</li><li>디자인</li>
-      </ul>
-    </section>
-
-    <section id="projects" class="section">
-      <h2>프로젝트</h2>
-      <div class="cards">
-        <article class="card">
-          <h3>프로젝트 1</h3>
-          <p>프로젝트에 대한 짧은 설명을 적어 주세요.</p>
-        </article>
-        <article class="card">
-          <h3>프로젝트 2</h3>
-          <p>프로젝트에 대한 짧은 설명을 적어 주세요.</p>
-        </article>
-        <article class="card">
-          <h3>프로젝트 3</h3>
-          <p>프로젝트에 대한 짧은 설명을 적어 주세요.</p>
-        </article>
+      <div class="about-text">
+        <p>
+          안녕하세요, 박여진입니다.
+          저는 문제의 본질을 깊이 이해하는 것에서 모든 일을 시작합니다.
+          복잡한 것을 명료하게 정리하고, 작은 디테일까지 놓치지 않는 꼼꼼함으로
+          신뢰할 수 있는 결과를 만들어 가는 것을 중요하게 생각합니다.
+        </p>
+        <p>
+          함께하는 사람들과의 열린 소통을 바탕으로, 꾸준히 배우고 성장하며
+          더 나은 가치를 만들어 가고자 합니다.
+        </p>
       </div>
     </section>
 
+    <!-- 경력: 아래 템플릿을 복사해 채워 넣고, empty 문단은 삭제하세요
+      <article class="timeline-item">
+        <p class="period">YYYY — YYYY</p>
+        <h3>회사 / 기관명</h3>
+        <p class="role">직무</p>
+        <p>주요 업무 설명</p>
+      </article>
+    -->
+    <section id="experience" class="section">
+      <p class="section-label">02 — Experience</p>
+      <h2>경력</h2>
+      <div class="timeline">
+        <p class="empty">준비 중입니다.</p>
+      </div>
+    </section>
+
+    <!-- 프로젝트: 아래 템플릿을 복사해 채워 넣고, empty 문단은 삭제하세요
+      <article class="card">
+        <h3>프로젝트명</h3>
+        <p>프로젝트 설명</p>
+      </article>
+    -->
+    <section id="projects" class="section">
+      <p class="section-label">03 — Projects</p>
+      <h2>프로젝트</h2>
+      <div class="cards">
+        <p class="empty">준비 중입니다.</p>
+      </div>
+    </section>
+
+    <!-- 연락처: 아래 템플릿을 참고해 채워 넣고, empty 문단은 삭제하세요
+      <li><span>Email</span><a href="mailto:주소">주소</a></li>
+      <li><span>GitHub</span><a href="https://github.com/아이디">github.com/아이디</a></li>
+    -->
     <section id="contact" class="section">
+      <p class="section-label">04 — Contact</p>
       <h2>연락처</h2>
-      <p>이메일: <a href="mailto:you@example.com">you@example.com</a></p>
+      <ul class="contact-list">
+        <li class="empty">준비 중입니다.</li>
+      </ul>
     </section>
   </main>
 
-  <footer>© <span id="year"></span> 홍길동</footer>
+  <footer>© <span id="year"></span> Park Yeojin. All rights reserved.</footer>
 
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
