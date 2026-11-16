@@ -1,596 +1,71 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>파도 따라, 강릉 하루 | 15초 키네틱 타이포그래피 광고</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>파도 따라, 강릉 하루 | 15초 프로모션</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+<style>
+:root{color-scheme:dark;--navy:#061425;--cyan:#61d8ff;--ice:#d9f6ff;--gold:#ffda91;--white:#f6fbff}*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#020915;font-family:Pretendard,"SUIT Variable","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif}body{display:grid;place-items:center}.stage{position:relative;width:min(100vw,177.7778vh);height:min(100vh,56.25vw);container-type:size;aspect-ratio:16/9;overflow:hidden;isolation:isolate;background:radial-gradient(ellipse at 75% 65%,#12354e 0%,#071728 48%,#020916 100%);color:var(--white)}.stage:after{content:"";position:absolute;inset:0;z-index:3;pointer-events:none;background:radial-gradient(ellipse at center,transparent 30%,#01071577 100%)}canvas{position:absolute;inset:0;width:100%;height:100%;z-index:0}.noise{position:absolute;inset:0;opacity:.13;z-index:1;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.25'/%3E%3C/svg%3E")}.scene{position:absolute;inset:0;z-index:2;opacity:0;visibility:hidden;pointer-events:none}.scene.active{visibility:visible}.eyebrow{font-size:1.25cqw;letter-spacing:.38em;font-weight:800;color:var(--cyan)}.intro{display:flex;align-items:center;justify-content:center;text-align:center}.intro .huge{font-size:11.7cqw;font-weight:950;letter-spacing:-.095em;line-height:.94;white-space:nowrap}.intro .line{display:block;overflow:hidden;padding:.08em .14em}.intro .line span{display:block;transform:translateY(115%) rotate(3deg);filter:blur(10px)}.intro .line:nth-child(2){color:var(--cyan)}.intro .small{margin-top:2.5cqh}.place{display:flex;align-items:center;padding:0 9%;}.place .num{font-size:1.4cqw;color:var(--gold);letter-spacing:.22em;font-weight:800}.place .place-name{font-size:11.5cqw;font-weight:950;letter-spacing:-.09em;line-height:1.08;white-space:nowrap;transform-origin:left center}.place .description{font-size:1.65cqw;color:#b7d8e8;letter-spacing:.025em;margin-top:1.8cqw;font-weight:500}.place .bar{width:0;height:5px;background:var(--cyan);margin:2.8cqw 0 2cqw;box-shadow:0 0 28px #50cfff88}.place .outline{position:absolute;right:-3%;bottom:-16%;font-size:31cqw;font-weight:900;letter-spacing:-.1em;opacity:.055;color:transparent;-webkit-text-stroke:2px #bceaff;white-space:nowrap;z-index:-1}.bridge{display:grid;place-items:center;text-align:center}.bridge .kicker{font-size:2cqw;color:var(--gold);font-weight:800;letter-spacing:.35em}.bridge .phrase{font-size:8.3cqw;font-weight:950;letter-spacing:-.08em;line-height:1.14;margin:1.8cqw 0}.bridge .phrase em{font-style:normal;color:var(--cyan)}.bridge .chips{display:flex;gap:1.4cqw;justify-content:center}.bridge .chips span{border:1px solid #85d8f766;border-radius:100px;padding:.65cqw 1.5cqw;color:#c4e6f6;font-size:1.3cqw;font-weight:700}.cost{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}.cost .price{font-size:17cqw;font-weight:950;letter-spacing:-.095em;line-height:1.1;color:var(--gold);font-variant-numeric:tabular-nums;text-shadow:0 0 90px #ffc56a33}.cost .unit{font-size:.33em;letter-spacing:-.04em;margin-left:.07em}.cost .note{font-size:1.5cqw;color:#c2d9e6;margin-top:2cqw}.cost .orbit{position:absolute;width:50cqw;height:50cqw;border:1px solid #72d8ff33;border-radius:50%;box-shadow:0 0 0 5cqw #3dd5ff08,0 0 0 10cqw #3dd5ff06;z-index:-1}.end{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:5%}.end .cta{font-size:11cqw;font-weight:950;letter-spacing:-.09em;line-height:1.06}.end .cta strong{color:var(--cyan)}.end .brand{font-size:1.8cqw;font-weight:800;letter-spacing:.08em;margin-top:2.3cqw}.end .url{margin-top:1.5cqw;font-size:1.45cqw;color:#bfe6f8;border:1px solid #66cfff80;background:#081d31b5;border-radius:100px;padding:.8cqw 2cqw;max-width:90%;overflow-wrap:anywhere}.end .footer{position:absolute;bottom:7%;font-size:1.1cqw;color:#a4c4d8;letter-spacing:.22em}.topline{position:absolute;top:5%;left:6%;right:6%;z-index:5;display:flex;justify-content:space-between;font-size:1cqw;letter-spacing:.24em;color:#b9d8e6;font-weight:800}.topline span:last-child{color:var(--cyan)}.progress{position:absolute;bottom:0;left:0;height:5px;width:0;background:linear-gradient(90deg,#33b6e9,#a6ecff,#ffdb9a);z-index:8;box-shadow:0 0 24px #51d8ff}.replay{position:absolute;right:3.4%;bottom:4.5%;z-index:9;appearance:none;background:#061a2ce8;border:1px solid #b5e8ff80;color:white;border-radius:100px;padding:11px 18px;font:700 1.05cqw inherit;cursor:pointer;letter-spacing:.04em;transition:background .2s,transform .2s}.replay:hover{background:#16516b;transform:translateY(-2px)}.flash{position:absolute;inset:0;z-index:6;background:#d8f7ff;opacity:0;pointer-events:none}.slash{position:absolute;width:145%;height:13%;left:-20%;top:43%;background:linear-gradient(90deg,transparent,#80e1ffbb,#fff,transparent);transform:translateX(-130%) rotate(-12deg);filter:blur(1px);z-index:4;pointer-events:none;opacity:0}@media(max-width:700px){.replay{padding:6px 10px}.progress{height:3px}.place .bar{height:3px}}
 
-  <!-- 한글 글꼴: Pretendard. 인터넷이 안 될 때는 아래 font-family의 기본 한글 글꼴로 대신 보입니다. -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-
-  <style>
-    /* =========================================================
-       색상과 글꼴
-       ========================================================= */
-    :root {
-      --navy: #071525;      /* 딥 네이비 */
-      --blue: #38BDF8;      /* 일렉트릭 블루 */
-      --ivory: #F8FAFC;     /* 아이보리 */
-      --font: "Pretendard", "SUIT", "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { width: 100%; height: 100%; overflow: hidden; background: #02080f; font-family: var(--font); }
-
-    /* =========================================================
-       16:9 무대
-       - 무대는 항상 1920×1080 크기로 그리고, 창 크기에 맞게 통째로 줄이거나 키웁니다.
-       ========================================================= */
-    #stage {
-      position: absolute; left: 50%; top: 50%;
-      width: 1920px; height: 1080px;
-      transform-origin: 0 0;
-      overflow: hidden;
-      background: var(--navy);
-      color: var(--ivory);
-    }
-    #bg { position: absolute; inset: 0; width: 1920px; height: 1080px; }
-
-    .layer { position: absolute; inset: 0; will-change: transform, opacity; }
-    .abs { position: absolute; will-change: transform, opacity; }
-    .ch { display: inline-block; will-change: transform, opacity, filter; }
-    .mask { display: inline-block; overflow: hidden; vertical-align: top; }
-    .mask > .ch { display: inline-block; }
-
-    .black { font-weight: 900; letter-spacing: -0.045em; line-height: 1; white-space: nowrap; }
-    .outline { color: transparent; -webkit-text-stroke: 2px rgba(56, 189, 248, 0.55); }
-    .blue { color: var(--blue); }
-    .tag { font-size: 22px; font-weight: 700; letter-spacing: 0.32em; color: var(--blue); }
-    .desc { font-size: 30px; font-weight: 600; color: rgba(248, 250, 252, 0.78); letter-spacing: -0.01em; }
-    .num-outline { font-size: 220px; font-weight: 900; color: transparent; -webkit-text-stroke: 2px rgba(248, 250, 252, 0.25); line-height: 1; }
-    .rule { position: absolute; height: 3px; background: var(--blue); transform-origin: 0 50%; }
-
-    /* ---------- 장면 1: 제목 ---------- */
-    #title { left: 0; top: 0; width: 1920px; height: 1080px; display: flex; flex-direction: column; justify-content: center; padding-left: 130px; transform-origin: 1180px 700px; }
-    #title .l1 { font-size: 300px; }
-    #title .l2 { font-size: 300px; margin-top: 10px; }
-    #flashCircle { position: absolute; inset: 0; background: var(--blue); clip-path: circle(0px at 1180px 700px); }
-
-    /* ---------- 장면 2-1: 경포해변 ---------- */
-    #gp-text { left: 120px; top: 520px; font-size: 360px; transform-origin: 0 100%; }
-    #gp-wave { left: 0; top: 400px; width: 3000px; height: 520px; filter: drop-shadow(0 0 24px rgba(56, 189, 248, 0.6)); }
-
-    /* ---------- 장면 2-2: 강문해변 ---------- */
-    #gm-back { top: 120px; font-size: 560px; left: 0; }
-    #gm-text { right: 120px; top: 400px; font-size: 330px; text-align: right; }
-
-    /* ---------- 가로 줄무늬 전환 ---------- */
-    #bars { position: absolute; inset: 0; pointer-events: none; }
-    #bars i { position: absolute; left: 0; width: 1920px; height: 136px; background: var(--blue); transform: scaleX(0); }
-
-    /* ---------- 장면 2-3: 안목 커피거리 ---------- */
-    #am-1 { left: 130px; top: 110px; font-size: 420px; }
-    #am-2 { right: 130px; top: 610px; font-size: 300px; }
-
-    /* ---------- 세 곳 모아 보기 ---------- */
-    #recap { left: -400px; top: 0; width: 2720px; height: 1080px; transform-origin: 1360px 540px; }
-    #recap .row { position: absolute; left: 0; font-size: 210px; white-space: nowrap; }
-
-    /* ---------- 장면 3: 비용 ---------- */
-    #cost { left: 0; top: 0; width: 1920px; height: 1080px; }
-    #cost-num-wrap { position: absolute; left: 0; width: 1920px; top: 300px; text-align: center; }
-    #cost-num { display: inline-block; font-size: 400px; font-variant-numeric: tabular-nums; transform-origin: 50% 60%; }
-    #cost-box { position: relative; display: inline-block; }
-    #cost-won { position: absolute; left: 100%; bottom: 40px; font-size: 150px; margin-left: 24px; color: var(--blue); }
-    #cost-label { position: absolute; left: 0; width: 1920px; top: 860px; text-align: center; font-size: 40px; font-weight: 800; letter-spacing: 0.02em; }
-    #cost-note { position: absolute; left: 0; width: 1920px; top: 925px; text-align: center; font-size: 24px; font-weight: 600; color: rgba(248, 250, 252, 0.6); letter-spacing: 0.04em; }
-
-    /* ---------- 장면 4: 엔딩 ---------- */
-    #end-go { left: 0; width: 1920px; top: 330px; text-align: center; font-size: 230px; }
-    #end-url { left: 0; width: 1920px; top: 650px; text-align: center; font-size: 44px; font-weight: 700; letter-spacing: 0.04em; }
-    #end-url a { color: var(--ivory); text-decoration: none; border-bottom: 2px solid rgba(56, 189, 248, 0.7); padding-bottom: 6px; pointer-events: auto; }
-    #end-brand { left: 0; width: 1920px; top: 150px; text-align: center; }
-
-    /* 진행 막대 */
-    #progress { position: absolute; left: 0; bottom: 0; height: 6px; width: 1920px; background: var(--blue); transform-origin: 0 50%; transform: scaleX(0); opacity: 0.8; }
-
-    /* 다시보기 버튼 (오른쪽 아래) */
-    #replay {
-      position: fixed; right: 24px; bottom: 24px; z-index: 10;
-      padding: 14px 28px;
-      border: 1.5px solid rgba(248, 250, 252, 0.7);
-      border-radius: 999px;
-      background: rgba(7, 21, 37, 0.65);
-      backdrop-filter: blur(8px);
-      color: var(--ivory);
-      font-family: var(--font); font-size: 17px; font-weight: 800; letter-spacing: 0.04em;
-      cursor: pointer;
-      transition: background 0.2s, color 0.2s;
-    }
-    #replay:hover { background: var(--ivory); color: var(--navy); }
-  </style>
+/* Editorial motion direction: all geometry is drawn with CSS/Canvas; no remote assets. */
+.stage{box-shadow:0 28px 90px #0008}
+.stage::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(125deg,#0000 35%,#56c7ff0b 51%,#0000 70%)}
+.graphic-orb{position:absolute;z-index:1;top:12%;right:-12%;width:62%;aspect-ratio:1;border-radius:50%;border:1px solid #72dcff35;box-shadow:0 0 0 4.3cqw #66d8ff08,0 0 0 8.6cqw #66d8ff06,0 0 0 13cqw #66d8ff03;filter:drop-shadow(0 0 30px #35b4ee26);pointer-events:none}
+.graphic-orb:after{content:"";position:absolute;inset:14%;border:1px dashed #78c9ec36;border-radius:50%}
+.vertical-rule{position:absolute;z-index:4;left:6%;top:12%;height:4%;width:2px;background:#5acdf8;opacity:.8}
+.corner-tag{position:absolute;z-index:4;left:6%;bottom:5.4%;font-size:.85cqw;font-weight:800;letter-spacing:.24em;color:#a4d5ea}
+.edge-index{position:absolute;z-index:4;right:5%;top:49%;writing-mode:vertical-rl;font-size:.95cqw;font-weight:800;letter-spacing:.25em;color:#78cdea}
+.topline{top:5.8%;font-size:1cqw;letter-spacing:.18em}.topline b{color:#61d8ff;padding:0 .6em}
+.eyebrow-line{display:inline-block;vertical-align:middle;width:4cqw;height:1px;background:#61d8ff;margin:0 .8em}
+.intro .huge{font-size:12cqw;line-height:.98;text-shadow:0 14px 50px #0004}
+.intro .small{letter-spacing:.5em;color:#d2e9f4}
+.place{padding-left:12%}.place .num{font-size:1.2cqw}
+.place .place-name{position:relative;z-index:2;filter:drop-shadow(0 12px 30px #0004)}
+.place .description{font-size:1.7cqw;color:#d3e8f4}
+.place .bar{height:3px;margin:2cqw 0 2.2cqw}
+.place-side{position:absolute;right:9%;bottom:13%;font-size:1cqw;letter-spacing:.22em;color:#8fcbdf;font-weight:800}
+.bridge .phrase{font-size:9cqw}.bridge .chips span{border-radius:0;background:#071e3080}
+.cost-sub{font-size:1.7cqw;color:#d7e9f4;margin-top:1.6cqw;font-weight:700}
+.cost .price{margin-top:.4cqw;letter-spacing:-.085em}.cost .note{margin-top:1cqw}
+.cost-micro{position:absolute;bottom:14%;font-size:1.15cqw;font-weight:800;letter-spacing:.15em;color:#77b9d4}
+.end .cta{font-size:12cqw;letter-spacing:-.085em}.end .brand{letter-spacing:.04em}
+.brand-dot{font-size:.4em;color:#61d8ff;vertical-align:middle;margin-left:.4em}
+.end .url{border:0;border-bottom:1px solid #7bd5f6;border-radius:0;background:transparent;padding:.65cqw .2cqw;color:#d8eff9;font-weight:700}
+.end .url{text-decoration:none;pointer-events:auto}.scene.end.active{pointer-events:auto}
+.replay{font-family:inherit;font-weight:800;background:#09243ce8;backdrop-filter:blur(8px)}
+@media (prefers-reduced-motion:reduce){.replay{transition:none}}
+</style>
 </head>
 <body>
-  <div id="stage">
-    <!-- 바다 배경(파도 선, 빛, 물결)은 이 캔버스에 코드로 그립니다 -->
-    <canvas id="bg" width="1920" height="1080"></canvas>
-
-    <!-- 장면 1: 제목 -->
-    <div class="layer" id="s1">
-      <div class="abs" id="title">
-        <div class="black l1" data-split>파도 따라,</div>
-        <div class="black l2 blue" data-split>강릉 하루</div>
-      </div>
-      <div id="flashCircle"></div>
-    </div>
-
-    <!-- 장면 2-1: 경포해변 -->
-    <div class="layer" id="s2a">
-      <div class="abs num-outline" id="gp-num" style="left:120px; top:90px;">01</div>
-      <div class="abs tag" id="gp-tag" style="left:400px; top:150px;">SPOT 01 · GYEONGPO</div>
-      <div class="rule" id="gp-rule" style="left:400px; top:200px; width:360px;"></div>
-      <div class="abs desc" id="gp-desc" style="right:130px; top:150px; text-align:right;">끝없이 펼쳐진 푸른 바다와 백사장</div>
-      <div class="abs black" id="gp-text">경포해변</div>
-      <svg class="abs" id="gp-wave" viewBox="0 0 3000 520" preserveAspectRatio="none" aria-hidden="true">
-        <defs>
-          <!-- 양 끝이 투명해지는 색: 파도가 부드럽게 나타났다 사라짐 -->
-          <linearGradient id="fadeBlue" x1="0" x2="1" y1="0" y2="0">
-            <stop offset="0" stop-color="#38BDF8" stop-opacity="0"/>
-            <stop offset="0.35" stop-color="#38BDF8" stop-opacity="1"/>
-            <stop offset="0.75" stop-color="#F8FAFC" stop-opacity="1"/>
-            <stop offset="1" stop-color="#F8FAFC" stop-opacity="0"/>
-          </linearGradient>
-        </defs>
-        <path fill="none" stroke="url(#fadeBlue)" stroke-width="38" stroke-linecap="round" d="M0,260 C250,90 500,90 750,260 C1000,430 1250,430 1500,260 C1750,90 2000,90 2250,260 C2500,430 2750,430 3000,260"/>
-        <path fill="none" stroke="url(#fadeBlue)" stroke-width="10" opacity="0.7" d="M0,330 C250,160 500,160 750,330 C1000,500 1250,500 1500,330 C1750,160 2000,160 2250,330 C2500,500 2750,500 3000,330"/>
-        <path fill="none" stroke="url(#fadeBlue)" stroke-width="4" opacity="0.5" d="M0,190 C250,20 500,20 750,190 C1000,360 1250,360 1500,190 C1750,20 2000,20 2250,190 C2500,360 2750,360 3000,190"/>
-      </svg>
-    </div>
-
-    <!-- 장면 2-2: 강문해변 -->
-    <div class="layer" id="s2b">
-      <div class="abs black outline" id="gm-back">GANGMUN BEACH</div>
-      <div class="abs tag" id="gm-tag" style="right:130px; top:300px;">SPOT 02 · GANGMUN</div>
-      <div class="abs black" id="gm-text" data-split="mask">강문해변</div>
-      <div class="rule" id="gm-rule" style="left:130px; top:820px; width:1660px;"></div>
-      <div class="abs desc" id="gm-desc" style="left:130px; top:860px;">아기자기한 포토존과 아름다운 해안 풍경</div>
-    </div>
-
-    <!-- 장면 2-3: 안목 커피거리 -->
-    <div class="layer" id="s2c">
-      <div class="abs black" id="am-1" data-split>안목</div>
-      <div class="abs black blue" id="am-2" data-split>커피거리</div>
-      <div class="rule" id="am-rule" style="left:130px; top:575px; width:1660px;"></div>
-      <div class="abs tag" id="am-tag" style="right:130px; top:150px;">SPOT 03 · ANMOK</div>
-      <div class="abs desc" id="am-desc" style="left:130px; top:950px;">탁 트인 오션뷰 카페에서 커피와 디저트</div>
-    </div>
-
-    <!-- 세 곳 모아 보기 -->
-    <div class="layer" id="s2d">
-      <div class="abs" id="recap">
-        <div class="row black" id="r1" style="top:150px;"></div>
-        <div class="row black outline" id="r2" style="top:430px;"></div>
-        <div class="row black blue" id="r3" style="top:710px;"></div>
-      </div>
-    </div>
-
-    <!-- 장면 3: 예상 비용 -->
-    <div class="layer" id="s3">
-      <div class="abs" id="cost">
-        <div class="abs tag" id="cost-tag" style="left:130px; top:130px;">BUDGET · 1 DAY</div>
-        <div id="cost-num-wrap"><span id="cost-box"><span class="black" id="cost-num">0</span><span class="black" id="cost-won">원</span></span></div>
-        <div class="rule" id="cost-rule" style="left:560px; top:790px; width:800px;"></div>
-        <div id="cost-label">1인 기준 예상 여행 비용</div>
-        <div id="cost-note">tour.html 예시 금액 · 강릉 왕복 교통비와 숙박비 제외</div>
-      </div>
-    </div>
-
-    <!-- 장면 4: 엔딩 -->
-    <div class="layer" id="s4">
-      <div class="abs tag" id="end-brand">파도 따라, 강릉 하루 · GANGNEUNG ONE DAY</div>
-      <div class="abs black" id="end-go" data-split="mask">지금 떠나세요</div>
-      <div class="abs" id="end-url"><a id="url-link" target="_blank" rel="noopener"></a></div>
-    </div>
-
-    <!-- 장면 사이 전환용 줄무늬 -->
-    <div id="bars"></div>
-    <div id="progress"></div>
-  </div>
-
-  <button type="button" id="replay">다시보기</button>
-
-  <script>
-  /* =====================================================
-     바꾸기 쉬운 내용 (tour.html에 있는 내용 그대로)
-     ===================================================== */
-  var PLACES = ['경포해변', '강문해변', '안목 커피거리'];  // 추천 관광지 3곳
-  var COST = 64000;                                       // 총 예상 비용 (tour.html의 예시 금액)
-  // 엔딩 주소: tour.html에는 웹 주소가 없어서, 실제로 존재하는 GitHub 저장소 주소를 씁니다.
-  // GitHub Pages 등 홈페이지 주소가 생기면 아래 두 줄만 바꾸면 됩니다.
-  var HOMEPAGE_TEXT = 'github.com/fulllove5634/my-homepage';
-  var HOMEPAGE_LINK = 'https://github.com/fulllove5634/my-homepage';
-
-  var DURATION = 15;   // 영상 길이 (초)
-
-  /* =====================================================
-     도우미 함수
-     ===================================================== */
-  var $ = function (id) { return document.getElementById(id); };
-  function clamp(v, a, b) { return Math.min(b, Math.max(a, v)); }
-  function lerp(a, b, p) { return a + (b - a) * p; }
-  // t가 a초~b초 사이에서 0→1로 변하는 진행도
-  function prog(t, a, b) { return clamp((t - a) / (b - a), 0, 1); }
-  // 움직임의 느낌(이징)
-  var E = {
-    outExpo: function (p) { return p === 1 ? 1 : 1 - Math.pow(2, -10 * p); },
-    inExpo: function (p) { return p === 0 ? 0 : Math.pow(2, 10 * p - 10); },
-    inOutExpo: function (p) { return p === 0 ? 0 : p === 1 ? 1 : p < 0.5 ? Math.pow(2, 20 * p - 10) / 2 : (2 - Math.pow(2, -20 * p + 10)) / 2; },
-    outCubic: function (p) { return 1 - Math.pow(1 - p, 3); },
-    inOutCubic: function (p) { return p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2; },
-    outBack: function (p) { var c = 1.9; return 1 + (c + 1) * Math.pow(p - 1, 3) + c * Math.pow(p - 1, 2); },
-    smooth: function (p) { return p * p * (3 - 2 * p); }
-  };
-  // 요소 하나의 위치·크기·회전·투명도·흐림을 한 번에 지정
-  function set(el, o) {
-    var tr = '';
-    if (o.x || o.y) tr += 'translate(' + (o.x || 0) + 'px,' + (o.y || 0) + 'px) ';
-    if (o.r) tr += 'rotate(' + o.r + 'deg) ';
-    if (o.skew) tr += 'skewX(' + o.skew + 'deg) ';
-    if (o.s !== undefined) tr += 'scale(' + o.s + ') ';
-    if (o.sx !== undefined) tr += 'scaleX(' + o.sx + ') ';
-    if (o.sy !== undefined) tr += 'scaleY(' + o.sy + ') ';
-    el.style.transform = tr || 'none';
-    if (o.o !== undefined) el.style.opacity = o.o;
-    el.style.filter = o.blur ? 'blur(' + o.blur.toFixed(1) + 'px)' : '';
-    if (o.clip) el.style.clipPath = o.clip;
-  }
-  // 장면을 보이거나 숨기기
-  function vis(el, on) { el.style.visibility = on ? 'visible' : 'hidden'; }
-
-  // 글자를 한 글자씩 나누기 (data-split="mask"면 글자마다 가림막 상자를 씌움)
-  document.querySelectorAll('[data-split]').forEach(function (el) {
-    var useMask = el.getAttribute('data-split') === 'mask';
-    var text = el.textContent;
-    el.textContent = '';
-    el.chars = [];
-    Array.from(text).forEach(function (c) {
-      var ch = document.createElement('span');
-      ch.className = 'ch';
-      ch.innerHTML = c === ' ' ? '&nbsp;' : c;
-      if (useMask) {
-        var m = document.createElement('span');
-        m.className = 'mask';
-        m.appendChild(ch);
-        el.appendChild(m);
-      } else {
-        el.appendChild(ch);
-      }
-      el.chars.push(ch);
-    });
-  });
-
-  // 모아 보기 줄: 장소 이름을 반복해서 긴 띠로 만들기
-  function rowText(name) { var s = ''; for (var i = 0; i < 6; i++) s += name + '  ·  '; return s; }
-  $('r1').textContent = rowText(PLACES[0]);
-  $('r2').textContent = rowText(PLACES[1]);
-  $('r3').textContent = rowText(PLACES[2]);
-
-  // 전환용 줄무늬 8개
-  for (var b = 0; b < 8; b++) {
-    var bar = document.createElement('i');
-    bar.style.top = (b * 135) + 'px';
-    $('bars').appendChild(bar);
-  }
-  var bars = $('bars').children;
-
-  $('url-link').textContent = HOMEPAGE_TEXT;
-  $('url-link').href = HOMEPAGE_LINK;
-
-  /* =====================================================
-     바다 배경 (캔버스)
-     - 시간에 따라 파도의 높이·간격·위치가 부드럽게 바뀌며
-       모든 장면을 하나로 이어 줍니다.
-     ===================================================== */
-  var cv = $('bg'), g = cv.getContext('2d');
-  // 시간별 파도 모양: [초, 중심 높이, 선 간격, 파도 높이, 밝기]
-  var WAVE_KEYS = [
-    [0.0, 780, 26, 40, 0.30],
-    [2.0, 760, 34, 110, 0.55],
-    [3.4, 700, 30, 70, 0.45],
-    [5.0, 860, 22, 50, 0.40],
-    [6.5, 560, 46, 80, 0.30],
-    [8.0, 930, 16, 26, 0.32],
-    [11.6, 930, 16, 26, 0.32],
-    [12.9, 610, 0, 4, 0.95],
-    [15.0, 610, 0, 6, 0.95]
-  ];
-  function waveAt(t) {
-    for (var i = 0; i < WAVE_KEYS.length - 1; i++) {
-      var a = WAVE_KEYS[i], b = WAVE_KEYS[i + 1];
-      if (t <= b[0]) {
-        var p = E.inOutCubic(prog(t, a[0], b[0]));
-        return a.map(function (v, k) { return lerp(v, b[k], p); });
-      }
-    }
-    return WAVE_KEYS[WAVE_KEYS.length - 1];
-  }
-  // 반짝이는 물방울(입자) 위치를 미리 정해 둠 (항상 같은 모양이 나오게)
-  var seed = 7;
-  function rnd() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
-  var DOTS = [];
-  for (var d = 0; d < 90; d++) DOTS.push({ x: rnd() * 1920, y: rnd() * 1080, z: 0.2 + rnd() * 0.8, r: 0.6 + rnd() * 2 });
-
-  function drawBg(t, camX) {
-    // 바탕: 딥 네이비 그라데이션
-    var grd = g.createLinearGradient(0, 0, 0, 1080);
-    grd.addColorStop(0, '#04101d');
-    grd.addColorStop(1, '#0a2238');
-    g.fillStyle = grd;
-    g.fillRect(0, 0, 1920, 1080);
-
-    // 천천히 움직이는 빛
-    var lx = 1400 + Math.sin(t * 0.6) * 260 - camX * 0.15;
-    var ly = 300 + Math.cos(t * 0.5) * 120;
-    var glow = g.createRadialGradient(lx, ly, 0, lx, ly, 900);
-    glow.addColorStop(0, 'rgba(56,189,248,0.20)');
-    glow.addColorStop(1, 'rgba(56,189,248,0)');
-    g.fillStyle = glow;
-    g.fillRect(0, 0, 1920, 1080);
-
-    // 물방울 (가까운 것일수록 빨리 움직여 깊이감이 생김: 패럴랙스)
-    DOTS.forEach(function (p) {
-      var x = ((p.x - camX * p.z - t * 18 * p.z) % 1920 + 1920) % 1920;
-      var y = p.y + Math.sin(t * 1.2 + p.x) * 10;
-      g.fillStyle = 'rgba(248,250,252,' + (0.15 + p.z * 0.35) + ')';
-      g.beginPath(); g.arc(x, y, p.r, 0, Math.PI * 2); g.fill();
-    });
-
-    // 파도 선 9개
-    var w = waveAt(t);
-    var yC = w[1], sp = w[2], amp = w[3], alpha = w[4];
-    var N = 9;
-    for (var i = 0; i < N; i++) {
-      var off = i - (N - 1) / 2;
-      var center = i === (N - 1) / 2;
-      g.beginPath();
-      for (var x = -20; x <= 1940; x += 16) {
-        var env = 0.55 + 0.45 * Math.sin((x + camX * 0.6) * 0.0016 + t * 0.4);
-        var y = yC + off * sp +
-          Math.sin((x + camX) * 0.0042 + t * 2.1 + i * 0.55) * amp * env +
-          Math.sin((x + camX) * 0.011 - t * 1.4 + i) * amp * 0.18;
-        if (x === -20) g.moveTo(x, y); else g.lineTo(x, y);
-      }
-      var a = alpha * (1 - Math.abs(off) / N);
-      g.strokeStyle = center ? 'rgba(248,250,252,' + Math.min(1, a + 0.15) + ')' : 'rgba(56,189,248,' + a + ')';
-      g.lineWidth = center ? 3 : 2;
-      g.shadowColor = 'rgba(56,189,248,0.8)';
-      g.shadowBlur = center && t > 12 ? 30 : 0;
-      g.stroke();
-    }
-    g.shadowBlur = 0;
-
-    // 비용 장면: 가운데서 퍼지는 물결 고리
-    if (t > 8 && t < 12.2) {
-      var fade = prog(t, 8, 8.4) * (1 - prog(t, 11.6, 12.2));
-      for (var k = 0; k < 4; k++) {
-        var rr = ((t - 8) * 260 + k * 250) % 1000;
-        g.strokeStyle = 'rgba(56,189,248,' + (0.25 * (1 - rr / 1000) * fade) + ')';
-        g.lineWidth = 2;
-        g.beginPath(); g.arc(960, 520, rr, 0, Math.PI * 2); g.stroke();
-      }
-      // 최종 금액 순간: 큰 빛의 고리가 터지듯 퍼짐
-      if (t > 10.6) {
-        var bp = prog(t, 10.6, 11.6);
-        g.strokeStyle = 'rgba(56,189,248,' + (1 - bp) + ')';
-        g.lineWidth = 10 * (1 - bp) + 1;
-        g.beginPath(); g.arc(960, 520, 120 + E.outExpo(bp) * 1100, 0, Math.PI * 2); g.stroke();
-      }
-    }
-  }
-
-  /* =====================================================
-     장면별 움직임: t(초)를 받아서 그 순간의 모습을 그립니다.
-     ===================================================== */
-  function render(t) {
-    // 카메라 가로 이동 (경포해변 → 강문해변 장면에서 화면이 옆으로 휙 지나감)
-    var pan = E.inOutExpo(prog(t, 3.3, 3.8));
-    var camX = pan * 1920 + prog(t, 6.5, 8) * 600;
-    drawBg(t, camX);
-
-    /* ---------- 장면 1 (0~2초): 제목 조립 → 강한 줌인 ---------- */
-    var s1 = $('s1');
-    vis(s1, t < 2.15);
-    if (t < 2.15) {
-      var all = $('title').querySelectorAll('.ch');
-      all.forEach(function (c, i) {
-        var p = E.outExpo(prog(t, 0.05 + i * 0.065, 0.55 + i * 0.065));
-        var dir = i % 2 ? 1 : -1;
-        set(c, {
-          x: (1 - p) * (i % 3 === 0 ? -1400 : 300 * dir),
-          y: (1 - p) * 900 * dir,
-          r: (1 - p) * 35 * dir,
-          s: lerp(2.6, 1, p),
-          o: p,
-          blur: (1 - p) * 18
-        });
-      });
-      // 조립 후 살짝 밀려 들어가다가(1.0~1.55초) 화면 속으로 강하게 줌인(1.55~2.0초)
-      var push = E.outCubic(prog(t, 0.9, 1.55));
-      var zoom = E.inExpo(prog(t, 1.55, 2.0));
-      set($('title'), { s: 1 + push * 0.05 + zoom * 16, blur: zoom * 6, o: 1 - prog(t, 1.9, 2.0) });
-      // 줌인 마지막 순간 파란 빛이 화면을 덮었다가 다음 장면으로
-      var fc = E.inExpo(prog(t, 1.75, 2.0));
-      $('flashCircle').style.clipPath = 'circle(' + (fc * 2300) + 'px at 1180px 700px)';
-      $('flashCircle').style.opacity = 1 - prog(t, 2.0, 2.15);
-    }
-
-    /* ---------- 장면 2-1 (2.0~3.5초): 경포해변, 확대 + 파도가 가로지름 ---------- */
-    var s2a = $('s2a');
-    vis(s2a, t >= 2.0 && t < 3.85);
-    if (t >= 2.0 && t < 3.85) {
-      var zp = E.outExpo(prog(t, 2.0, 2.75));
-      // 카메라가 왼쪽으로 지나가며 장면이 화면 밖으로 밀려남
-      set(s2a, { x: -pan * 1920, skew: Math.sin(pan * Math.PI) * 8 });
-      set($('gp-text'), { s: lerp(2.6, 1, zp), x: (1 - zp) * -200, y: (1 - zp) * 120, blur: (1 - zp) * 10, o: prog(t, 2.0, 2.15) });
-      // 거대한 파도 띠가 왼쪽에서 오른쪽으로 화면을 가로지름 (겹친 글자 색이 뒤집힘)
-      var wp = E.inOutCubic(prog(t, 2.25, 3.3));
-      $('gp-wave').style.transform = 'translate(' + lerp(-3000, 1920, wp) + 'px,' + (Math.sin(t * 6) * 15) + 'px)';
-      set($('gp-num'), { y: (1 - E.outExpo(prog(t, 2.2, 2.8))) * 120, o: prog(t, 2.2, 2.6) });
-      set($('gp-tag'), { x: (1 - E.outExpo(prog(t, 2.35, 2.9))) * -60, o: prog(t, 2.35, 2.7) });
-      set($('gp-rule'), { sx: E.outExpo(prog(t, 2.4, 3.0)) });
-      set($('gp-desc'), { y: (1 - E.outExpo(prog(t, 2.5, 3.0))) * 30, o: prog(t, 2.5, 2.9) });
-    }
-
-    /* ---------- 장면 2-2 (3.5~5.0초): 강문해변, 수평 카메라 이동 ---------- */
-    var s2b = $('s2b');
-    vis(s2b, t >= 3.3 && t < 5.05);
-    if (t >= 3.3 && t < 5.05) {
-      // 오른쪽에서 화면이 미끄러져 들어옴 (빠를수록 글자가 기울어짐)
-      set(s2b, { x: (1 - pan) * 1920, skew: Math.sin(pan * Math.PI) * 8 });
-      // 뒤쪽 큰 영문 글자는 천천히, 앞쪽 글자는 빠르게 = 패럴랙스
-      set($('gm-back'), { x: lerp(500, -900, prog(t, 3.3, 5.05)) });
-      $('gm-text').chars.forEach(function (c, i) {
-        var p = E.outExpo(prog(t, 3.65 + i * 0.06, 4.15 + i * 0.06));
-        set(c, { y: (1 - p) * 360 });
-      });
-      set($('gm-text'), { x: -prog(t, 3.8, 5.05) * 80 });
-      set($('gm-tag'), { x: (1 - E.outExpo(prog(t, 3.7, 4.2))) * 80, o: prog(t, 3.7, 4.0) });
-      set($('gm-rule'), { sx: E.outExpo(prog(t, 3.8, 4.5)) });
-      set($('gm-desc'), { y: (1 - E.outExpo(prog(t, 3.95, 4.45))) * 30, o: prog(t, 3.95, 4.3) });
-    }
-
-    /* ---------- 줄무늬 전환 (4.75~5.25초) ---------- */
-    for (var bi = 0; bi < bars.length; bi++) {
-      var inP = E.inOutExpo(prog(t, 4.72 + bi * 0.02, 4.98 + bi * 0.02));
-      var outP = E.inOutExpo(prog(t, 5.02 + bi * 0.02, 5.28 + bi * 0.02));
-      var left = bi % 2 === 0;
-      bars[bi].style.transformOrigin = (outP > 0 ? (left ? '100%' : '0%') : (left ? '0%' : '100%')) + ' 50%';
-      bars[bi].style.transform = 'scaleX(' + (inP - outP) + ')';
-    }
-
-    /* ---------- 장면 2-3 (5.0~6.5초): 안목 커피거리, 여러 방향에서 조립 ---------- */
-    var s2c = $('s2c');
-    vis(s2c, t >= 5.0 && t < 6.55);
-    if (t >= 5.0 && t < 6.55) {
-      var FROM = [[-1300, -500, -60], [300, -1100, 40], [1500, 300, 70], [-500, 1100, -50], [1300, -900, 30], [-1500, 200, -80]];
-      var chars = $('am-1').chars.concat($('am-2').chars);
-      chars.forEach(function (c, i) {
-        var landAt = 5.05 + i * 0.12;              // 박자에 맞춰 한 글자씩 착지
-        var p = E.outBack(prog(t, landAt, landAt + 0.38));
-        var f = FROM[i % FROM.length];
-        // 착지한 뒤에는 박자마다 살짝 튀어 오름 (리듬감)
-        var beat = Math.max(0, Math.sin((t - landAt) * Math.PI * 4)) * prog(t, landAt + 0.4, landAt + 0.5) * (1 - prog(t, 6.2, 6.4));
-        set(c, { x: (1 - p) * f[0], y: (1 - p) * f[1] - beat * 14, r: (1 - p) * f[2], o: clamp(p * 3, 0, 1) });
-      });
-      set($('am-rule'), { sx: E.outExpo(prog(t, 5.6, 6.2)) });
-      set($('am-tag'), { o: prog(t, 5.5, 5.8) });
-      set($('am-desc'), { y: (1 - E.outExpo(prog(t, 5.8, 6.2))) * 30, o: prog(t, 5.8, 6.1) });
-      // 다음 장면으로: 화면이 뒤로 물러나며 흐려짐
-      var ex = E.inExpo(prog(t, 6.25, 6.55));
-      set(s2c, { s: 1 - ex * 0.35, blur: ex * 12, o: 1 - ex });
-    }
-
-    /* ---------- 세 곳 모아 보기 (6.5~8.0초): 기울어진 띠가 엇갈려 흐름 ---------- */
-    var s2d = $('s2d');
-    vis(s2d, t >= 6.5 && t < 8.15);
-    if (t >= 6.5 && t < 8.15) {
-      var ip = E.outExpo(prog(t, 6.5, 6.95));
-      var drift = (t - 6.5) * 260;
-      set($('r1'), { x: lerp(-2400, -300, ip) - drift });
-      set($('r2'), { x: lerp(1800, -900, ip) + drift });
-      set($('r3'), { x: lerp(-2600, -500, ip) - drift * 1.3 });
-      // 끝에서 세 줄이 가운데 한 줄로 납작하게 모임 → 비용 숫자로 이어짐
-      var squash = E.inExpo(prog(t, 7.6, 8.05));
-      set($('recap'), { r: -7 * (1 - squash), s: 1 + (1 - ip) * 0.3, sy: 1 - squash * 0.98, o: 1 - prog(t, 7.95, 8.1) });
-    }
-
-    /* ---------- 장면 3 (8.0~12.0초): 비용 카운트업 ---------- */
-    var s3 = $('s3');
-    vis(s3, t >= 7.95 && t < 12.2);
-    if (t >= 7.95 && t < 12.2) {
-      var cp = E.outCubic(prog(t, 8.15, 10.6));
-      $('cost-num').textContent = Math.round(COST * cp).toLocaleString('ko-KR');
-      // 숫자가 납작한 선에서 펼쳐지듯 등장
-      var open = E.outExpo(prog(t, 7.95, 8.4));
-      // 최종 금액 순간의 강한 강조 (10.6초)
-      var hit = prog(t, 10.6, 11.2);
-      var punch = hit > 0 ? 1 + Math.sin(hit * Math.PI) * 0.14 * (1 - hit * 0.5) : 1;
-      set($('cost-num'), {
-        sy: open,
-        s: lerp(0.82, 1, cp) * punch,
-        y: lerp(40, 0, cp) + Math.sin(t * 3) * 6 * (1 - hit),
-        r: lerp(-2.5, 0, cp)
-      });
-      $('cost-num').style.textShadow = hit > 0 ? '0 0 ' + (80 * (1 - hit) + 30) + 'px rgba(56,189,248,' + (0.9 - hit * 0.5) + ')' : 'none';
-      $('cost-num').style.color = hit > 0 && hit < 0.25 ? '#38BDF8' : '#F8FAFC';
-      var won = E.outExpo(prog(t, 10.6, 11.0));
-      set($('cost-won'), { x: (1 - won) * 120, o: won });
-      set($('cost-rule'), { sx: E.outExpo(prog(t, 10.7, 11.3)) });
-      set($('cost-label'), { y: (1 - E.outExpo(prog(t, 8.4, 8.9))) * 40, o: prog(t, 8.4, 8.8) });
-      set($('cost-note'), { o: prog(t, 8.7, 9.1) * 1 });
-      set($('cost-tag'), { o: prog(t, 8.3, 8.6) });
-      var cx = E.inExpo(prog(t, 11.75, 12.2));
-      set($('cost'), { s: 1 - cx * 0.12, y: cx * -40, blur: cx * 10, o: 1 - cx });
-    }
-
-    /* ---------- 장면 4 (12.0~15.0초): 엔딩 ---------- */
-    var s4 = $('s4');
-    vis(s4, t >= 12.3);
-    if (t >= 12.3) {
-      // 파도 선들이 한 줄의 빛으로 모인 뒤(배경), 그 선 위로 문구가 솟아오름
-      $('end-go').chars.forEach(function (c, i) {
-        var p = E.outExpo(prog(t, 12.45 + i * 0.05, 13.15 + i * 0.05));
-        set(c, { y: (1 - p) * 300 });
-      });
-      var gs = E.outCubic(prog(t, 12.6, 15));
-      set($('end-go'), { s: lerp(1.06, 1, gs) });
-      set($('end-url'), { y: (1 - E.outExpo(prog(t, 13.2, 13.8))) * 40, o: prog(t, 13.2, 13.7) });
-      set($('end-brand'), { o: prog(t, 13.5, 14.0), y: (1 - E.outExpo(prog(t, 13.5, 14.1))) * -20 });
-    }
-
-    // 진행 막대
-    $('progress').style.transform = 'scaleX(' + (t / DURATION) + ')';
-  }
-
-  /* =====================================================
-     재생 장치
-     ===================================================== */
-  var startTime = null, raf = null;
-
-  // 창 크기에 맞춰 1920×1080 무대를 확대/축소 (항상 16:9)
-  function fit() {
-    var s = Math.min(innerWidth / 1920, innerHeight / 1080);
-    $('stage').style.transform = 'scale(' + s + ') translate(-50%, -50%)';
-  }
-  addEventListener('resize', fit);
-  fit();
-
-  function tick(now) {
-    if (startTime === null) startTime = now;
-    var t = Math.min((now - startTime) / 1000, DURATION);
-    render(t);
-    if (t < DURATION) raf = requestAnimationFrame(tick);   // 15초가 되면 마지막 화면에서 멈춤
-  }
-
-  function play() {
-    if (raf) cancelAnimationFrame(raf);
-    startTime = null;
-    raf = requestAnimationFrame(tick);
-  }
-
-  $('replay').addEventListener('click', play);
-
-  // 주소 끝에 ?t=5 처럼 붙이면 그 초의 장면에 멈춰서 볼 수 있습니다 (확인용)
-  var fixed = new URLSearchParams(location.search).get('t');
-  if (fixed !== null) {
-    render(clamp(parseFloat(fixed) || 0, 0, DURATION));
-  } else {
-    // 글꼴이 준비되면 자동 재생 시작 (최대 1초까지만 기다림)
-    render(0);   // 기다리는 동안에도 첫 장면 상태로 보이게
-    var started = false;
-    function go() { if (!started) { started = true; play(); } }
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(go);
-    setTimeout(go, 1000);
-  }
-  </script>
+<main class="stage" id="stage" aria-label="강릉 관광 홍보 15초 모션그래픽">
+<canvas id="ocean" aria-hidden="true"></canvas><div class="noise"></div><div class="graphic-orb" id="graphic-orb"></div><div class="vertical-rule"></div><div class="corner-tag">37°45′N / EAST SEA</div><div class="edge-index" id="edge-index">01 — DISCOVER</div>
+<div class="topline"><span>GANGNEUNG <b> / </b> COASTAL EDITION</span><span>01 DAY <b> / </b> 15 SEC</span></div>
+<section class="scene intro" id="intro"><div><div class="eyebrow" id="intro-eyebrow">YOUR NEXT COASTAL ESCAPE <span class="eyebrow-line"></span> 2026</div><div class="huge"><div class="line"><span id="intro-a">파도 따라,</span></div><div class="line"><span id="intro-b">강릉 하루</span></div></div><div class="eyebrow small" id="intro-small">바다에서 시작되는 하루</div></div></section>
+<section class="scene place" id="place"><div><div class="num" id="place-num">01 / 03 · MUST VISIT</div><div class="bar" id="place-bar"></div><div class="place-name" id="place-name">경포해변</div><div class="description" id="place-desc">끝없이 펼쳐진 푸른 바다</div></div><div class="outline" id="place-outline">SEA</div><div class="place-side" id="place-side">GANGNEUNG / EXPERIENCE 01</div></section>
+<section class="scene bridge" id="bridge"><div><div class="kicker" id="bridge-kicker">ONE DAY, THREE MOMENTS</div><div class="phrase" id="bridge-phrase">바다를 걷고,<br><em>강릉을 담다.</em></div><div class="chips" id="bridge-chips"><span>경포해변</span><span>강문해변</span><span>안목 커피거리</span></div></div></section>
+<section class="scene cost" id="cost"><div class="orbit" id="orbit"></div><div class="eyebrow" id="cost-label">ONE DAY / ONE BUDGET</div><div class="cost-sub">강릉 하루 여행 · 1인 예상 비용</div><div class="price" id="price">0<span class="unit">원</span></div><div class="note" id="cost-note">왕복 교통비 및 숙박비 제외 · 예시 예산</div><div class="cost-micro">01 / BEACH &nbsp; 02 / COFFEE &nbsp; 03 / LOCAL FOOD</div></section>
+<section class="scene end" id="end"><div class="eyebrow" id="end-eyebrow">THE SEA IS CALLING</div><div class="cta" id="end-cta">지금 <strong>떠나세요.</strong></div><div class="brand" id="end-brand">파도 따라, 강릉 하루 <span class="brand-dot">●</span></div><a class="url" id="end-url" href="https://fulllove5634.github.io/my-homepage/tour.html" target="_blank" rel="noopener">fulllove5634.github.io/my-homepage/tour.html</a><div class="footer">GANGNEUNG · YOUR DAY, YOUR WAVE</div></section>
+<div class="slash" id="slash"></div><div class="flash" id="flash"></div><div class="progress" id="progress"></div><button class="replay" id="replay" type="button" aria-label="15초 영상 다시보기">↻ 다시보기</button>
+</main>
+<script>
+(()=>{'use strict';
+// 관광지 이름·설명은 tour.html의 추천 관광지 3곳 내용 그대로 (확인 완료)
+const places=[['경포해변','끝없이 펼쳐진 푸른 바다','SEA'],['강문해변','아기자기한 포토존과 아름다운 해안 풍경','WAVE'],['안목 커피거리','탁 트인 오션뷰 카페에서 커피와 디저트','COFFEE']];
+const $=id=>document.getElementById(id),stage=$('stage'),canvas=$('ocean'),ctx=canvas.getContext('2d');const scenes=['intro','place','bridge','cost','end'].map($);const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v)),ease=t=>1-Math.pow(1-clamp(t),3),smooth=t=>{t=clamp(t);return t*t*(3-2*t)},lerp=(a,b,t)=>a+(b-a)*t;let started=performance.now(),lastPlace=-1,raf;
+function css(id,props){Object.assign($(id).style,props)}function show(index){scenes.forEach((s,i)=>{s.classList.toggle('active',i===index);s.style.opacity=i===index?1:0})}
+function reset(){started=performance.now();lastPlace=-1;cancelAnimationFrame(raf);raf=requestAnimationFrame(frame)}
+function drawOcean(t){const w=canvas.width,h=canvas.height;ctx.clearRect(0,0,w,h);const gl=ctx.createRadialGradient(w*.75,h*.7,10,w*.75,h*.7,w*.8);gl.addColorStop(0,'rgba(33,131,173,.18)');gl.addColorStop(1,'rgba(2,8,20,0)');ctx.fillStyle=gl;ctx.fillRect(0,0,w,h);
+for(let j=0;j<7;j++){ctx.beginPath();const y=h*(.61+j*.062),amp=h*(.018+j*.004);for(let x=0;x<=w+8;x+=8){const yy=y+Math.sin(x/w*11+t*(.7+j*.12)+j*.8)*amp+Math.sin(x/w*19-t*.46+j)*amp*.25;if(x===0)ctx.moveTo(x,yy);else ctx.lineTo(x,yy)}ctx.strokeStyle=`rgba(${j%2?'80,204,248':'46,125,178'},${.17-j*.014})`;ctx.lineWidth=Math.max(1,w*.0017);ctx.stroke()}
+for(let i=0;i<38;i++){const x=((i*97.2+t*(i%3+1)*6)%w),y=(i*43.7)%h;ctx.fillStyle=`rgba(154,227,255,${.12+.13*Math.sin(t+i)**2})`;ctx.beginPath();ctx.arc(x,y,Math.max(1,w*.0009),0,Math.PI*2);ctx.fill()}}
+function frame(now){const t=Math.min(15,(now-started)/1000);const w=stage.clientWidth,h=stage.clientHeight;if(canvas.width!==Math.round(w*devicePixelRatio)||canvas.height!==Math.round(h*devicePixelRatio)){canvas.width=Math.round(w*devicePixelRatio);canvas.height=Math.round(h*devicePixelRatio)}drawOcean(t);css('progress',{width:(t/15*100)+'%'});css('graphic-orb',{transform:`translate(${Math.sin(t*.65)*12}%,${Math.cos(t*.55)*10}%) scale(${1+.08*Math.sin(t*1.2)}) rotate(${t*11}deg)`});$('edge-index').textContent=t<2?'01 — ARRIVE':t<8?'02 — EXPLORE':t<12?'03 — PLAN':'04 — GO';let k,local;
+if(t<2){show(0);local=t;css('intro-a',{transform:`translateY(${lerp(115,0,ease((local-.04)/.57))}%) rotate(${lerp(3,0,ease((local-.04)/.57))}deg)`,filter:`blur(${lerp(10,0,ease((local-.04)/.57))}px)`});css('intro-b',{transform:`translateY(${lerp(115,0,ease((local-.28)/.62))}%) scale(${lerp(.9,1,ease((local-.28)/.62))})`,filter:`blur(${lerp(10,0,ease((local-.28)/.62))}px)`});css('intro-eyebrow',{opacity:ease((local-.4)/.6)});css('intro-small',{opacity:ease((local-1)/.6)});css('intro',{transform:`scale(${1+ease((local-1.4)/.6)*.4})`,opacity:1-smooth((local-1.75)/.25)});
+}else if(t<8){local=t-2;if(local<4.5){show(1);k=Math.min(2,Math.floor(local/1.5));const q=local-k*1.5;if(k!==lastPlace){$('place-num').textContent=`0${k+1} / 03 · MUST VISIT`;$('place-name').textContent=places[k][0];$('place-desc').textContent=places[k][1];$('place-outline').textContent=places[k][2];$('place-side').textContent=`GANGNEUNG / EXPERIENCE 0${k+1}`;lastPlace=k}const en=ease(q/.34),out=1-smooth((q-1.24)/.26),offset=k===1?lerp(60,0,en):lerp(-60,0,en);css('place',{opacity:out,transform:`translateX(${offset}px)`});css('place-name',{transform:k===0?`scale(${lerp(1.5,1,en)})`:k===1?`translateX(${lerp(100,0,en)}px)`:`translateX(${Math.sin(q*37)*13*(1-en)}px) rotate(${(1-en)*-3}deg)`,opacity:en,filter:`blur(${(1-en)*10}px)`});css('place-desc',{opacity:ease((q-.3)/.3),transform:`translateY(${(1-ease((q-.3)/.3))*25}px)`});css('place-bar',{width:`${en*26}cqw`})}else{show(2);const q=local-4.5;const en=ease(q/.4);css('bridge',{opacity:1-smooth((q-1.22)/.28)});css('bridge-kicker',{opacity:en,transform:`translateY(${(1-en)*35}px)`});css('bridge-phrase',{opacity:en,transform:`scale(${lerp(.78,1,en)})`});css('bridge-chips',{opacity:ease((q-.35)/.35)})}}
+else if(t<12){show(3);local=t-8;const en=ease(local/.55);css('cost',{opacity:1-smooth((local-3.7)/.3)});css('cost-label',{opacity:en});css('price',{transform:`scale(${lerp(.65,1,en)})`,opacity:en});css('orbit',{transform:`scale(${1+local*.13}) rotate(${local*18}deg)`,opacity:.65});const amount=Math.round(64000*ease(local/3.05)/100)*100;$('price').innerHTML=amount.toLocaleString('ko-KR')+'<span class="unit">원</span>';css('cost-note',{opacity:ease((local-2.8)/.55)})}
+else{show(4);local=t-12;const en=ease(local/.65);css('end',{opacity:en});css('end-eyebrow',{opacity:ease((local-.2)/.45)});css('end-cta',{transform:`translateY(${lerp(90,0,en)}px) scale(${lerp(1.17,1,en)})`,filter:`blur(${lerp(12,0,en)}px)`});css('end-brand',{opacity:ease((local-.65)/.5)});css('end-url',{opacity:ease((local-1.05)/.5),transform:`translateY(${(1-ease((local-1.05)/.5))*22}px)`})}
+const transition=[2,3.5,5,6.5,8,12].reduce((a,x)=>Math.max(a,1-smooth(Math.abs(t-x)/.16)),0);css('flash',{opacity:Math.min(.42,transition*.32)});css('slash',{opacity:transition*.8,transform:`translateX(${lerp(-90,85,1-transition)}%) rotate(-12deg)`});if(t<15)raf=requestAnimationFrame(frame)}
+$('replay').addEventListener('click',reset);document.addEventListener('visibilitychange',()=>{if(!document.hidden)reset()});reset();
+})();
+</script>
 </body>
 </html>
