@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>파도 따라, 강릉 하루 | 15초 홍보 영상</title>
+
+  <!-- 한글 글꼴: Pretendard (인터넷이 안 되면 아래 font-family의 기본 한글 글꼴로 대신 보입니다) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #050608;        /* 아주 어두운 배경 */
+      --text: #ffffff;      /* 흰 글자 (대비 강하게) */
+      --ocean: #4fc3ff;     /* 밝은 오션 블루 */
+      --sand: #ffd89a;      /* 밝은 샌드 베이지 */
+      --font: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif;
+    }
+
+    html, body {
+      width: 100%; height: 100%;
+      background: #000;
+      overflow: hidden;
+      font-family: var(--font);
+    }
+
+    /* ---------- 16:9 화면 ----------
+       어떤 크기의 창에서도 16:9 비율을 지키며 화면에 꽉 차게 맞춥니다.
+       글자 크기는 화면 너비 기준 단위(cqw)라서 화면 크기에 따라 같이 커지고 작아집니다. */
+    body { display: flex; align-items: center; justify-content: center; }
+    .stage {
+      position: relative;
+      width: min(100vw, calc(100vh * 16 / 9));
+      aspect-ratio: 16 / 9;
+      background:
+        radial-gradient(ellipse at 50% 120%, rgba(79, 195, 255, 0.25), transparent 60%),
+        var(--bg);
+      overflow: hidden;
+      container-type: inline-size;
+      color: var(--text);
+    }
+
+    /* 장면(scene): 한 번에 하나만 보입니다 */
+    .scene {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      opacity: 0;
+      visibility: hidden;
+    }
+    .scene.on { opacity: 1; visibility: visible; }
+
+    /* 화면 아래쪽 파도 그림 (코드로 그린 그림) */
+    .waves { position: absolute; left: 0; bottom: 0; width: 100%; height: 22%; }
+    .waves path { animation: sway 4s ease-in-out infinite alternate; }
+    .waves path:nth-child(2) { animation-duration: 3s; }
+    @keyframes sway { to { transform: translateX(-3%); } }
+
+    /* ---------- 장면 1: 제목 (0~2초) ---------- */
+    .title {
+      font-size: 13cqw;
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+    }
+    .title em { font-style: normal; color: var(--ocean); }
+    .scene.on .title { animation: slam 0.7s cubic-bezier(.2, 1.6, .4, 1) both; }
+    @keyframes slam {
+      0%   { transform: scale(3); opacity: 0; filter: blur(12px); }
+      60%  { transform: scale(0.95); opacity: 1; filter: blur(0); }
+      100% { transform: scale(1); }
+    }
+    /* "쾅" 하는 순간 화면 전체가 흔들리고 번쩍입니다 */
+    .stage.shake { animation: shake 0.4s 0.35s; }
+    @keyframes shake {
+      0%, 100% { transform: translate(0, 0); }
+      20% { transform: translate(-1.2%, 0.8%); }
+      40% { transform: translate(1.2%, -0.8%); }
+      60% { transform: translate(-0.8%, 0.5%); }
+      80% { transform: translate(0.6%, -0.3%); }
+    }
+    .flash {
+      position: absolute; inset: 0;
+      background: #fff;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .flash.go { animation: flash 0.5s 0.35s; }
+    @keyframes flash { 0% { opacity: 0.7; } 100% { opacity: 0; } }
+
+    /* ---------- 장면 2: 추천 장소 (2~8초) ---------- */
+    .label {
+      font-size: 2.6cqw;
+      font-weight: 800;
+      color: var(--sand);
+      letter-spacing: 0.2em;
+      margin-bottom: 2cqw;
+    }
+    .place {
+      font-size: 12cqw;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+    }
+    .place-all {
+      font-size: 5.4cqw;
+      font-weight: 900;
+      line-height: 1.5;
+    }
+    .place-all span { color: var(--ocean); }
+    /* 효과 3가지: 확대 / 슬라이드 / 흔들림 */
+    .fx-zoom  { animation: zoom 0.6s cubic-bezier(.2, 1.4, .4, 1) both; }
+    .fx-slide { animation: slide 0.6s cubic-bezier(.2, 1, .3, 1) both; }
+    .fx-wobble{ animation: wobble 0.8s ease both; }
+    @keyframes zoom  { from { transform: scale(0.2); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    @keyframes slide { from { transform: translateX(60%); opacity: 0; } to { transform: none; opacity: 1; } }
+    @keyframes wobble {
+      0%   { transform: translateY(30%); opacity: 0; }
+      40%  { transform: rotate(-4deg); opacity: 1; }
+      60%  { transform: rotate(3deg); }
+      80%  { transform: rotate(-1.5deg); }
+      100% { transform: none; }
+    }
+
+    /* ---------- 장면 3: 숫자 카운트업 (8~12초) ---------- */
+    .count {
+      font-size: 16cqw;
+      font-weight: 900;
+      color: var(--sand);
+      line-height: 1;
+      font-variant-numeric: tabular-nums;   /* 숫자가 바뀔 때 폭이 흔들리지 않게 */
+    }
+    .count small { font-size: 0.4em; margin-left: 0.1em; }
+    .count-note {
+      margin-top: 2.4cqw;
+      font-size: 2.6cqw;
+      font-weight: 700;
+      color: #d8d8d8;
+    }
+    .mini {
+      display: flex; gap: 6cqw;
+      margin-top: 3cqw;
+      font-size: 3.4cqw;
+      font-weight: 800;
+    }
+    .mini b { color: var(--ocean); font-size: 1.4em; }
+
+    /* ---------- 장면 4: 마무리 (12~15초) ---------- */
+    .go {
+      font-size: 11cqw;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+    }
+    .url {
+      margin-top: 3cqw;
+      padding: 1cqw 2.4cqw;
+      border: 0.25cqw solid var(--ocean);
+      font-size: 3.2cqw;
+      font-weight: 800;
+      color: var(--ocean);
+    }
+    .scene.on .go  { animation: zoom 0.7s cubic-bezier(.2, 1.4, .4, 1) both; }
+    .scene.on .url { animation: slideUp 0.6s 0.6s both; }
+    @keyframes slideUp { from { transform: translateY(40%); opacity: 0; } to { transform: none; opacity: 1; } }
+
+    /* 진행 막대 (화면 맨 아래) */
+    .progress {
+      position: absolute; left: 0; bottom: 0;
+      height: 0.5cqw; width: 0;
+      background: var(--ocean);
+    }
+    .progress.run { animation: grow 15s linear forwards; }
+    @keyframes grow { to { width: 100%; } }
+
+    /* ---------- 다시보기 버튼 (오른쪽 아래) ---------- */
+    .replay {
+      position: fixed; right: 24px; bottom: 24px; z-index: 5;
+      padding: 14px 26px;
+      border: 2px solid var(--text);
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.6);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 18px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .replay:hover { background: var(--text); color: #000; }
+  </style>
+</head>
+<body>
+  <div class="stage" id="stage">
+    <!-- 파도 그림 -->
+    <svg class="waves" viewBox="0 0 1600 200" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0,90 C260,150 520,30 800,90 C1080,150 1340,30 1600,90 L1700,200 L0,200 Z" fill="#4fc3ff" opacity="0.18"/>
+      <path d="M0,130 C300,80 560,180 860,130 C1160,80 1380,170 1700,130 L1700,200 L0,200 Z" fill="#1d6fa3" opacity="0.35"/>
+    </svg>
+
+    <!-- 장면 1: 제목 -->
+    <section class="scene" id="s1">
+      <h1 class="title">파도 따라,<br><em>강릉 하루</em></h1>
+    </section>
+
+    <!-- 장면 2: 추천 장소 (이름은 tour.html과 똑같이) -->
+    <section class="scene" id="s2">
+      <p class="label">추천 관광지</p>
+      <p class="place" id="place"></p>
+    </section>
+
+    <!-- 장면 3: 숫자 (tour.html의 예시 금액과 일정 개수) -->
+    <section class="scene" id="s3">
+      <p class="label">하루 예상 비용</p>
+      <p class="count"><span id="money">0</span><small>원</small></p>
+      <p class="count-note">1인 기준 예시 금액 · 왕복 교통비와 숙박비 제외</p>
+      <div class="mini">
+        <span>추천 관광지 <b id="spots">0</b>곳</span>
+        <span>하루 일정 <b id="plans">0</b>개</span>
+      </div>
+    </section>
+
+    <!-- 장면 4: 마무리 -->
+    <section class="scene" id="s4">
+      <p class="go">지금 떠나세요</p>
+      <p class="url" id="url"></p>
+    </section>
+
+    <div class="flash" id="flash"></div>
+    <div class="progress" id="progress"></div>
+  </div>
+
+  <button type="button" class="replay" id="replay">다시보기</button>
+
+  <script>
+    // =====================================================
+    // 바꾸기 쉬운 내용은 여기 모아 두었습니다.
+    // =====================================================
+
+    // 마지막 화면에 보이는 주소입니다.
+    // GitHub Pages를 켰다면 그 주소(예: 내아이디.github.io/my-homepage)로 바꿔 주세요.
+    var HOMEPAGE = 'github.com/fulllove5634/my-homepage';
+
+    // 장소 이름 (tour.html의 추천 관광지 3곳 그대로)
+    var PLACES = ['경포해변', '강문해변', '안목 커피거리'];
+    var EFFECTS = ['fx-zoom', 'fx-slide', 'fx-wobble'];   // 확대, 슬라이드, 흔들림
+
+    // 숫자 (tour.html 내용 그대로)
+    var MONEY = 64000;   // 총 예상 비용 (예시 금액)
+    var SPOTS = 3;       // 추천 관광지 수
+    var PLANS = 6;       // 하루 일정표 항목 수
+
+    // =====================================================
+    // 아래는 영상을 움직이는 부분입니다.
+    // =====================================================
+    var stage = document.getElementById('stage');
+    var timers = [];     // 예약해 둔 동작들 (다시보기 때 모두 취소)
+    var frame = null;    // 카운트업 진행 중인 동작
+
+    // ms 밀리초(1000 = 1초) 뒤에 fn을 실행하도록 예약
+    function at(ms, fn) { timers.push(setTimeout(fn, ms)); }
+
+    // 장면 하나만 보이게
+    function show(id) {
+      document.querySelectorAll('.scene').forEach(function (s) {
+        s.classList.toggle('on', s.id === id);
+      });
+    }
+
+    // 애니메이션을 처음부터 다시 실행 (클래스를 뺐다가 다시 넣기)
+    function restartClass(el, cls) {
+      el.classList.remove(cls);
+      void el.offsetWidth;
+      el.classList.add(cls);
+    }
+
+    // 장소 이름 바꾸기
+    function showPlace(text, effect, all) {
+      var p = document.getElementById('place');
+      p.className = all ? 'place-all' : 'place';
+      p.innerHTML = text;
+      restartClass(p, effect);
+    }
+
+    // 숫자를 0부터 목표까지 올리기
+    function countUp(duration) {
+      var start = null;
+      var money = document.getElementById('money');
+      var spots = document.getElementById('spots');
+      var plans = document.getElementById('plans');
+      function step(now) {
+        if (start === null) start = now;
+        var t = Math.min((now - start) / duration, 1);
+        var eased = 1 - Math.pow(1 - t, 3);   // 처음엔 빠르게, 끝에서 천천히
+        money.textContent = Math.round(MONEY * eased).toLocaleString('ko-KR');
+        spots.textContent = Math.round(SPOTS * eased);
+        plans.textContent = Math.round(PLANS * eased);
+        if (t < 1) frame = requestAnimationFrame(step);
+      }
+      frame = requestAnimationFrame(step);
+    }
+
+    // 15초 영상 전체 재생
+    function play() {
+      // 이전 재생 정리
+      timers.forEach(clearTimeout);
+      timers = [];
+      if (frame) cancelAnimationFrame(frame);
+      document.getElementById('money').textContent = '0';
+      document.getElementById('spots').textContent = '0';
+      document.getElementById('plans').textContent = '0';
+      document.getElementById('url').textContent = HOMEPAGE;
+      restartClass(document.getElementById('progress'), 'run');
+
+      // 0~2초: 제목 쾅!
+      show('s1');
+      restartClass(stage, 'shake');
+      restartClass(document.getElementById('flash'), 'go');
+
+      // 2~8초: 장소 이름이 1.5초씩 바뀜 (확대 → 슬라이드 → 흔들림 → 세 곳 모두)
+      at(2000, function () { show('s2'); showPlace(PLACES[0], EFFECTS[0]); });
+      at(3500, function () { showPlace(PLACES[1], EFFECTS[1]); });
+      at(5000, function () { showPlace(PLACES[2], EFFECTS[2]); });
+      at(6500, function () {
+        showPlace('<span>' + PLACES.join('</span> · <span>') + '</span>', EFFECTS[0], true);
+      });
+
+      // 8~12초: 숫자 카운트업 (3초 동안 올라가고 1초 멈춤)
+      at(8000, function () { show('s3'); countUp(3000); });
+
+      // 12~15초: 마무리 문구와 주소 (끝나도 화면에 그대로 남음)
+      at(12000, function () { show('s4'); });
+    }
+
+    document.getElementById('replay').addEventListener('click', play);
+    play();   // 페이지를 열면 자동 재생
+  </script>
+</body>
+</html>
