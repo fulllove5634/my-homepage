@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..800;1,400..800&family=Inter:wght@400..700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600&text=%EB%A9%9C%EB%A1%9C&display=swap" rel="stylesheet">
 <link rel="preload" href="PretendardVariable.subset.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="InterNum.woff2" as="font" type="font/woff2" crossorigin>
 <style>
@@ -64,8 +65,8 @@ button,input,select,textarea{font:inherit;color:inherit}
 nav.top{position:fixed;top:0;left:0;right:0;z-index:40;transition:background .2s}
 nav.top.solid{background:rgba(255,255,255,.86);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
 nav.top .wrap-wide{display:flex;align-items:center;gap:22px;height:68px}
-.logo{font-weight:800;font-size:20px;letter-spacing:-.03em;color:var(--ink);text-decoration:none}
-.logo span{color:var(--violet)}
+.logo{font-family:"Playfair Display","Noto Serif KR",Georgia,serif;font-weight:600;font-size:24px;letter-spacing:-.005em;color:var(--ink);text-decoration:none}
+.logo span{color:var(--violet);font-style:italic;font-weight:500;margin-left:.03em}
 .navlinks{display:flex;gap:26px;margin-left:auto}
 .navlinks a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:500}
 .navlinks a:hover{color:var(--ink)}
@@ -297,6 +298,15 @@ footer b{color:var(--muted)}
 .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:11px 18px;border-radius:999px;font-weight:700;font-size:14px;z-index:70;opacity:0;pointer-events:none;transition:opacity .2s;max-width:calc(100% - 32px);text-align:center}
 .toast.show{opacity:1}
 @media (max-width:760px){.clip{height:116px}.wave-lane{height:96px}#wave{height:96px}.transport{gap:12px}.lcd{min-width:70px}.hero-feats h3{font-size:20px}}
+/* 브랜드 필름(멜로MR 쇼릴) */
+.film{padding:56px 0 24px}
+.film-card{display:grid;grid-template-columns:minmax(240px,1fr) 2.3fr;gap:clamp(24px,3.5vw,56px);align-items:center;padding:clamp(24px,4vw,56px);border-radius:28px;background:radial-gradient(120% 140% at 15% 0%,#1d2366 0%,#0b0e2e 55%,#05061a 100%);box-shadow:0 30px 80px rgba(28,25,51,.22)}
+.film-head .eyebrow{color:var(--lav)}
+.film-head h2{color:#fff;font-size:clamp(26px,3vw,40px);font-weight:600;letter-spacing:-.03em;margin:14px 0 12px}
+.film-head h2 em{font-family:var(--serif);font-style:italic;font-weight:500;color:var(--lav)}
+.film-head p{color:#cfc2ff;margin:0;font-size:16px;line-height:1.65}
+.film-video{display:block;width:100%;aspect-ratio:16/9;border-radius:16px;background:#05061a;box-shadow:0 0 0 1px rgba(164,139,255,.28),0 24px 60px rgba(109,77,255,.28)}
+@media (max-width:900px){.film-card{grid-template-columns:1fr}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
 
@@ -343,6 +353,25 @@ footer b{color:var(--muted)}
   </div>
   <div class="img-credit" data-i18n="hero.imgNote"></div>
 </header>
+
+<section class="film" id="film">
+  <div class="wrap-wide">
+    <div class="film-card">
+      <div class="film-head">
+        <div class="eyebrow" data-i18n="film.eyebrow"></div>
+        <h2 data-i18n="film.h2"></h2>
+        <p data-i18n="film.p"></p>
+      </div>
+      <video class="film-video" src="MeloMR_showreel.mp4" poster="MeloMR_poster.jpg" autoplay muted loop playsinline controls preload="metadata" aria-label="MeloMR brand film"></video>
+    </div>
+  </div>
+</section>
+<script>
+  /* 움직임 줄이기 설정이면 자동 재생하지 않기 */
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const v = document.querySelector(".film-video"); v.removeAttribute("autoplay"); v.pause();
+  }
+</script>
 
 <section id="app">
   <div class="wrap-wide">
@@ -952,6 +981,9 @@ const SONG_TXT = {
 
 /* ===== v6 리뉴얼: 새로 추가되거나 바뀐 문구 [한국어, English, 中文] ===== */
 Object.assign(L, {
+  "film.eyebrow":["Brand film · 15초","Brand film · 15 sec","品牌影片 · 15 秒"],
+  "film.h2":["15초로 보는 <em>MeloMR</em>","<em>MeloMR</em> in 15 seconds","15 秒看懂 <em>MeloMR</em>"],
+  "film.p":["곡을 분석하고, 막힌 마디만 고치고, 연주까지 준비하는 과정을 한 편의 모션그래픽으로 담았어요. 소리를 켜고 보세요.","Analyze the song, fix only the bar that's stuck, and get ready to play: the whole flow in one motion piece. Turn the sound on.","分析歌曲、只修改卡住的小节、一路准备到演奏——用一段动态影像呈现。请打开声音观看。"],
   "nav.app":["앱 데모","App demo","应用演示"],
   "nav.help":["결제·문의","Pay & support","付款·咨询"],
   "hero.eyebrow":["연주자를 위한 AI 음악 코파일럿","The AI music copilot for players","为演奏者打造的 AI 音乐助手"],
