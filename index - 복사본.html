@@ -1,0 +1,1821 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>멜로MR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..800;1,400..800&family=Inter:wght@400..700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preload" href="PretendardVariable.subset.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="InterNum.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+/* 글꼴: 한글·본문 Pretendard / 영어 제목 Playfair Display / 숫자·가격 Inter (모두 SIL OFL 1.1) */
+@font-face{font-family:"Pretendard";src:url("PretendardVariable.subset.woff2") format("woff2-variations"),url("PretendardVariable.subset.woff2") format("woff2");font-weight:45 920;font-display:swap}
+/* InterNum: 숫자와 가격 기호만 담은 Inter. 글꼴 목록 맨 앞에 두어 모든 숫자가 Inter로 보입니다 */
+@font-face{font-family:"InterNum";src:url("InterNum.woff2") format("woff2-variations"),url("InterNum.woff2") format("woff2");font-weight:100 900;font-display:swap;unicode-range:U+0030-0039,U+002C,U+002E,U+0025,U+002B,U+002F,U+003A,U+0024,U+20A9,U+00D7,U+2013}
+:root{
+  /* 흰 바탕 + 파스텔 라벤더. 단일 라이트 테마(브랜드 세계관 고정). */
+  /* 레이아웃: 스튜디오 히어로 → 기능 3열 → 라벤더 톤 작업실형 웹앱 → 요금제 → 결제·문의 → 주문(데모) → FAQ */
+  --bg:#ffffff; --lav-50:#f8f6ff; --lav-100:#f1ecff; --lav-200:#e4dbff; --lav-300:#cfc2ff;
+  --line:rgba(91,64,214,.12); --line-2:rgba(91,64,214,.22);
+  --ink:#1c1933; --muted:#5d5980; --dim:#8d89ad;
+  --violet:#6d4dff; --violet-2:#8467ff; --lav:#a48bff; --orchid:#d264e6; --amber:#d99a0b; --rose:#e5486d; --indigo:#6b7cf2;
+  --f-T:#b8a5ff; --f-S:#8fa0ff; --f-D:#ee9cf8; --f-X:#f7c64c;
+  --sans:"InterNum","Pretendard",-apple-system,BlinkMacSystemFont,system-ui,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --serif:"Playfair Display",Georgia,"Times New Roman",serif;
+  --num:"Inter","InterNum","Pretendard",system-ui,sans-serif;
+  --display:var(--sans); --body:var(--sans); --mono:var(--sans);
+  color-scheme:light;
+}
+:root:lang(zh-CN){--sans:"InterNum","Pretendard","Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:var(--violet)}
+h1,h2,h3,h4{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.18}
+:root:lang(en) h1,:root:lang(en) .sec-head h2,:root:lang(en) .hero-feats h3,:root:lang(en) .plan h3{font-family:var(--serif);letter-spacing:-.01em}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--violet);outline-offset:2px}
+.num{font-family:var(--num);font-variant-numeric:tabular-nums}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+.wrap-wide{max-width:1360px;margin:0 auto;padding:0 24px}
+.eyebrow{font-size:13px;font-weight:600;letter-spacing:.08em;color:var(--violet)}
+:root:lang(en) .eyebrow{text-transform:uppercase;letter-spacing:.14em;font-size:12px}
+.demo-tag{white-space:nowrap;flex:none;display:inline-flex;align-items:center;font-size:11px;font-weight:700;letter-spacing:.04em;color:#a06a00;background:#fff4d6;border-radius:5px;padding:1px 7px;line-height:1.55;vertical-align:middle}
+.soon{display:inline-block;font-size:10px;font-weight:600;color:var(--dim);background:var(--lav-100);border-radius:4px;padding:0 6px;margin-left:6px;vertical-align:1px}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:999px;padding:13px 22px;font-weight:700;cursor:pointer;text-decoration:none;transition:transform .15s,background .15s,box-shadow .15s;white-space:nowrap}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--violet);color:#fff;box-shadow:0 10px 26px rgba(109,77,255,.28)}
+.btn-primary:hover{background:var(--violet-2)}
+.btn-ghost{background:var(--lav-100);color:var(--ink)}
+.btn-ghost:hover{background:var(--lav-200)}
+.btn-sm{padding:8px 14px;font-size:14px}
+.btn[disabled]{opacity:.55;cursor:default}
+.pill{display:inline-block;font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--lav-100);color:var(--muted)}
+.pill.pro{background:var(--violet);color:#fff}
+.pill.wait{background:#fff4d6;color:#a06a00}
+.pill.ok{background:var(--lav-200);color:#4b2fd6}
+
+/* nav */
+nav.top{position:fixed;top:0;left:0;right:0;z-index:40;transition:background .2s}
+nav.top.solid{background:rgba(255,255,255,.86);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+nav.top .wrap-wide{display:flex;align-items:center;gap:22px;height:68px}
+.logo{font-weight:800;font-size:20px;letter-spacing:-.03em;color:var(--ink);text-decoration:none}
+.logo span{color:var(--violet)}
+.navlinks{display:flex;gap:26px;margin-left:auto}
+.navlinks a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:500}
+.navlinks a:hover{color:var(--ink)}
+.langsw{display:inline-flex;gap:2px;background:var(--lav-100);border-radius:999px;padding:3px}
+.langsw button{background:none;border:0;border-radius:999px;padding:4px 10px;cursor:pointer;color:var(--muted);font-weight:700;font-size:12px}
+.langsw button[aria-pressed="true"]{background:#fff;color:var(--ink);box-shadow:0 1px 4px rgba(28,25,51,.12)}
+.auth{display:flex;align-items:center;gap:8px}
+.auth .who{font-size:13px;color:var(--muted);max-width:10em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media (max-width:900px){.navlinks a.hide-md{display:none}}
+@media (max-width:640px){.navlinks{display:none}.langsw{margin-left:auto}.auth .who{display:none}.auth .btn-ghost{display:none}}
+
+/* hero */
+.hero{position:relative;overflow:hidden;padding:150px 0 72px;isolation:isolate;background:linear-gradient(180deg,var(--lav-50),#fff 85%)}
+.hero-bg{position:absolute;top:0;right:0;bottom:0;width:66%;z-index:-2;-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 42%);mask-image:linear-gradient(90deg,transparent 0%,#000 42%)}
+.hero-bg img{width:100%;height:100%;object-fit:cover;object-position:65% 40%;filter:brightness(1.18) saturate(.75) contrast(.92)}
+.hero::before{content:"";position:absolute;inset:0;z-index:-1;background:
+  linear-gradient(90deg,#fff 0%,rgba(255,255,255,.97) 38%,rgba(255,255,255,.55) 60%,rgba(255,255,255,.08) 82%,rgba(255,255,255,.18) 100%),
+  linear-gradient(180deg,rgba(248,246,255,0) 60%,#fff 100%),
+  radial-gradient(50% 60% at 85% 25%,rgba(164,139,255,.28),transparent 70%)}
+.hero .en-title{font-family:var(--serif);font-size:clamp(44px,7vw,96px);font-weight:500;letter-spacing:-.015em;line-height:1.02;margin:18px 0 6px;color:var(--ink)}
+.hero .en-title i{font-style:italic;color:var(--violet)}
+.hero h1{font-size:clamp(28px,4.2vw,54px);font-weight:500;letter-spacing:-.035em;line-height:1.2;max-width:14em;color:var(--ink)}
+:root:lang(en) .hero h1{font-family:var(--sans);letter-spacing:-.03em}
+.hero h1 em{font-style:normal;background:linear-gradient(100deg,var(--violet) 0%,var(--lav) 50%,var(--orchid) 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .lead{color:var(--muted);font-size:clamp(17px,1.5vw,19px);max-width:34em;margin:24px 0 34px}
+.hero .ctas{display:flex;gap:12px;flex-wrap:wrap}
+.hero-meta{margin-top:24px;display:flex;gap:12px;flex-wrap:wrap;font-size:13px;color:var(--muted);align-items:center}
+.hero-feats{margin-top:92px;display:grid;grid-template-columns:repeat(3,1fr);gap:48px;border-top:1px solid var(--line);padding-top:34px}
+.hero-feats .k{font-size:12px;font-weight:600;letter-spacing:.12em;color:var(--violet)}
+.hero-feats h3{font-size:21px;font-weight:600;letter-spacing:-.02em;margin:10px 0 6px}
+.hero-feats p{margin:0;color:var(--muted);font-size:15px;max-width:30em}
+.img-credit{position:absolute;right:24px;bottom:18px;font-size:11px;color:var(--dim)}
+@media (max-width:820px){.hero{padding:120px 0 56px}.hero-bg{width:100%;-webkit-mask-image:linear-gradient(180deg,#000 0%,#000 30%,transparent 62%);mask-image:linear-gradient(180deg,#000 0%,#000 30%,transparent 62%)}.hero-bg img{object-position:70% 20%}.hero::before{background:linear-gradient(180deg,rgba(255,255,255,.55) 0%,rgba(255,255,255,.82) 35%,#fff 62%)}.hero-feats{grid-template-columns:1fr;gap:26px;margin-top:60px}.img-credit{position:static;margin-top:26px;padding:0 24px}}
+
+section{padding:120px 0}
+.sec-head{display:flex;flex-direction:column;gap:14px;margin-bottom:48px;max-width:760px}
+.sec-head h2{font-size:clamp(28px,3.8vw,46px);font-weight:500;letter-spacing:-.03em}
+.sec-head p{color:var(--muted);margin:0;font-size:17px;max-width:40em}
+@media (max-width:640px){section{padding:84px 0}.sec-head{margin-bottom:32px}}
+
+/* ===== 작업실형 웹앱 ===== */
+.daw{background:#fff;border:1px solid var(--line-2);border-radius:20px;overflow:hidden;box-shadow:0 30px 80px rgba(91,64,214,.14),0 2px 6px rgba(28,25,51,.05)}
+.transport{display:flex;align-items:center;gap:18px;padding:12px 16px;background:linear-gradient(180deg,var(--lav-100),var(--lav-50));border-bottom:1px solid var(--line);flex-wrap:wrap}
+.tp-brand{font-weight:700;font-size:14px;display:flex;align-items:center;gap:8px}
+.tp-ctrl{display:flex;align-items:center;gap:6px}
+.tp-btn{width:38px;height:38px;border-radius:10px;border:0;background:#fff;color:var(--ink);cursor:pointer;display:grid;place-items:center;font-size:14px;box-shadow:0 1px 3px rgba(28,25,51,.08)}
+.tp-btn:hover{background:var(--lav-200)}
+.tp-play{width:48px;height:48px;border-radius:50%;background:var(--violet);color:#fff;font-size:18px;box-shadow:0 0 0 6px rgba(109,77,255,.14),0 8px 20px rgba(109,77,255,.35)}
+.tp-play:hover{background:var(--violet-2)}
+.tp-play.on{background:var(--orchid);box-shadow:0 0 0 6px rgba(210,100,230,.16),0 8px 20px rgba(210,100,230,.35)}
+.tp-text{height:38px;padding:0 12px;border-radius:10px;border:0;background:#fff;cursor:pointer;font-size:13px;font-weight:600;box-shadow:0 1px 3px rgba(28,25,51,.08)}
+.tp-text:hover{background:var(--lav-200)}
+.lcds{display:flex;gap:2px;background:#1c1933;border-radius:12px;padding:4px}
+.lcd{display:flex;flex-direction:column;padding:2px 12px;min-width:86px}
+.lcd span{font-size:10px;font-weight:600;letter-spacing:.08em;color:#8d89ad}
+.lcd b{font-family:var(--num);font-variant-numeric:tabular-nums;font-size:18px;font-weight:600;color:#d9ceff;letter-spacing:.01em}
+.tp-quota{margin-left:auto;display:flex;gap:12px;align-items:center;font-size:12px;color:var(--muted);flex-wrap:wrap}
+.daw-grid{display:grid;grid-template-columns:210px minmax(0,1fr) 360px}
+@media (max-width:1180px){.daw-grid{grid-template-columns:190px minmax(0,1fr)}.inspector{grid-column:1/-1;border-left:0!important;border-top:1px solid var(--line)}}
+@media (max-width:760px){.daw-grid{grid-template-columns:minmax(0,1fr)}.tp-quota{margin-left:0}.browser{border-right:0!important;border-bottom:1px solid var(--line)}}
+.browser{border-right:1px solid var(--line);padding:16px 12px;display:flex;flex-direction:column;gap:10px;background:var(--lav-50)}
+.browser h3{font-size:11px;letter-spacing:.06em;color:var(--dim);font-weight:700;margin-top:6px}
+.song{text-align:left;background:transparent;border:0;border-radius:10px;padding:10px;cursor:pointer;display:flex;flex-direction:column;gap:2px;width:100%}
+.song:hover{background:var(--lav-100)}
+.song.active{background:#fff;box-shadow:0 1px 4px rgba(91,64,214,.14)}
+.song b{font-size:13px;font-weight:600}
+.song small{color:var(--muted);font-size:11px}
+.upload{margin-top:4px;font-size:11px;color:var(--dim);line-height:1.5;padding:0 10px}
+@media (max-width:760px){#songList{flex-direction:row!important;overflow-x:auto;padding-bottom:4px}.song{min-width:180px}}
+.arrange{min-width:0;padding:0 0 14px;background:#fff}
+.arr-scroll{overflow-x:auto}
+.arr-inner{min-width:620px;position:relative}
+.ruler{display:grid;height:36px;border-bottom:1px solid var(--line);font-family:var(--num);font-size:11px;color:var(--dim);background:var(--lav-50)}
+.ruler .spacer{border-right:1px solid var(--line)}
+.ruler .rb{position:relative;border-left:1px solid var(--line);padding:4px 6px;display:flex;flex-direction:column;line-height:1.2;cursor:pointer}
+.ruler .rb.sel{color:var(--violet);font-weight:700}
+.ruler .rb .sec{font-family:var(--body);font-size:10px;color:var(--violet);font-weight:700;white-space:nowrap}
+.track{display:grid;border-bottom:1px solid var(--line)}
+.th{border-right:1px solid var(--line);padding:10px;font-size:11px;color:var(--muted);display:flex;flex-direction:column;gap:4px;background:var(--lav-50)}
+.th b{font-size:11px;letter-spacing:.04em;color:var(--ink)}
+.th i{display:block;width:10px;height:10px;border-radius:3px;background:var(--violet)}
+.lane{position:relative;display:grid;padding:8px 0}
+.clip{position:relative;margin:0 3px;height:136px;border-radius:10px;border:0;cursor:pointer;text-align:left;padding:0;overflow:hidden;display:flex;flex-direction:column;transition:transform .12s,box-shadow .12s}
+.clip:hover{transform:translateY(-1px)}
+.clip .cap{display:flex;justify-content:space-between;align-items:center;gap:4px;padding:5px 8px;font-size:10px;font-weight:700;color:#2a2450}
+.clip .cap span:last-child{font-family:var(--num)}
+.clip .ch{font-size:20px;font-weight:700;padding:5px 9px 0;color:var(--ink);line-height:1.1}
+.clip .tg{font-size:11px;padding:0 9px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.clip .roll{position:absolute;left:7px;right:7px;bottom:8px;height:30px}
+.clip .roll i{position:absolute;height:3px;border-radius:2px;opacity:.95}
+.clip.sel{box-shadow:0 0 0 2px var(--violet) inset}
+.clip.playing{box-shadow:0 0 0 2px var(--orchid) inset,0 6px 18px rgba(210,100,230,.3)}
+.clip .dot{position:absolute;top:30px;right:8px;width:7px;height:7px;border-radius:50%;background:var(--orchid)}
+.c-T{background:linear-gradient(180deg,#f1ecff,#f8f6ff)}.c-T .cap{background:var(--f-T)}
+.c-S{background:linear-gradient(180deg,#eceffe,#f7f8ff)}.c-S .cap{background:var(--f-S)}
+.c-D{background:linear-gradient(180deg,#fcecfe,#fef7ff)}.c-D .cap{background:var(--f-D)}
+.c-X{background:linear-gradient(180deg,#fff5da,#fffbef)}.c-X .cap{background:var(--f-X)}
+.wave-lane{height:120px;padding:0;background:var(--lav-50)}
+#wave{width:100%;height:120px;display:block;cursor:pointer}
+.playhead{position:absolute;top:0;bottom:0;width:2px;background:var(--violet);box-shadow:0 0 10px rgba(109,77,255,.45);pointer-events:none;z-index:3;transition:left .06s linear}
+.playhead::before{content:"";position:absolute;top:0;left:-5px;border:6px solid transparent;border-top-color:var(--violet)}
+.synth-note{font-size:11px;color:var(--dim);margin:10px 14px 0}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin:10px 14px 0}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:9px;height:9px;border-radius:3px;display:inline-block}
+.inspector{border-left:1px solid var(--line);background:var(--lav-50);padding:14px 18px 20px;min-width:0}
+.tabs{display:flex;gap:2px;background:var(--lav-100);border-radius:10px;padding:3px;margin-bottom:16px}
+.tab{flex:1;background:none;border:0;border-radius:8px;padding:8px 6px;cursor:pointer;color:var(--muted);font-weight:700;font-size:13px;white-space:nowrap}
+.tab[aria-selected="true"]{background:#fff;color:var(--ink);box-shadow:0 1px 4px rgba(28,25,51,.1)}
+.seg{display:inline-flex;background:var(--lav-100);border-radius:8px;padding:3px;gap:2px}
+.seg button{background:none;border:0;border-radius:6px;padding:5px 11px;cursor:pointer;color:var(--muted);font-weight:700;font-size:12px}
+.seg button[aria-pressed="true"]{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(28,25,51,.1)}
+.insp h4{font-size:14px;font-weight:700;margin:18px 0 6px}
+.insp p{margin:4px 0;color:var(--muted);font-size:14px;line-height:1.6}
+.insp p b{color:var(--ink)}
+.insp .hint{font-size:12px;color:var(--dim)}
+.insp .sel-chord{display:flex;align-items:baseline;gap:10px;margin-top:16px}
+.insp .sel-chord .big{font-size:30px;font-weight:700;color:var(--ink)}
+.insp .sel-chord .lab{font-size:12px;color:var(--violet);font-weight:700}
+.opts{display:flex;flex-direction:column;gap:4px}
+.opt{background:transparent;border:0;border-radius:8px;padding:8px 10px;cursor:pointer;font-size:13px;text-align:left;display:flex;align-items:center;gap:10px;width:100%}
+.opt:hover{background:#fff}
+.opt.on{background:#fff;box-shadow:0 0 0 1.5px var(--violet) inset}
+.opt b{min-width:56px;color:var(--ink)}
+.opt span{color:var(--ink)}
+.opt small{margin-left:auto;color:var(--dim);font-size:11px;white-space:nowrap}
+.rgrid{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.diff-chart{display:grid;gap:5px;align-items:end;height:150px;padding:8px 0 0;border-bottom:1px solid var(--line);margin-top:14px;background:repeating-linear-gradient(to top,transparent 0 29px,rgba(91,64,214,.07) 29px 30px)}
+.dcol{display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end;cursor:pointer;background:none;border:0;padding:0}
+.dval{font-family:var(--num);font-size:10px;color:var(--muted)}
+.dbar{width:72%;border-radius:4px 4px 0 0;min-height:4px}
+.dlabels{display:grid;gap:5px;padding:6px 0 0;font-family:var(--num);font-size:10px;color:var(--dim);text-align:center}
+.lock{display:flex;flex-direction:column;gap:10px;align-items:flex-start;background:var(--lav-100);border-radius:12px;padding:14px;margin-top:14px;font-size:13px;color:var(--muted)}
+
+/* pricing */
+.trial-line{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:22px 26px;border-radius:18px;background:linear-gradient(90deg,var(--lav-100),#fdf3ff);margin-bottom:28px;font-size:16px;color:var(--muted)}
+.trial-line b{color:var(--ink)}
+.cycle{display:inline-flex;background:var(--lav-100);border-radius:999px;padding:4px;margin-bottom:36px}
+.cycle button{background:none;border:0;border-radius:999px;padding:8px 18px;cursor:pointer;color:var(--muted);font-weight:700;font-size:14px}
+.cycle button[aria-pressed="true"]{background:#fff;color:var(--ink);box-shadow:0 1px 4px rgba(28,25,51,.1)}
+.plans-main{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+@media (max-width:1000px){.plans-main{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:620px){.plans-main{grid-template-columns:1fr}}
+.plan{border-radius:22px;padding:30px 26px;display:flex;flex-direction:column;gap:14px;background:var(--lav-50);border:1px solid var(--line)}
+.plan.best{background:radial-gradient(120% 90% at 100% 0%,rgba(164,139,255,.35),transparent 60%),linear-gradient(180deg,#f3eeff,#ebe3ff);border:1.5px solid var(--lav-300);box-shadow:0 24px 60px rgba(109,77,255,.16)}
+.plan h3{font-size:22px;font-weight:700;display:flex;align-items:center;gap:10px}
+.plan .price{font-family:var(--num);font-size:clamp(34px,3.2vw,44px);font-weight:600;letter-spacing:-.03em;font-variant-numeric:tabular-nums;line-height:1;display:flex;flex-wrap:wrap;align-items:baseline;column-gap:2px}
+.plan .price small{font-family:var(--body);font-size:15px;font-weight:500;color:var(--muted);letter-spacing:0;margin-left:4px;white-space:nowrap}
+.plan .sub{color:var(--muted);font-size:14px;margin:0}
+.plan ul{list-style:none;margin:10px 0 18px;padding:0;display:flex;flex-direction:column;gap:10px;font-size:15px;flex:1}
+.plan li{padding-left:26px;position:relative}
+.plan li::before{content:"";position:absolute;left:2px;top:.5em;width:10px;height:5px;border-left:2px solid var(--violet);border-bottom:2px solid var(--violet);transform:rotate(-45deg)}
+.plan li.no{color:var(--dim)}.plan li.no::before{border:0;border-top:2px solid var(--dim);transform:none;top:.8em;height:0}
+.plan .btn{align-self:stretch}
+.plan:not(.best) .btn-ghost{background:#fff;box-shadow:0 0 0 1px var(--line-2) inset}
+
+/* help */
+.notice{display:flex;gap:12px;align-items:flex-start;background:#fff8e6;color:#6e4a00;border-radius:14px;padding:16px 18px;font-size:14px;margin-bottom:40px;max-width:900px}
+.help-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px}
+@media (max-width:820px){.help-grid{grid-template-columns:1fr;gap:40px}}
+.help-grid h3{font-size:20px;font-weight:700;margin-bottom:8px}
+.hrow{display:grid;grid-template-columns:120px 1fr auto;gap:16px;align-items:center;padding:16px 0;border-bottom:1px solid var(--line);font-size:15px}
+.hrow .lb{color:var(--muted);font-size:13px;display:flex;align-items:center;gap:8px}
+.hrow .vl{font-weight:600}
+.hrow .vl small{display:block;color:var(--muted);font-weight:400;font-size:12px;margin-top:2px}
+.hrow .mono{font-family:var(--num)}
+.vtag{font-size:10px;font-weight:700;color:#a06a00;background:#fff4d6;border-radius:4px;padding:0 6px;margin-left:8px;vertical-align:2px}
+.nmark{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:4px;background:#03c75a;color:#fff;font-weight:900;font-size:11px}
+.kmark{display:inline-grid;place-items:center;height:18px;padding:0 4px;border-radius:4px;background:#fee500;color:#191600;font-weight:900;font-size:10px}
+.bmark{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:4px;background:var(--violet);color:#fff;font-weight:900;font-size:11px}
+@media (max-width:480px){.hrow{grid-template-columns:1fr auto}.hrow .lb{grid-column:1/-1}}
+
+/* orders & faq */
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:13px;font-weight:700}
+.field input,.field select,.field textarea{background:#fff;border:1px solid var(--line-2);border-radius:10px;padding:11px 13px;color:var(--ink)}
+.field textarea{font-size:16px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--violet);outline:none;box-shadow:0 0 0 3px rgba(109,77,255,.14)}
+.code-form{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:10px;max-width:640px}
+.orders{display:flex;flex-direction:column}
+.order{padding:14px 0;border-bottom:1px solid var(--line);display:flex;gap:16px;align-items:center;flex-wrap:wrap;font-size:14px}
+.order .oid{font-family:var(--num);font-weight:600}
+.order .sp{margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.empty{color:var(--muted);font-size:14px;padding:18px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.err{font-size:13px;color:var(--rose);min-height:1em}
+.hint{font-size:12px;color:var(--dim)}
+details{border-bottom:1px solid var(--line);padding:20px 0}
+summary{cursor:pointer;font-weight:600;font-size:17px;list-style:none;display:flex;justify-content:space-between;gap:16px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";color:var(--violet);font-size:20px;line-height:1}
+details[open] summary::after{content:"–"}
+details p{color:var(--muted);margin:10px 0 0;font-size:15px;max-width:52em}
+footer{border-top:1px solid var(--line);padding:40px 0 56px;color:var(--dim);font-size:13px;background:var(--lav-50)}
+footer .wrap-wide{display:flex;flex-direction:column;gap:6px}
+footer b{color:var(--muted)}
+
+/* modal */
+.modal{position:fixed;inset:0;z-index:60;background:rgba(28,25,51,.32);backdrop-filter:blur(6px);display:none;align-items:flex-start;justify-content:center;padding:48px 16px;overflow-y:auto}
+.modal.open{display:flex}
+.sheet{background:#fff;border-radius:20px;width:100%;max-width:520px;box-shadow:0 40px 100px rgba(28,25,51,.25)}
+.sheet header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:18px 22px;border-bottom:1px solid var(--line)}
+.sheet header h3{font-size:18px;font-weight:700;display:flex;align-items:center;gap:10px}
+.x{background:none;border:0;font-size:24px;line-height:1;cursor:pointer;color:var(--muted);padding:4px 8px}
+.sheet .body{padding:20px 22px 24px;display:flex;flex-direction:column;gap:16px}
+.demo-bar{display:flex;gap:8px;align-items:center;font-size:13px;color:#6e4a00;background:#fff8e6;border-radius:10px;padding:10px 12px}
+.summary{background:var(--lav-50);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:8px;font-size:14px}
+.row{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.row .v{font-family:var(--num);font-variant-numeric:tabular-nums}
+.row.total{border-top:1px solid var(--line);padding-top:10px;font-weight:700;font-size:18px}
+.methods{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.method{background:var(--lav-50);border:1.5px solid transparent;border-radius:14px;padding:13px;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:4px}
+.method[aria-checked="true"]{border-color:var(--violet);background:#fff}
+.method b{display:flex;align-items:center;gap:8px;font-size:15px}
+.method small{color:var(--muted);font-size:12px}
+.acct{background:var(--lav-50);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:8px;font-size:14px}
+.acct .num{font-size:17px;font-weight:600}
+.check{display:flex;gap:8px;align-items:flex-start;font-size:13px;color:var(--muted)}
+.done{display:flex;flex-direction:column;gap:12px}
+.done .big{font-size:22px;font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:6px;min-height:4px}
+.chip{font-size:13px;background:var(--lav-100);border-radius:6px;padding:2px 8px}
+.chip.bad{background:#ffe7ee;color:var(--rose)}
+.auth-tabs{display:flex;gap:2px;background:var(--lav-100);border-radius:10px;padding:3px}
+.auth-tabs button{flex:1;background:none;border:0;border-radius:8px;padding:9px;cursor:pointer;color:var(--muted);font-weight:700;font-size:14px}
+.auth-tabs button[aria-selected="true"]{background:#fff;color:var(--ink);box-shadow:0 1px 4px rgba(28,25,51,.1)}
+.linkish{background:none;border:0;color:var(--violet);cursor:pointer;font-size:13px;padding:0;text-decoration:underline}
+.fab{position:fixed;right:20px;bottom:20px;z-index:30;background:#fff;color:var(--ink);font-weight:700;font-size:14px;text-decoration:none;padding:12px 18px;border-radius:999px;box-shadow:0 10px 28px rgba(91,64,214,.2),0 0 0 1px var(--line-2) inset}
+.fab:hover{background:var(--lav-100)}
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:11px 18px;border-radius:999px;font-weight:700;font-size:14px;z-index:70;opacity:0;pointer-events:none;transition:opacity .2s;max-width:calc(100% - 32px);text-align:center}
+.toast.show{opacity:1}
+@media (max-width:760px){.clip{height:116px}.wave-lane{height:96px}#wave{height:96px}.transport{gap:12px}.lcd{min-width:70px}.hero-feats h3{font-size:20px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+
+</head>
+<body>
+
+<nav class="top" id="nav">
+  <div class="wrap-wide">
+    <a class="logo" href="#top" data-i18n="brand.logo">멜로<span>MR</span></a>
+    <div class="navlinks">
+      <a class="hide-md" href="#features" data-i18n="nav.features"></a>
+      <a href="#app" data-i18n="nav.app"></a>
+      <a href="#pricing" data-i18n="nav.pricing"></a>
+      <a href="#help" data-i18n="nav.help"></a>
+      <a class="hide-md" href="#orders" data-i18n="nav.orders"></a>
+    </div>
+    <div class="langsw" role="group" data-i18n-aria="nav.lang">
+      <button type="button" data-lang="ko" lang="ko">KO</button>
+      <button type="button" data-lang="en" lang="en">EN</button>
+      <button type="button" data-lang="zh" lang="zh-CN">中文</button>
+    </div>
+    <div class="auth" id="authArea"></div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="hero-bg"><img src="studio.jpg" alt="" data-i18n-alt="hero.alt"></div>
+  <div class="wrap-wide">
+    <div class="eyebrow" data-i18n="hero.eyebrow"></div>
+    <p class="en-title" lang="en">Make your music <i>better</i></p>
+    <h1 data-i18n="hero.title"></h1>
+    <p class="lead" data-i18n="hero.lead"></p>
+    <div class="ctas">
+      <button class="btn btn-primary" type="button" data-trial data-i18n="trial.btn"></button>
+      <a class="btn btn-ghost" href="#app" data-i18n="hero.cta"></a>
+    </div>
+    <div class="hero-meta"><span class="demo-tag" data-i18n="daw.demo"></span><span data-i18n="hero.demoNote"></span></div>
+
+    <div class="hero-feats" id="features">
+      <article><div class="k">01 · ANALYZE</div><h3 data-i18n="f1.h"></h3><p data-i18n="f1.p"></p></article>
+      <article><div class="k">02 · EDIT</div><h3 data-i18n="f2.h"></h3><p data-i18n="f2.p"></p></article>
+      <article><div class="k">03 · PRACTICE</div><h3 data-i18n="f3.h"></h3><p data-i18n="f3.p"></p></article>
+    </div>
+  </div>
+  <div class="img-credit" data-i18n="hero.imgNote"></div>
+</header>
+
+<section id="app">
+  <div class="wrap-wide">
+    <div class="sec-head">
+      <div class="eyebrow" data-i18n="app.eyebrow"></div>
+      <h2 data-i18n="app.h2"></h2>
+      <p data-i18n="app.p"></p>
+    </div>
+
+    <div class="daw" role="region" data-i18n-aria="app.title">
+      <div class="transport">
+        <div class="tp-brand"><span data-i18n="app.title"></span><span class="demo-tag" data-i18n="daw.demo"></span></div>
+        <div class="tp-ctrl">
+          <button class="tp-btn" type="button" id="toStart" data-i18n-aria="daw.toStart">⏮</button>
+          <button class="tp-btn tp-play" type="button" id="playBtn" data-i18n-aria="btn.play">▶</button>
+          <button class="tp-text" type="button" id="resetBtn" data-i18n="btn.reset"></button>
+        </div>
+        <div class="lcds">
+          <div class="lcd"><span data-i18n="daw.pos"></span><b id="lcdPos">01.1</b></div>
+          <div class="lcd"><span data-i18n="daw.tempo"></span><b id="lcdTempo">76</b></div>
+          <div class="lcd"><span data-i18n="daw.key"></span><b id="lcdKey">C maj</b></div>
+        </div>
+        <div class="tp-quota">
+          <span id="tpTickets"></span>
+          <span id="appPlan" class="pill"></span>
+        </div>
+      </div>
+      <div class="daw-grid">
+        <aside class="browser">
+          <button class="btn btn-primary btn-sm" type="button" id="addMine" data-i18n="app.addMine"></button>
+          <h3 data-i18n="app.songList"></h3>
+          <div id="songList" style="display:flex;flex-direction:column;gap:2px"></div>
+          <div class="upload" data-i18n="app.upload"></div>
+        </aside>
+        <div class="arrange">
+          <div class="arr-scroll">
+            <div class="arr-inner" id="arrInner">
+              <div class="ruler" id="ruler"></div>
+              <div class="track" id="chordTrack">
+                <div class="th"><i></i><b data-i18n="daw.tChords"></b><span id="songName"></span></div>
+                <div class="lane" id="chordLane"></div>
+              </div>
+              <div class="track">
+                <div class="th"><i style="background:var(--orchid)"></i><b data-i18n="daw.tWave"></b><span data-i18n="daw.synthShort"></span></div>
+                <div class="lane wave-lane"><canvas id="wave" data-i18n-aria="daw.tWave"></canvas></div>
+              </div>
+              <div class="playhead" id="playhead"></div>
+            </div>
+          </div>
+          <div class="legend" id="legend"></div>
+          <p class="synth-note" data-i18n="daw.synth"></p>
+        </div>
+        <div class="inspector">
+          <div class="tabs" role="tablist">
+            <button class="tab" role="tab" aria-selected="true" data-tab="analyze" id="tab-analyze" data-i18n="tab.analyze"></button>
+            <button class="tab" role="tab" aria-selected="false" data-tab="edit" id="tab-edit" data-i18n="tab.edit"></button>
+            <button class="tab" role="tab" aria-selected="false" data-tab="diff" id="tab-diff" data-i18n="tab.diff"></button>
+          </div>
+          <div class="insp" id="panel"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow" data-i18n="pr.eyebrow"></div>
+      <h2 data-i18n="pr.h2"></h2>
+      <p data-i18n="pr.p"></p>
+    </div>
+    <div class="trial-line"><span data-i18n="trial.line"></span><button class="btn btn-primary btn-sm" type="button" data-trial data-i18n="trial.btn"></button></div>
+    <div class="cycle" role="group" data-i18n-aria="pr.group">
+      <button type="button" aria-pressed="true" data-cycle="month" data-i18n="cy.month"></button>
+      <button type="button" aria-pressed="false" data-cycle="season" data-i18n="cy.season"></button>
+      <button type="button" aria-pressed="false" data-cycle="year" data-i18n="cy.year"></button>
+    </div>
+    <div class="plans-main" id="plansMain"></div>
+  </div>
+</section>
+
+<section id="help" style="padding-top:40px">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow" data-i18n="help.eyebrow"></div>
+      <h2 data-i18n="help.h2"></h2>
+    </div>
+    <div class="notice"><span class="demo-tag" data-i18n="daw.demo"></span><span data-i18n="help.notice"></span></div>
+    <div class="help-grid">
+      <div>
+        <h3 data-i18n="help.payH"></h3>
+        <div class="hrow"><span class="lb"><span class="nmark">N</span><span data-i18n="pay.ssH"></span></span><span class="vl" data-i18n="help.ssD"></span><span></span></div>
+        <div class="hrow"><span class="lb"><span class="bmark">₩</span><span data-i18n="pay.bankH"></span></span><span class="vl" data-i18n="help.bankD"></span><span></span></div>
+        <p class="hint" style="margin-top:14px" data-i18n="help.refund"></p>
+      </div>
+      <div>
+        <h3 data-i18n="help.supH"></h3>
+        <div class="hrow"><span class="lb" data-i18n="help.phone"></span><span class="vl"><span class="mono" id="supPhone"></span><span class="vtag" data-i18n="sup.vPhone"></span><small data-i18n="sup.hours"></small></span><button class="btn btn-ghost btn-sm" type="button" id="supCopyPhone" data-i18n="help.copy"></button></div>
+        <div class="hrow"><span class="lb"><span class="kmark" data-i18n="sup.kmark"></span><span data-i18n="help.kakao"></span></span><span class="vl"><span class="mono" id="supKakao"></span><span class="vtag" data-i18n="sup.vKakao"></span><small id="supKakaoHours"></small></span><button class="btn btn-ghost btn-sm" type="button" id="supCopyKakao" data-i18n="help.copy"></button></div>
+        <div class="hrow"><span class="lb" data-i18n="help.email"></span><span class="vl"><span class="mono" id="supEmail"></span><span class="vtag" data-i18n="help.emailV"></span></span><span></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="orders" style="padding-top:40px">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow" data-i18n="ord.eyebrow"></div>
+      <h2 data-i18n="ord.h2"></h2>
+      <p data-i18n="ord.p"></p>
+    </div>
+    <form id="codeForm" class="code-form" novalidate>
+      <div class="field" style="flex:1;min-width:220px">
+        <label for="codeInput" data-i18n="ord.codeL"></label>
+        <input id="codeInput" data-i18n-ph="ord.codePh" autocomplete="off">
+      </div>
+      <button class="btn btn-primary" type="submit" data-i18n="ord.codeBtn"></button>
+    </form>
+    <p class="hint" style="margin:0 0 6px" data-i18n="co.demo"></p>
+    <div class="err" id="codeErr" style="margin:0 0 14px"></div>
+    <div class="orders" id="orderList"></div>
+  </div>
+</section>
+
+<section id="faq" style="padding-top:40px">
+  <div class="wrap" style="max-width:860px">
+    <div class="sec-head">
+      <div class="eyebrow" data-i18n="faq.eyebrow"></div>
+      <h2 data-i18n="faq.h2"></h2>
+    </div>
+    <details><summary data-i18n="q1"></summary><p data-i18n="a1"></p></details>
+    <details><summary data-i18n="q2"></summary><p data-i18n="a2"></p></details>
+    <details><summary data-i18n="q3"></summary><p data-i18n="a3"></p></details>
+    <details><summary data-i18n="q4"></summary><p data-i18n="a4"></p></details>
+  </div>
+</section>
+
+<!-- 바로가기 버튼: 관광 페이지와 홍보 영상 -->
+<section style="padding-top:40px">
+  <div class="wrap" style="max-width:860px; display:flex; flex-wrap:wrap; gap:12px">
+    <a class="btn btn-ghost" href="tour.html">관광 페이지 보기</a>
+    <a class="btn btn-ghost" href="promo.html">홍보 영상 보기</a>
+  </div>
+</section>
+
+<a class="fab" href="#help" data-i18n="fab" data-i18n-aria="fab.aria"></a>
+
+<footer>
+  <div class="wrap-wide">
+    <div data-i18n="foot.1"></div>
+    <div data-i18n="foot.2"></div>
+    <div data-i18n="foot.3"></div>
+  </div>
+</footer>
+
+<!-- 결제창 -->
+<div class="modal" id="checkout" role="dialog" aria-modal="true" aria-labelledby="coTitle">
+  <div class="sheet">
+    <header><h3 id="coTitle"><span data-i18n="co.title"></span><span class="demo-tag" data-i18n="daw.demo"></span></h3><button class="x" type="button" data-close data-i18n-aria="co.close">×</button></header>
+    <div class="body" id="coBody"></div>
+  </div>
+</div>
+<!-- 업그레이드 안내 -->
+<div class="modal" id="upsell" role="dialog" aria-modal="true" aria-labelledby="upTitle">
+  <div class="sheet">
+    <header><h3 id="upTitle" data-i18n="up.h"></h3><button class="x" type="button" data-close data-i18n-aria="co.close">×</button></header>
+    <div class="body">
+      <p id="upMsg" style="margin:0;color:var(--muted)"></p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-primary" type="button" id="upGo"></button>
+        <button class="btn btn-ghost" type="button" id="upTicket"></button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 내 곡 입력 -->
+<div class="modal" id="custom" role="dialog" aria-modal="true" aria-labelledby="myTitleH">
+  <div class="sheet">
+    <header><h3 id="myTitleH" data-i18n="my.h"></h3><button class="x" type="button" data-close data-i18n-aria="co.close">×</button></header>
+    <form class="body" id="customForm" novalidate>
+      <div class="field"><label for="myTitle" data-i18n="my.titleL"></label><input id="myTitle" data-i18n-ph="my.titlePh" autocomplete="off"></div>
+      <div class="field"><label for="myChords" data-i18n="my.chordsL"></label>
+        <textarea id="myChords" rows="2" placeholder="C G Am F C G F G" autocomplete="off" spellcheck="false"></textarea>
+        <span class="hint" data-i18n="my.chordsHint"></span></div>
+      <div id="myPreview" class="chips" aria-live="polite"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="field"><label for="myKey" data-i18n="my.keyL"></label><select id="myKey"></select>
+          <span class="hint" id="myKeyHint"></span></div>
+        <div class="field"><label for="myBpm" data-i18n="my.bpmL"></label><input id="myBpm" type="number" inputmode="numeric" min="40" max="200" value="80"></div>
+      </div>
+      <div class="err" id="myErr"></div>
+      <button class="btn btn-primary" type="submit" data-i18n="my.submit"></button>
+      <p class="hint" style="margin:0" data-i18n="my.quota"></p>
+    </form>
+  </div>
+</div>
+<!-- 로그인 · 회원가입 (데모) -->
+<div class="modal" id="auth" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+  <div class="sheet">
+    <header><h3 id="authTitle"><span id="authTitleText"></span><span class="demo-tag" data-i18n="daw.demo"></span></h3><button class="x" type="button" data-close data-i18n-aria="co.close">×</button></header>
+    <div class="body">
+      <div class="auth-tabs" role="tablist">
+        <button type="button" role="tab" data-auth="signup" data-i18n="auth.signup"></button>
+        <button type="button" role="tab" data-auth="login" data-i18n="auth.login"></button>
+      </div>
+      <div class="demo-bar"><span class="demo-tag" data-i18n="daw.demo"></span><span data-i18n="auth.demo"></span></div>
+      <form id="authForm" novalidate style="display:flex;flex-direction:column;gap:12px">
+        <div class="field" id="fName"><label for="auName" data-i18n="auth.name"></label><input id="auName" autocomplete="name"></div>
+        <div class="field"><label for="auEmail" data-i18n="auth.email"></label><input id="auEmail" type="email" autocomplete="email" placeholder="name@example.com"></div>
+        <div class="field"><label for="auPw" data-i18n="auth.pw"></label><input id="auPw" type="password" autocomplete="new-password" data-i18n-ph="auth.pwHint"></div>
+        <label class="check" id="fAgree"><input type="checkbox" id="auAgree"> <span data-i18n="auth.agree"></span></label>
+        <div class="err" id="auErr"></div>
+        <button class="btn btn-primary" type="submit" id="auSubmit"></button>
+        <p class="hint" style="margin:0;text-align:center"><button type="button" class="linkish" id="auSwitch"></button></p>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ===== 다국어 문구: [한국어, English, 中文] ===== */
+const LANGS = ["ko","en","zh"];
+const HTML_LANG = {ko:"ko", en:"en", zh:"zh-CN"};
+const L = {
+  "doc.title":["멜로MR 스토어","MeloMR Store","MeloMR 商店"],
+  "brand":["멜로MR","MeloMR","MeloMR"],
+  "brand.logo":["멜로<span>MR</span>","Melo<span>MR</span>","Melo<span>MR</span>"],
+  "nav.app":["앱 체험","Try the app","体验应用"],
+  "nav.features":["기능","Features","功能"],
+  "nav.pricing":["요금제","Pricing","价格"],
+  "nav.orders":["내 주문","My orders","我的订单"],
+  "nav.support":["고객센터","Support","客服中心"],
+  "nav.lang":["언어","Language","语言"],
+  "plan.free":["무료","Free","免费"],
+  "plan.pro":["프로","Pro","专业版"],
+  "plan.team":["팀","Team","团队版"],
+  "plan.ticket10":["10곡 이용권","10-song pass","10 首曲目券"],
+
+  "hero.eyebrow":["AI 음악 분석 · 부분 수정 · 연주 준비","AI music analysis · Bar-by-bar edits · Practice prep","AI 音乐分析 · 局部修改 · 演奏准备"],
+  "hero.title":["분석하고, 수정하고,<br><em>연주까지 준비하자</em>","Analyze it, edit it,<br><em>get ready to play</em>","分析、修改，<br><em>一路准备到演奏</em>"],
+  "hero.lead":["음악을 만드는 AI에서, 음악을 이해하고 표현하도록 돕는 AI. 곡의 코드 진행을 읽고, 막히는 마디만 골라 고치고, 어려운 구간을 미리 연습하세요.",
+               "From AI that makes music for you to AI that helps you understand and express your own. Read your song's chord progression, fix only the bars where you're stuck, and practice the hard parts before you play.",
+               "从替你作曲的 AI，到帮你理解和表达音乐的 AI。读懂歌曲的和弦进行，只修改卡住的小节，提前练好难点。"],
+  "hero.cta":["무료로 바로 써보기","Try it free now","立即免费试用"],
+  "hero.cta2":["요금제 보기","See pricing","查看价格"],
+  "hero.alt":["멜로MR 광고 포스터: 분석하고, 수정하고, 연주까지 준비하자 (AI 생성 이미지)","MeloMR ad poster: Analyze, edit, get ready to play (AI-generated image)","MeloMR 广告海报：分析、修改、准备演奏（AI 生成图片）"],
+
+  "app.eyebrow":["01 · 웹앱","01 · Web app","01 · 网页应用"],
+  "app.h2":["설치 없이 여기서 바로 써보세요","Use it right here, no install","无需安装，在这里直接使用"],
+  "app.p":["내 곡의 코드를 적으면 어디서 분위기가 바뀌는지 쉬운 말로 알려 줘요. 마디를 골라 코드와 리듬을 바꾸고 ▶ 재생으로 들어 보세요. 무료로 매달 내 곡 1곡, 수정은 하루 5회까지 써요.",
+           "Enter your song's chords and we'll tell you, in plain words, where the mood shifts. Pick a bar to change its chord or rhythm, then press ▶ Play to hear it. Free: 1 of your own songs per month and 5 edits per day.",
+           "输入你的歌曲和弦，我们会用通俗的话告诉你情绪在哪里转变。选中小节修改和弦或节奏，按 ▶ 播放 试听。免费版每月可分析 1 首自己的歌，每天可修改 5 次。"],
+  "app.title":["멜로MR 웹앱","MeloMR web app","MeloMR 网页应用"],
+  "app.qMine":["내 곡","My songs","我的歌曲"],
+  "app.qEdit":["수정","Edits","修改"],
+  "app.unlimited":["무제한","Unlimited","无限"],
+  "app.ticketPlus":[" +이용권 {n}"," +{n} pass"," +券 {n}"],
+  "app.addMine":["+ 내 곡 코드 입력","+ Enter my chords","+ 输入我的和弦"],
+  "app.songList":["곡 목록","Songs","曲目"],
+  "app.upload":["MIDI·MusicXML 파일<br>업로드는 프로 전용","MIDI · MusicXML file<br>upload is Pro only","MIDI · MusicXML 文件<br>上传仅限专业版"],
+  "tab.analyze":["원곡 분석","Analysis","原曲分析"],
+  "tab.edit":["AI 부분 수정","AI bar edit","AI 局部修改"],
+  "tab.diff":["연주 난이도","Difficulty","演奏难度"],
+  "btn.play":["▶ 재생","▶ Play","▶ 播放"],
+  "btn.stop":["■ 정지","■ Stop","■ 停止"],
+  "btn.reset":["원래대로","Reset","还原"],
+  "meta":["{k} major{a} · {bpm} BPM · {n}마디","{k} major{a} · {bpm} BPM · {n} bars","{k} 大调{a} · {bpm} BPM · {n} 小节"],
+  "meta.auto":[" (자동 감지)"," (auto-detected)","（自动识别）"],
+  "ex.easy":["쉬운 말","Plain words","通俗说明"],
+  "ex.term":["이론 용어","Theory terms","乐理术语"],
+  "ex.group":["설명 방식","Explanation style","说明方式"],
+
+  "fn.T":["안정","Rest","稳定"], "fn.S":["이동","Move","推进"], "fn.D":["긴장","Tension","紧张"], "fn.X":["색다름","Color","变色"],
+  "fnTerm.X":["색채","Color","色彩"],
+  "lg.T":["안정 · 편안함","Rest · settled","稳定 · 安心"],
+  "lg.S":["이동 · 앞으로 나아감","Move · going forward","推进 · 向前走"],
+  "lg.D":["긴장 · 돌아가고 싶음","Tension · wants to resolve","紧张 · 想回家"],
+  "lg.X":["색다름 · 분위기 전환","Color · mood change","变色 · 情绪转换"],
+  "lgt.T":["T 토닉","T Tonic","T 主功能"],
+  "lgt.S":["S 서브도미넌트","S Subdominant","S 下属功能"],
+  "lgt.D":["D 도미넌트","D Dominant","D 属功能"],
+  "lgt.X":["색채 · 조 바깥 화음","Color · non-diatonic","色彩 · 调外和弦"],
+  "easy.glance":["한눈에 보기","At a glance","一眼看懂"],
+  "easy.moments":["귀 기울여 들을 순간","Moments to listen for","值得细听的瞬间"],
+  "easy.whatIs":["{n}마디 {c}는 어떤 코드?","What does bar {n} ({c}) do?","第 {n} 小节的 {c} 是什么和弦？"],
+  "easy.hint":["마디를 누르면 그 코드 설명이 나와요. 두 번 누르면 수정 화면으로 가요.","Tap a bar to see what its chord does. Tap it again to edit it.","点击小节查看和弦说明，再点一次进入修改。"],
+  "term.title":["AI 해석","AI reading","AI 解读"],
+  "term.summary":["진행 요약","Progression","进行概要"],
+
+  "e0.tag":["중심","Home","中心"], "e0.line":["집에 돌아온 듯 편안한 소리예요. 이 곡의 중심이에요.","Sounds like coming home: relaxed and settled. It's the center of this song.","像回到家一样安心，是这首歌的中心。"],
+  "e2.tag":["부드러운 이동","Gentle move","柔和推进"], "e2.line":["앞으로 부드럽게 나아가는 코드예요. 보통 긴장되는 코드 앞에 와요.","Moves forward softly. It usually comes right before a tense chord.","柔和地向前推进，通常出现在紧张和弦之前。"],
+  "e4.tag":["몽환","Dreamy","朦胧"], "e4.line":["밝음과 슬픔 사이에 있는 애매하고 몽환적인 색이에요.","Somewhere between bright and sad: a hazy, dreamy color.","介于明亮与忧伤之间，朦胧梦幻的色彩。"],
+  "e5.tag":["펼쳐짐","Opening up","展开"], "e5.line":["밝게 펼쳐지며 앞으로 나아가는 느낌이에요.","Opens up brightly and pushes the song forward.","明亮地展开，推动歌曲向前。"],
+  "e7.tag":["긴장","Tension","紧张"], "e7.line":["‘곧 돌아간다’는 긴장감이에요. 다음에 중심 코드가 오면 시원하게 풀려요.","A “we're about to go home” tension. It releases when the home chord comes next.","一种“马上要回家”的紧张感，接到中心和弦时就会舒展开。"],
+  "e9.tag":["슬픈 버전","Sad twin","忧伤版"], "e9.line":["중심 코드와 재료가 거의 같은데 슬픈 버전이에요. 분위기가 살짝 가라앉아요.","Almost the same notes as the home chord, but the sad version. The mood dips a little.","和中心和弦几乎是同样的音，却是忧伤版本，情绪会稍稍下沉。"],
+  "e11.tag":["불안","Unstable","不安"], "e11.line":["불안하게 떠 있는 소리라 금방 다른 코드로 넘어가요.","Floats uneasily, so it quickly moves on to another chord.","悬浮不安，很快就会转到别的和弦。"],
+  "esec.tag":["끌어당김","Pull","牵引"],
+  "esec.line":["다음에 올 {t}(으)로 강하게 끌어당기는 자석 같은 코드예요. 원래 조에 없는 음이 섞여 순간 반짝 튀어요.","A magnet that pulls hard toward {t}, the chord it wants next. It borrows a note from outside the key, so it sparkles for a moment.","像磁铁一样把音乐强力拉向 {t}。它借用了调外的音，所以会瞬间闪亮。"],
+  "esec.hit":[" 실제로 다음 마디가 {c}라서 시원하게 풀려요."," And the next bar really is {c}, so it resolves nicely.","下一小节正好是 {c}，所以解决得很痛快。"],
+  "ebor.tag":["분위기 전환","Mood shift","情绪转换"],
+  "ebor.line":["다른 조에서 빌려 온 코드라 분위기가 갑자기 바뀌어요. 영화에서 장면이 전환되는 느낌이에요.","Borrowed from another key, so the mood changes suddenly, like a scene change in a film.","从别的调借来的和弦，情绪会突然改变，就像电影换场。"],
+  "m.x":["<b>{n}마디 {c}</b>에서 분위기가 확 바뀌어요. 원래 조에 없는 음이 들어가서 귀에 걸리는 순간이에요.","<b>Bar {n} ({c})</b> suddenly changes the mood. A note from outside the key catches your ear here.","<b>第 {n} 小节 {c}</b> 让情绪一下子改变，调外的音在这里抓住耳朵。"],
+  "m.sad":["<b>{n}마디</b>에서 갑자기 슬퍼지는 이유는 <b>{c}</b> 때문이에요. 밝은 {p} 다음에 같은 재료의 슬픈 버전이 와요.","<b>Bar {n}</b> suddenly turns sad because of <b>{c}</b>: the sad twin of the bright {p} before it.","<b>第 {n} 小节</b> 突然变得忧伤，是因为 <b>{c}</b>：它是前面明亮的 {p} 的忧伤版本。"],
+  "m.res":["<b>{a}→{b}마디</b>에서 {p}의 긴장이 {c}로 풀리며 ‘해결’돼요. 듣는 사람이 가장 시원하게 느끼는 지점이에요.","<b>Bars {a}→{b}</b>: the tension of {p} releases into {c}. This is where listeners feel the most relief.","<b>第 {a}→{b} 小节</b>：{p} 的紧张在 {c} 中得到解决，这是听众感觉最舒畅的地方。"],
+  "m.endV":["마지막 <b>{c}</b>에서 긴장한 채로 끝나서, 처음으로 돌아가 반복할 때 자연스럽게 이어져요.","It ends on <b>{c}</b>, still tense, so it flows naturally back to the start when it repeats.","结尾停在 <b>{c}</b> 的紧张上，重复时会自然地接回开头。"],
+  "m.endI":["마지막에 중심 코드 <b>{c}</b>로 돌아와 깔끔하게 마무리돼요.","It returns to the home chord <b>{c}</b> at the end for a clean finish.","最后回到中心和弦 <b>{c}</b>，干净利落地收尾。"],
+  "n.v7":["딸림7화음: 으뜸화음으로 강하게 돌아가려는 소리","Dominant 7th: pulls strongly back to the tonic","属七和弦：强烈倾向回到主和弦"],
+  "n.sec":["{t} 화음으로 가기 위해 잠시 빌려온 딸림화음(세컨더리 도미넌트)","Secondary dominant borrowed to lead into {t}","为进入 {t} 而借用的副属和弦"],
+  "n.bor":["조 바깥 화음(차용화음): 색다른 분위기를 만듭니다","Non-diatonic (borrowed) chord: adds a different color","调外和弦（借用和弦）：带来不同的色彩"],
+  "n.modal":["같은 이름의 단조에서 빌려온 화음(모달 인터체인지)","Borrowed from the parallel minor (modal interchange)","借自同主音小调的和弦（调式互换）"],
+
+  "edit.chordH":["{n}마디 코드 바꾸기","Change bar {n}'s chord","更换第 {n} 小节和弦"],
+  "edit.now":["지금 {c}","Now {c}","当前 {c}"],
+  "edit.rhythmH":["{n}마디 리듬","Bar {n} rhythm","第 {n} 小节节奏"],
+  "edit.hint":["마디를 눌러 고칠 마디를 바꿔요. 바꾼 뒤 ▶ 재생으로 들어 보세요.","Tap a bar to choose which one to edit. Press ▶ Play to hear the change.","点击小节选择要修改的位置，改完按 ▶ 播放 试听。"],
+  "edit.edited":["수정됨","Edited","已修改"],
+  "t.changed":["{n}마디를 {c}로 바꿨어요","Bar {n} changed to {c}","第 {n} 小节已改为 {c}"],
+  "t.reset":["원곡 코드로 되돌렸어요","Back to the original chords","已还原为原曲和弦"],
+  "t.noAudio":["이 브라우저에서는 소리를 낼 수 없어요","This browser can't play sound","此浏览器无法播放声音"],
+  "r.whole":["온음표","Whole note","全音符"], "r.whole.d":["한 마디 길게","one long hit","整小节长音"],
+  "r.quarter":["4비트","Quarter notes","四分音符"], "r.quarter.d":["쿵·쿵·쿵·쿵","four even beats","咚·咚·咚·咚"],
+  "r.arp":["아르페지오","Arpeggio","琶音"], "r.arp.d":["한 음씩 펼쳐서","one note at a time","一个音一个音展开"],
+  "r.sync":["당김음","Syncopation","切分音"], "r.sync.d":["엇박으로 경쾌하게","bouncy off-beats","反拍更轻快"],
+  "s.lyrical":["더 서정적으로","More lyrical","更抒情"],
+  "s.dreamy":["살짝 몽환적으로","A little dreamy","带点朦胧"],
+  "s.urban":["세련되고 도시적으로","Sleek and urban","时尚都市感"],
+  "s.softer":["같은 역할, 더 부드럽게","Same job, softer","作用相同，更柔和"],
+  "s.wistful":["아련하고 그리운 느낌","Wistful and nostalgic","怀念、惆怅"],
+  "s.open":["맑게 열린 소리","Clear, open sound","清澈开阔"],
+  "s.hold":["긴장을 한 번 더 끌기","Hold the tension longer","再拖一下紧张感"],
+  "s.release":["돌아갈 때 더 시원하게","Bigger release","解决更痛快"],
+  "s.rock":["록·팝처럼 당당하게","Bold, rock-pop feel","像摇滚流行一样大气"],
+  "s.bright":["밝게 바꾸기","Make it bright","变明亮"],
+  "s.pullVi":["이 코드로 강하게 끌어당기기(앞 마디에 추천)","Pulls strongly into this chord (try it in the bar before)","强力牵引到这里（建议放在前一小节）"],
+  "s.smooth":["부드럽게","Smoother","更柔和"],
+  "s.brighter":["더 밝게","Brighter","更明亮"],
+  "s.pullFront":["앞에서 끌어당기는 느낌","Pull in from before","从前面牵引过来"],
+  "s.stable":["안정적으로","More settled","更稳定"],
+  "s.pullNext":["다음 코드로 끌어당기기","Pull into the next chord","牵引到下一个和弦"],
+  "s.slide":["반음으로 미끄러지듯","Slide by a half step","半音滑过去"],
+  "s.color":["색을 한 겹 더하기","Add a layer of color","多加一层色彩"],
+  "s.float":["붕 떠 있는 느낌","Floating feel","悬浮感"],
+  "s.plain":["단순하고 또렷하게","Simple and clear","简单清晰"],
+  "st.relmin":["관계 단조 vi","relative minor vi","关系小调 vi"],
+  "st.bor":["차용 iv","borrowed iv","借用 iv"],
+  "st.tri":["트라이톤 대리","tritone sub","三全音替代"],
+  "st.seventh":["7화음","7th chord","七和弦"],
+  "st.triad":["3화음","triad","三和弦"],
+
+  "d.piano":["피아노","Piano","钢琴"], "d.guitar":["기타","Guitar","吉他"], "d.proTag":[" (프로)"," (Pro)","（专业版）"],
+  "d.group":["악기","Instrument","乐器"],
+  "d.meta":["평균 {a} / 10 · 가장 어려운 마디 {n}","Average {a}/10 · Hardest bar {n}","平均 {a}/10 · 最难小节 {n}"],
+  "d.lock":["기타 난이도 분석과 연습 루프는 프로 플랜 기능이에요.","Guitar difficulty and practice loops are Pro features.","吉他难度分析和练习循环是专业版功能。"],
+  "d.lockBtn":["프로 시작하기","Start Pro","开通专业版"],
+  "d.title":["{n}마디 {c} · 난이도 {s}","Bar {n} · {c} · difficulty {s}","第 {n} 小节 {c} · 难度 {s}"],
+  "d.why":["어려운 이유: {w}","Why it's hard: {w}","难点：{w}"],
+  "d.join":[", ",", ","，"],
+  "d.none":["큰 어려움이 없는 구간이에요.","Nothing tricky here.","这一段没什么难点。"],
+  "d.practice":["연습 방법: {a}–{b}마디만 {s} BPM(원래 빠르기의 70%)으로 4번 반복한 뒤 {bpm} BPM으로 올리세요.","Practice: loop bars {a}–{b} four times at {s} BPM (70% speed), then go up to {bpm} BPM.","练习方法：先用 {s} BPM（原速的 70%）把第 {a}–{b} 小节重复 4 遍，再提到 {bpm} BPM。"],
+  "d.tipG":[" 바레 코드는 검지를 프렛 바로 뒤에 붙이고 엄지로 목 뒤를 받치면 힘이 덜 들어요."," For barre chords, place your index finger right behind the fret and support the neck with your thumb."," 按横按和弦时，食指紧贴品丝后方，用拇指在琴颈背面支撑，会省力很多。"],
+  "d.tipP":[" 손가락 번호를 미리 정해 두면 위치 이동이 빨라져요."," Decide your fingering in advance to move between positions faster."," 事先定好指法，换把位会更快。"],
+  "d.hint":["AI 부분 수정에서 어려운 코드를 쉬운 대리 코드로 바꾸면 이 점수도 함께 바뀌어요.","Swap a hard chord for an easier substitute in AI bar edit and this score updates.","在 AI 局部修改中把难和弦换成简单的替代和弦，分数也会随之变化。"],
+  "d.aria":["{n}마디 난이도 {s}","Bar {n} difficulty {s}","第 {n} 小节难度 {s}"],
+  "w.barre":["{c}는 바레 코드(검지로 여러 줄을 누름)","{c} is a barre chord (index finger presses several strings)","{c} 是横按和弦（食指同时按多根弦）"],
+  "w.seventh":["7화음 운지가 낯섦","unfamiliar 7th-chord shape","七和弦指法不熟悉"],
+  "w.dom":["개방현이 없는 딸림7 운지","dominant 7th with no open strings","没有空弦的属七和弦指法"],
+  "w.black":["검은 건반 {n}개","{n} black key(s)","{n} 个黑键"],
+  "w.four":["네 음 이상 짚는 화음","four or more notes at once","要同时按四个以上的音"],
+  "w.jump":["앞 마디에서 손 위치가 크게 이동({a}→{b})","big hand jump from the previous bar ({a}→{b})","与前一小节相比手的位置大幅移动（{a}→{b}）"],
+  "w.sync":["당김음 리듬","syncopated rhythm","切分节奏"],
+  "bar.aria":["{n}마디 {c}","Bar {n} {c}","第 {n} 小节 {c}"],
+
+  "c.title":["내 곡 · {t}","My song · {t}","我的歌曲 · {t}"],
+  "c.defName":["내 곡","My song","我的歌曲"],
+  "c.desc":["{k}장조 · {bpm} BPM · {n}마디","{k} major · {bpm} BPM · {n} bars","{k} 大调 · {bpm} BPM · {n} 小节"],
+  "c.first":["앞부분","First half","前半"], "c.second":["뒷부분","Second half","后半"], "c.all":["진행","Progression","进行"],
+  "c.easy1":["이 곡의 중심 코드는 <b>{k}</b>예요. {n}개 코드 중 {d}개는 {k}장조 안의 코드라 자연스럽게 이어지고, ","The home chord of this song is <b>{k}</b>. {d} of its {n} chords belong to {k} major, so they flow naturally","这首歌的中心和弦是 <b>{k}</b>。{n} 个和弦中有 {d} 个属于 {k} 大调，衔接自然；"],
+  "c.easyOut":["{x}개는 바깥에서 가져온 코드라 분위기를 바꾸는 포인트가 돼요.",", and {x} come from outside the key, which makes them the mood-changing moments.","有 {x} 个来自调外，是改变情绪的亮点。"],
+  "c.easyIn":["바깥 코드가 없어서 편안하고 익숙하게 들려요.",". There are no outside chords, so it sounds comfortable and familiar.","没有调外和弦，听起来舒服又熟悉。"],
+  "c.story":["{k} major 기준 분석입니다. 진행: {p}.","Analyzed in {k} major. Progression: {p}.","按 {k} 大调分析。进行：{p}。"],
+  "c.slash":[" 슬래시 코드는 앞부분(근음 코드)만 반영했습니다."," For slash chords, only the chord before the slash is used.","斜线和弦只采用斜线前的部分。"],
+
+  "my.h":["내 곡 코드 입력","Enter my chords","输入我的和弦"],
+  "my.titleL":["곡 이름 (선택)","Song name (optional)","歌曲名称（选填）"],
+  "my.titlePh":["예: 동아리 공연곡","e.g. Club concert song","例如：社团演出曲"],
+  "my.chordsL":["코드 진행 (4~8마디, 한 마디에 하나씩)","Chord progression (4–8 bars, one chord per bar)","和弦进行（4–8 小节，每小节一个）"],
+  "my.chordsHint":["띄어쓰기로 구분해요. 예: Am F C G · Dm7 G7 Cmaj7 Cmaj7","Separate with spaces. e.g. Am F C G · Dm7 G7 Cmaj7 Cmaj7","用空格分隔。例如：Am F C G · Dm7 G7 Cmaj7 Cmaj7"],
+  "my.keyL":["조","Key","调"],
+  "my.auto":["자동으로 찾기","Detect automatically","自动识别"],
+  "my.keyOpt":["{k} 장조","{k} major","{k} 大调"],
+  "my.bpmL":["빠르기 (BPM)","Tempo (BPM)","速度 (BPM)"],
+  "my.submit":["분석하기","Analyze","开始分析"],
+  "my.quota":["무료 플랜은 매달 1곡까지 분석할 수 있어요.","The free plan analyzes 1 song per month.","免费版每月可分析 1 首。"],
+  "my.autoHint":["자동 감지: {k} 장조","Detected: {k} major","自动识别：{k} 大调"],
+  "my.badRead":["읽지 못한 코드: {b} · C, Am, G7, Fmaj7, Dm7, Bdim 같은 형태로 적어 주세요.","Couldn't read: {b} · Use forms like C, Am, G7, Fmaj7, Dm7, Bdim.","无法识别的和弦：{b} · 请按 C、Am、G7、Fmaj7、Dm7、Bdim 这样的格式输入。"],
+  "my.over8":["8마디까지만 분석해요. 앞의 8개만 사용합니다.","Only 8 bars are analyzed. The first 8 chords will be used.","最多分析 8 小节，只使用前 8 个和弦。"],
+  "my.errBad":["읽지 못한 코드가 있어요: {b}","Some chords couldn't be read: {b}","有无法识别的和弦：{b}"],
+  "my.errFew":["코드를 4개 이상 적어 주세요. 한 마디에 코드 하나씩, 띄어쓰기로 구분해요.","Enter at least 4 chords, one per bar, separated by spaces.","请至少输入 4 个和弦，每小节一个，用空格分隔。"],
+  "my.errBpm":["빠르기(BPM)는 40에서 200 사이 숫자로 적어 주세요.","Enter a tempo between 40 and 200 BPM.","速度请输入 40 到 200 之间的数字。"],
+  "t.slash":["슬래시 코드는 앞부분만 반영했어요","Slash chords: only the part before the slash was used","斜线和弦只采用了斜线前的部分"],
+  "t.mine":["내 곡 분석을 시작했어요","Analyzing your song","开始分析你的歌曲"],
+
+  "up.h":["무료 사용량을 다 썼어요","You've used your free allowance","免费额度已用完"],
+  "up.mine":["무료 플랜은 매달 내 곡 1곡까지 분석할 수 있어요. 10곡 이용권이나 프로 플랜으로 더 분석해 보세요.","The free plan analyzes 1 of your songs per month. Get a 10-song pass or Pro to analyze more.","免费版每月可分析 1 首自己的歌。购买 10 首曲目券或专业版即可继续分析。"],
+  "up.edit":["무료 플랜은 하루 5회까지 수정할 수 있어요. 프로는 수정 횟수 제한이 없어요.","The free plan allows 5 edits per day. Pro has no limit.","免费版每天可修改 5 次，专业版不限次数。"],
+  "up.go":["프로 {p}으로 계속하기","Continue with Pro ({p})","以 {p} 开通专业版"],
+  "up.ticket":["내 곡 10곡 이용권 {p}","10-song pass {p}","10 首曲目券 {p}"],
+
+  "feat.eyebrow":["02 · 기능","02 · Features","02 · 功能"],
+  "feat.h2":["곡을 대신 만들지 않고, 내 음악을 이해하게 돕습니다","It doesn't write songs for you. It helps you understand yours.","不替你写歌，而是帮你读懂自己的音乐"],
+  "f1.h":["원곡 분석·해석","Song analysis","原曲分析与解读"],
+  "f1.p":["코드 진행을 쉬운 말과 이론 용어로 풀어, 곡이 왜 그렇게 들리는지 설명합니다.","Breaks down the chord progression in plain words or theory terms to explain why the song sounds the way it does.","用通俗说明或乐理术语拆解和弦进行，解释歌曲为什么会这样听起来。"],
+  "f2.h":["AI 부분 수정","AI bar edit","AI 局部修改"],
+  "f2.p":["바꾸고 싶은 마디만 골라 대리 코드와 리듬 패턴을 추천받고, 바로 들어 보며 고칩니다.","Pick only the bars you want to change, get substitute chords and rhythm patterns, and hear them right away.","只选想改的小节，获取替代和弦与节奏型推荐，边听边改。"],
+  "f3.h":["연주 난이도 분석","Difficulty analysis","演奏难度分析"],
+  "f3.p":["피아노·기타 기준으로 어려운 마디를 찾아 이유와 연습 방법을 알려 줍니다.","Finds the hard bars for piano or guitar and tells you why and how to practice them.","按钢琴或吉他找出难的小节，告诉你原因和练习方法。"],
+
+  "pr.eyebrow":["03 · 요금제","03 · Pricing","03 · 价格"],
+  "pr.h2":["필요한 만큼만 고르세요","Pick only what you need","按需选择"],
+  "pr.p":["결제는 네이버 스마트스토어(네이버페이·카드) 또는 계좌이체 중에서 고를 수 있습니다.","Pay through Naver Smart Store (Naver Pay or card) or by bank transfer. Prices are in Korean won (KRW).","可通过 Naver Smart Store（Naver Pay·银行卡）或银行转账付款。价格以韩元（KRW）计。"],
+  "pr.group":["결제 주기","Billing cycle","付款周期"],
+  "cy.month":["월간","Monthly","按月"],
+  "cy.year":["연간 (2개월 무료)","Yearly (2 months free)","按年（免 2 个月）"],
+  "u.month":[" / 월"," / mo"," / 月"], "u.year":[" / 년"," / yr"," / 年"], "u.once":[" / 1회"," / once"," / 次"],
+  "pr.best":["추천","Popular","推荐"],
+  "pr.mine":["이용 중","Current","使用中"],
+  "pr.perMonth":["월 {p} 꼴","about {p}/mo","约合每月 {p}"],
+  "pr.free":["무료로 시작","Start free","免费开始"],
+  "pr.buy":["결제하기","Buy now","立即购买"],
+  "pr.ticket":["이용권 구매","Buy pass","购买曲目券"],
+  "free.sub":["처음 써보는 분","First-timers","初次体验"],
+  "free.f":[["예시곡 분석·체험 무제한","내 곡 1곡 코드 입력 분석 (매달)","AI 부분 수정 하루 5회","피아노 난이도 요약"],["Unlimited example songs","1 of your songs per month (chord input)","5 AI bar edits per day","Piano difficulty summary"],["示例曲无限体验","每月 1 首自己的歌（和弦输入）","每天 5 次 AI 局部修改","钢琴难度概要"]],
+  "free.no":[["MIDI·MusicXML 파일 업로드","기타 난이도·연습 루프"],["MIDI · MusicXML upload","Guitar difficulty · practice loops"],["MIDI · MusicXML 文件上传","吉他难度 · 练习循环"]],
+  "pro.sub":["취미 작곡가·연주자","Hobby songwriters and players","业余作曲者与演奏者"],
+  "pro.f":[["내 곡 분석 무제한","AI 부분 수정 무제한","피아노·기타 난이도 상세 + 연습 루프","MIDI·MusicXML 파일 업로드","MIDI·악보 PDF 내보내기"],["Unlimited song analysis","Unlimited AI bar edits","Detailed piano & guitar difficulty + practice loops","MIDI · MusicXML upload","Export MIDI · sheet music PDF"],["自己的歌无限分析","AI 局部修改不限次数","钢琴·吉他详细难度 + 练习循环","MIDI · MusicXML 文件上传","导出 MIDI · 乐谱 PDF"]],
+  "team.sub":["동아리·밴드 최대 5명","Clubs and bands, up to 5 people","社团·乐队，最多 5 人"],
+  "team.f":[["프로 기능 전부 × 5명","공유 프로젝트·코멘트","합주 파트 나누기","팀 연습 일정 공유"],["Everything in Pro × 5 people","Shared projects · comments","Split parts for ensemble","Shared practice schedule"],["专业版全部功能 × 5 人","共享项目 · 评论","合奏分配声部","共享团队练习日程"]],
+  "ticket10.sub":["구독 없이 필요할 때만","Only when you need it, no subscription","无需订阅，按需购买"],
+  "ticket10.f":[["내 곡 10곡 분석","곡마다 부분 수정 무제한","90일 안에 사용"],["Analyze 10 of your songs","Unlimited edits per song","Use within 90 days"],["分析 10 首自己的歌","每首歌局部修改不限次数","90 天内有效"]],
+
+  "pay.eyebrow":["04 · 결제 안내","04 · How to pay","04 · 付款说明"],
+  "pay.h2":["두 가지 결제 방법","Two ways to pay","两种付款方式"],
+  "pay.ssH":["네이버 스마트스토어","Naver Smart Store","Naver Smart Store"],
+  "pay.ssList":["<li>결제창에서 ‘스마트스토어에서 결제’를 누르면 멜로MR 스토어 상품 페이지로 이동합니다.</li><li>네이버페이·카드·포인트로 결제합니다.</li><li>구매 후 카카오톡·문자로 받은 이용권 코드를 <a href=\"#orders\">내 주문</a>에 등록하면 바로 적용됩니다.</li>",
+                "<li>Press “Pay on Smart Store” at checkout to open the MeloMR store product page.</li><li>Pay with Naver Pay, card, or points.</li><li>After paying, enter the pass code you receive by KakaoTalk or text in <a href=\"#orders\">My orders</a> and it applies right away.</li>",
+                "<li>在结算窗口点击“在 Smart Store 付款”，打开 MeloMR 商店商品页。</li><li>使用 Naver Pay、银行卡或积分付款。</li><li>付款后，把通过 KakaoTalk 或短信收到的券码填写到 <a href=\"#orders\">我的订单</a>，即可立即生效。</li>"],
+  "pay.bankH":["계좌이체(무통장입금)","Bank transfer","银行转账"],
+  "pay.bankList":["<li>결제창에서 입금자명과 이메일을 입력하고 주문합니다.</li><li>안내된 계좌로 24시간 안에 주문 금액을 입금합니다.</li><li>입금이 확인되면(평일 기준 1시간 이내) 플랜이 열리고 이메일로 알려 드립니다.</li>",
+                  "<li>Enter the depositor name and email at checkout and place the order.</li><li>Transfer the order amount to the account shown within 24 hours.</li><li>Once the deposit is confirmed (within 1 hour on business days), your plan opens and we email you.</li>",
+                  "<li>在结算窗口填写汇款人姓名和邮箱后下单。</li><li>请在 24 小时内向显示的账户转入订单金额。</li><li>确认到账后（工作日 1 小时内），套餐即开通并发送邮件通知。</li>"],
+
+  "ord.eyebrow":["05 · 내 주문","05 · My orders","05 · 我的订单"],
+  "ord.h2":["주문·이용권","Orders & passes","订单与券"],
+  "ord.p":["이 브라우저에서 한 주문이 표시됩니다.","Shows orders made in this browser.","显示在此浏览器中下的订单。"],
+  "ord.codeL":["스마트스토어 이용권 코드 등록","Redeem a Smart Store pass code","兑换 Smart Store 券码"],
+  "ord.codePh":["예: MELO-PRO1-2026","e.g. MELO-PRO1-2026","例如：MELO-PRO1-2026"],
+  "ord.codeBtn":["등록","Redeem","兑换"],
+  "ord.empty":["아직 주문이 없어요. <a href=\"#pricing\">요금제</a>에서 결제하면 여기에 표시됩니다.","No orders yet. Buy a plan in <a href=\"#pricing\">Pricing</a> and it shows up here.","还没有订单。在 <a href=\"#pricing\">价格</a> 中购买后会显示在这里。"],
+  "st.done":["이용 중","Active","使用中"],
+  "st.wait":["입금 확인 대기","Awaiting deposit","等待到账确认"],
+  "st.store":["스마트스토어 결제 진행","Smart Store payment in progress","Smart Store 付款中"],
+  "via.bank":["계좌이체","Bank transfer","银行转账"],
+  "via.ss":["스마트스토어","Smart Store","Smart Store"],
+  "cyc.year":[" · 연간"," · yearly"," · 按年"],
+  "cyc.month":[" · 월간"," · monthly"," · 按月"],
+  "ord.copy":["계좌 복사","Copy account","复制账号"],
+  "ord.admin":["(시연) 입금 확인 처리","(Demo) Confirm deposit","（演示）确认到账"],
+  "ord.adminT":["판매자가 입금을 확인한 상황을 시연합니다","Simulates the seller confirming the deposit","演示卖家确认到账"],
+  "code.empty":["이용권 코드를 입력해 주세요.","Enter a pass code.","请输入券码。"],
+  "code.used":["이미 등록한 코드예요.","This code has already been redeemed.","该券码已兑换。"],
+  "code.bad":["코드를 찾을 수 없어요. 스마트스토어 주문 알림에 적힌 코드를 그대로 입력해 주세요.","Code not found. Enter it exactly as shown in your Smart Store order notice.","找不到该券码。请按 Smart Store 订单通知中的券码原样输入。"],
+  "t.applied":["{l} 적용 완료","{l} applied","{l} 已生效"],
+  "t.opened":["{l} 플랜이 열렸어요","{l} plan is now active","{l} 已开通"],
+
+  "faq.eyebrow":["06 · 자주 묻는 질문","06 · FAQ","06 · 常见问题"],
+  "faq.h2":["결제 전에 확인하세요","Check before you buy","购买前请确认"],
+  "q1":["무료 플랜으로 어디까지 쓸 수 있나요?","What can I do on the free plan?","免费版能用到什么程度？"],
+  "a1":["예시곡은 제한 없이 체험할 수 있고, 매달 내 곡 1곡을 코드로 입력해 분석할 수 있어요. AI 부분 수정은 하루 5회, 난이도는 피아노 기준 요약까지 볼 수 있어요.","Example songs are unlimited, and you can enter 1 of your own songs by chords each month. You also get 5 AI bar edits a day and a piano difficulty summary.","示例曲不限次数体验，每月可以输入 1 首自己的歌的和弦进行分析。每天可进行 5 次 AI 局部修改，并查看钢琴难度概要。"],
+  "q2":["코드는 어떻게 입력하나요?","How do I enter chords?","和弦怎么输入？"],
+  "a2":["한 마디에 코드 하나씩 띄어쓰기로 적으면 돼요. 예: C G Am F. 4~8마디까지 분석하고, 조는 자동으로 찾아 줘요. C/E 같은 슬래시 코드는 앞부분(C)만 반영해요.","Type one chord per bar, separated by spaces, like C G Am F. We analyze 4–8 bars and detect the key for you. For slash chords like C/E, only the part before the slash (C) is used.","每小节一个和弦，用空格分隔即可，例如 C G Am F。可分析 4–8 小节，并自动识别调性。C/E 这样的斜线和弦只采用斜线前的部分（C）。"],
+  "q3":["스마트스토어와 계좌이체는 무엇이 다른가요?","What's the difference between Smart Store and bank transfer?","Smart Store 和银行转账有什么区别？"],
+  "a3":["스마트스토어는 네이버페이·카드로 바로 결제하고 이용권 코드를 받습니다. 계좌이체는 입금 확인 후 자동으로 플랜이 열리며, 현금영수증을 신청할 수 있습니다.","With Smart Store you pay instantly by Naver Pay or card and receive a pass code. With bank transfer, your plan opens automatically once the deposit is confirmed, and you can request a cash receipt.","Smart Store 可用 Naver Pay 或银行卡立即付款并获得券码。银行转账在确认到账后自动开通套餐，还可以申请现金收据。"],
+  "q4":["환불은 어떻게 하나요?","How do refunds work?","如何退款？"],
+  "a4":["결제 후 7일 안에 분석·수정 기능을 쓰지 않았다면 전액 환불됩니다. 스마트스토어 주문은 스마트스토어에서, 계좌이체 주문은 <a href=\"#support\">고객센터</a>(전화·카카오톡)로 신청하세요.","If you haven't used analysis or edits within 7 days of paying, you get a full refund. Request refunds for Smart Store orders through Smart Store, and for bank transfer orders through <a href=\"#support\">Support</a> (phone or KakaoTalk).","付款后 7 天内未使用分析或修改功能，可全额退款。Smart Store 订单请在 Smart Store 申请，银行转账订单请联系 <a href=\"#support\">客服中心</a>（电话或 KakaoTalk）。"],
+  "q5":["팀 플랜은 몇 명까지 쓰나요?","How many people can use the Team plan?","团队版最多几个人用？"],
+  "a5":["한 팀(동아리·밴드) 최대 5명이 프로 기능과 공유 프로젝트를 함께 씁니다. 6명 이상이면 학교·학원 라이선스로 문의하세요.","Up to 5 people in one team (club or band) share Pro features and projects. For 6 or more, ask us about a school or academy license.","一个团队（社团或乐队）最多 5 人共享专业版功能和项目。6 人以上请咨询学校·培训机构授权。"],
+
+  "sup.eyebrow":["07 · 고객센터","07 · Support","07 · 客服中心"],
+  "sup.h2":["막히면 바로 물어보세요","Stuck? Ask us anytime","遇到问题随时问我们"],
+  "sup.p":["결제, 입금 확인, 이용권 코드 문의를 받아요. 사용법 질문은 카카오톡이 가장 빨라요.","We help with payments, deposit checks, and pass codes. KakaoTalk is fastest for how-to questions.","受理付款、到账确认和券码咨询。使用方法类问题用 KakaoTalk 最快。"],
+  "sup.phoneH":["전화 상담","Phone","电话咨询"],
+  "sup.kakaoH":["카카오톡 채널 상담","KakaoTalk channel","KakaoTalk 频道咨询"],
+  "sup.kmark":["톡","Talk","Talk"],
+  "sup.vPhone":["가상 번호","Fictional number","虚拟号码"],
+  "sup.vKakao":["가상 채널","Fictional channel","虚拟频道"],
+  "sup.hours":["평일 10:00–18:00 (점심 12:00–13:00, 주말·공휴일 휴무)","Weekdays 10:00–18:00 KST (lunch 12:00–13:00, closed weekends & holidays)","工作日 10:00–18:00（韩国时间，午休 12:00–13:00，周末及节假日休息）"],
+  "sup.kakaoHours":["카카오톡에서 ‘{n}’ 검색 · 매일 10:00–22:00","Search “{n}” in KakaoTalk · Daily 10:00–22:00 KST","在 KakaoTalk 中搜索“{n}” · 每天 10:00–22:00（韩国时间）"],
+  "sup.call":["전화 걸기","Call","拨打电话"],
+  "sup.copyPhone":["번호 복사","Copy number","复制号码"],
+  "sup.chat":["채널 추가하고 1:1 채팅","Add channel and chat","添加频道并 1:1 聊天"],
+  "sup.copyKakao":["채널 ID 복사","Copy channel ID","复制频道 ID"],
+  "sup.email":["이메일: {e} · 영업일 기준 24시간 안에 답장해요.","Email: {e} · We reply within one business day.","邮箱：{e} · 工作日 24 小时内回复。"],
+  "sup.virtCall":["가상 번호라 전화가 걸리지 않아요","This is a fictional number, so it can't be called","这是虚拟号码，无法拨通"],
+  "sup.virtKakao":["가상 채널이라 연결되지 않아요. 실제 채널 주소를 STORE.kakaoUrl에 넣어 주세요","This is a fictional channel, so it won't open","这是虚拟频道，无法打开"],
+  "fab":["문의하기","Contact us","联系我们"],
+  "fab.aria":["고객센터 문의","Contact support","联系客服"],
+
+  "foot.1":["<b>멜로MR</b> · 가상의 AI 음악 서비스 (수업 과제용 시연 페이지, 실제 결제가 이뤄지지 않습니다)","<b>MeloMR</b> · A fictional AI music service (a class project demo; no real payments are made)","<b>MeloMR</b> · 虚构的 AI 音乐服务（课程作业演示页面，不会产生真实付款）"],
+  "foot.contact":["고객센터 {p} ({h}) · 카카오톡 채널 {k}","Support {p} ({h}) · KakaoTalk channel {k}","客服 {p}（{h}）· KakaoTalk 频道 {k}"],
+  "foot.2":["스마트스토어 링크, 입금 계좌, 고객센터 전화번호와 카카오톡 채널은 예시(가상)입니다. 포스터 이미지는 ChatGPT로 생성한 AI 이미지입니다.","The Smart Store link, bank account, support phone number, and KakaoTalk channel are fictional examples. The poster was generated with ChatGPT (AI-generated image).","Smart Store 链接、收款账户、客服电话和 KakaoTalk 频道均为虚构示例。海报图片由 ChatGPT 生成（AI 生成图片）。"],
+  "foot.3":["예시곡의 캐논 진행은 파헬벨(1653–1706)의 퍼블릭 도메인 작품이며, 나머지는 연습용으로 만든 코드 진행입니다.","The canon progression comes from Pachelbel (1653–1706) and is in the public domain; the other examples are practice progressions written for this demo.","卡农进行出自帕赫贝尔（1653–1706），属于公有领域；其余示例为本演示编写的练习用和弦进行。"],
+
+  "co.title":["결제하기","Checkout","结算"],
+  "co.close":["닫기","Close","关闭"],
+  "co.product":["상품","Product","商品"],
+  "co.productName":["멜로MR {p}","MeloMR {p}","MeloMR {p}"],
+  "co.cycle":["결제 주기","Billing","付款周期"],
+  "co.once":["1회 구매","One-time purchase","一次性购买"],
+  "co.monthOpt":["월간 {p}","Monthly {p}","按月 {p}"],
+  "co.yearOpt":["연간 {p}","Yearly {p}","按年 {p}"],
+  "co.total":["결제 금액","Total","支付金额"],
+  "co.method":["결제 수단","Payment method","付款方式"],
+  "co.ss":["스마트스토어","Smart Store","Smart Store"],
+  "co.ssSub":["네이버페이 · 카드 · 포인트","Naver Pay · card · points","Naver Pay · 银行卡 · 积分"],
+  "co.bank":["계좌이체","Bank transfer","银行转账"],
+  "co.bankSub":["무통장입금 · 현금영수증","Direct deposit · cash receipt","直接汇款 · 现金收据"],
+  "co.ssInfo":["멜로MR 스마트스토어 상품 페이지가 새 창에서 열립니다. 결제를 마치면 카카오톡·문자로 이용권 코드가 옵니다.","The MeloMR Smart Store product page opens in a new window. After paying, you'll get a pass code by KakaoTalk or text.","将在新窗口打开 MeloMR Smart Store 商品页。付款后会通过 KakaoTalk 或短信收到券码。"],
+  "co.ssBtn":["N 스마트스토어에서 {p} 결제","N Pay {p} on Smart Store","N 在 Smart Store 支付 {p}"],
+  "co.codeL":["이미 결제했다면 이용권 코드 입력","Already paid? Enter your pass code","已付款？请输入券码"],
+  "co.redeem":["코드 등록하고 바로 쓰기","Redeem and start","兑换并立即使用"],
+  "co.demo":["시연용 코드: MELO-PRO1-2026 (프로) · MELO-TEAM-2026 (팀) · MELO-T10-2026 (10곡 이용권)","Demo codes: MELO-PRO1-2026 (Pro) · MELO-TEAM-2026 (Team) · MELO-T10-2026 (10-song pass)","演示券码：MELO-PRO1-2026（专业版）· MELO-TEAM-2026（团队版）· MELO-T10-2026（10 首曲目券）"],
+  "t.ssGo":["스마트스토어 결제 후 받은 코드를 입력하세요","After paying on Smart Store, enter the code you receive","在 Smart Store 付款后，请输入收到的券码"],
+  "co.bkName":["입금자명","Depositor name","汇款人姓名"],
+  "co.bkNamePh":["통장에 찍히는 이름","Name shown on the transfer","转账记录上显示的姓名"],
+  "co.bkEmail":["이메일","Email","邮箱"],
+  "co.bkEmailPh":["입금 확인 알림을 받을 주소","Where we'll send the deposit confirmation","接收到账通知的邮箱"],
+  "co.receipt":["현금영수증","Cash receipt","现金收据"],
+  "co.rNone":["신청 안 함","Not needed","不需要"],
+  "co.rPersonal":["소득공제용 (휴대폰 번호)","Personal (phone number)","个人所得扣除（手机号）"],
+  "co.rBiz":["지출증빙용 (사업자 번호)","Business (registration no.)","支出凭证（营业执照号）"],
+  "co.rNo":["번호","Number","号码"],
+  "co.rNoPh":["숫자만 입력","Digits only","仅输入数字"],
+  "co.agree":["주문 내용과 환불 규정(결제 후 7일, 미사용 시 전액 환불)을 확인했습니다.","I've checked the order and the refund policy (full refund within 7 days if unused).","我已确认订单内容及退款规定（付款后 7 天内未使用可全额退款）。"],
+  "co.bkBtn":["{p} 계좌이체로 주문하기","Order {p} by bank transfer","以银行转账下单 {p}"],
+  "e.name":["입금자명을 입력해 주세요.","Enter the depositor name.","请输入汇款人姓名。"],
+  "e.email":["이메일 주소 형식을 확인해 주세요. 예: name@example.com","Check the email format, e.g. name@example.com","请检查邮箱格式，例如 name@example.com"],
+  "e.receipt":["현금영수증 번호를 숫자로 입력해 주세요.","Enter the receipt number in digits.","请用数字填写现金收据号码。"],
+  "e.agree":["주문 내용 확인에 체크해 주세요.","Please tick the confirmation box.","请勾选确认订单内容。"],
+  "dn.h":["주문이 접수됐어요","Order received","订单已提交"],
+  "dn.msg":["{d}까지 아래 계좌로 입금해 주세요. 입금자명이 <b style=\"color:var(--ink)\">{n}</b>과 같아야 자동으로 확인됩니다.","Please transfer to the account below by {d}. The depositor name must match <b style=\"color:var(--ink)\">{n}</b> for automatic confirmation.","请在 {d} 前转账到以下账户。汇款人姓名须与 <b style=\"color:var(--ink)\">{n}</b> 一致才能自动确认。"],
+  "dn.oid":["주문번호","Order no.","订单号"],
+  "dn.amt":["입금 금액","Amount","转账金额"],
+  "dn.bank":["은행","Bank","银行"],
+  "dn.acct":["계좌번호","Account no.","账号"],
+  "dn.holder":["예금주","Account holder","户名"],
+  "dn.copy":["계좌번호 복사","Copy account number","复制账号"],
+  "dn.orders":["내 주문에서 확인하기","View in My orders","在我的订单中查看"],
+  "dn.contact":["입금 문의: 전화 {p} · 카카오톡 {k} ({n})","Deposit questions: phone {p} · KakaoTalk {k} ({n})","到账咨询：电话 {p} · KakaoTalk {k}（{n}）"],
+  "ok.badge":["결제 완료","Paid","付款成功"],
+  "ok.h":["이용권이 적용됐어요","Your pass is active","券已生效"],
+  "ok.msg":["{l}을(를) 지금 바로 쓸 수 있습니다.","You can use {l} right now.","现在就可以使用{l}。"],
+  "ok.btn":["앱으로 가기","Go to the app","前往应用"],
+  "t.copied":["복사했어요: {t}","Copied: {t}","已复制：{t}"],
+  "t.copyFail":["복사가 막혔어요. 직접 선택해 복사해 주세요","Copy was blocked. Please select and copy it manually","复制被阻止，请手动选择复制"],
+  "bank.name":["OO은행","OO Bank","OO 银行"]
+};
+
+/* 예시곡 문구 */
+const SONG_TXT = {
+  ballad:{
+    title:["예시곡 A · 팝 발라드","Example A · Pop ballad","示例 A · 流行抒情"],
+    desc:["C장조 · 76 BPM · 8마디","C major · 76 BPM · 8 bars","C 大调 · 76 BPM · 8 小节"],
+    sections:[["벌스","코러스"],["Verse","Chorus"],["主歌","副歌"]],
+    easy:["대중가요에서 가장 많이 쓰는 ‘국민 진행’이에요. 밝게 시작해서(C) 긴장했다가(G) 살짝 슬퍼지고(Am) 다시 펼쳐지는(F) 흐름을 반복해요.",
+          "The most-used progression in pop. It starts bright (C), gets tense (G), turns a little sad (Am), then opens up again (F), and repeats.",
+          "流行音乐中最常用的“万能进行”。从明亮开始（C），变得紧张（G），稍稍忧伤（Am），再重新展开（F），如此循环。"],
+    story:["I–V–vi–IV는 대중음악에서 가장 많이 쓰는 진행입니다. 7마디째 IV에서 마지막 V로 가며 긴장을 쌓고, 다음 반복의 I로 돌아갈 준비를 합니다.",
+           "I–V–vi–IV is the most common progression in popular music. Moving from IV in bar 7 to V in bar 8 builds tension and sets up the return to I on the repeat.",
+           "I–V–vi–IV 是流行音乐中最常见的进行。第 7 小节的 IV 走向最后的 V，积累紧张感，为下一轮回到 I 做准备。"]
+  },
+  canon:{
+    title:["캐논 진행 (파헬벨)","Canon progression (Pachelbel)","卡农进行（帕赫贝尔）"],
+    desc:["D장조 · 64 BPM · 퍼블릭 도메인","D major · 64 BPM · public domain","D 大调 · 64 BPM · 公有领域"],
+    sections:[["앞 4마디","뒤 4마디"],["First 4 bars","Last 4 bars"],["前 4 小节","后 4 小节"]],
+    easy:["베이스가 계단을 한 칸씩 내려가듯 움직여서, 코드가 바뀌어도 아주 매끄럽게 들려요. 수백 년 동안 수많은 곡이 이 뼈대를 빌려 썼어요.",
+          "The bass walks down like stairs, one step at a time, so the chords change very smoothly. Countless songs have borrowed this skeleton for centuries.",
+          "低音像下楼梯一样一级一级往下走，所以和弦变化时听起来非常顺滑。几百年来无数歌曲都借用了这个骨架。"],
+    story:["베이스가 한 음씩 내려가는(D→C#→B→A→G→F#→G→A) 진행이라 화음이 바뀌어도 매끄럽게 들립니다. 수백 년 동안 수많은 곡이 이 뼈대를 빌려 썼습니다.",
+           "The bass descends step by step (D→C#→B→A→G→F#→G→A), so the harmony moves smoothly even as chords change. Countless pieces have borrowed this framework over the centuries.",
+           "低音逐级下行（D→C#→B→A→G→F#→G→A），即使和弦变化，听起来也很流畅。几百年来无数作品借用了这一框架。"]
+  },
+  jazz:{
+    title:["예시곡 B · 재즈 투파이브","Example B · Jazz ii–V","示例 B · 爵士 ii–V"],
+    desc:["C장조 · 96 BPM · 8마디","C major · 96 BPM · 8 bars","C 大调 · 96 BPM · 8 小节"],
+    sections:[["A","턴어라운드"],["A","Turnaround"],["A","回转"]],
+    easy:["재즈에서 가장 기본이 되는 문장(Dm7 → G7 → Cmaj7)이에요. 6마디의 A7은 다음 Dm7로 끌어당기는 자석 역할이라, 원래 조에 없는 음이 반짝 들려요.",
+          "The basic sentence of jazz (Dm7 → G7 → Cmaj7). The A7 in bar 6 acts as a magnet pulling into Dm7, so a note from outside the key sparkles.",
+          "爵士乐最基本的句子（Dm7 → G7 → Cmaj7）。第 6 小节的 A7 像磁铁一样拉向 Dm7，所以会闪现一个调外的音。"],
+    story:["ii7–V7–Imaj7은 재즈의 기본 문장입니다. 6마디째 A7은 다음 Dm7로 끌어당기는 세컨더리 도미넌트라, 원래 조에 없는 C#음이 반짝 들립니다.",
+           "ii7–V7–Imaj7 is the basic phrase of jazz. The A7 in bar 6 is a secondary dominant pulling into Dm7, so you briefly hear C#, which isn't in the key.",
+           "ii7–V7–Imaj7 是爵士乐的基本乐句。第 6 小节的 A7 是引向 Dm7 的副属和弦，因此会短暂听到调外的 C#。"]
+  }
+};
+
+/* ===== v6 리뉴얼: 새로 추가되거나 바뀐 문구 [한국어, English, 中文] ===== */
+Object.assign(L, {
+  "nav.app":["앱 데모","App demo","应用演示"],
+  "nav.help":["결제·문의","Pay & support","付款·咨询"],
+  "hero.eyebrow":["연주자를 위한 AI 음악 코파일럿","The AI music copilot for players","为演奏者打造的 AI 音乐助手"],
+  "hero.title":["딱 <em>한 마디</em>만<br>바꾸고 싶었잖아.","You only wanted<br>to change <em>one bar</em>.","你只是想改<br><em>那一小节</em>而已。"],
+  "hero.lead":["멜로MR은 곡을 대신 만들지 않아요. 코드 진행을 읽어 주고, 막힌 마디만 고치게 돕고, 어디가 어려운지 미리 알려 줘요.",
+               "MeloMR doesn't write your song for you. It reads the chord progression, helps you fix only the bar you're stuck on, and shows you what's hard before you play.",
+               "MeloMR 不替你写歌。它帮你读懂和弦进行，只修改卡住的那一小节，并提前告诉你哪里难。"],
+  "hero.cta":["웹앱 데모 열기","Open the web app demo","打开网页应用演示"],
+  "hero.cta2":["요금제 보기","See pricing","查看价格"],
+  "hero.demoNote":["수업 과제로 만든 데모 서비스예요. 결제와 고객센터 정보는 모두 가상입니다.","A demo built for a class project. All payment and support details are fictional.","这是为课程作业制作的演示服务，所有付款与客服信息均为虚构。"],
+  "hero.imgNote":["배경 이미지: AI 생성(ChatGPT)","Background image: AI-generated (ChatGPT)","背景图片：AI 生成（ChatGPT）"],
+  "hero.alt":["키보드, 헤드폰, 악보가 놓인 보랏빛 작업실 (AI 생성 이미지)","A violet-lit studio desk with a keyboard, headphones, and sheet music (AI-generated image)","摆着键盘、耳机和乐谱的紫色调工作室（AI 生成图片）"],
+  "f1.p":["코드 진행을 쉬운 말이나 이론 용어로 풀어서, 곡이 왜 그렇게 들리는지 알려 줘요.","Explains the chord progression in plain words or theory terms, so you know why the song sounds the way it does.","用通俗说明或乐理术语拆解和弦进行，告诉你歌曲为什么会这样听起来。"],
+  "f2.p":["바꾸고 싶은 마디만 골라 대리 코드와 리듬을 추천받고, 바로 들어 보며 고쳐요.","Pick just the bar you want to change, get substitute chords and rhythms, and hear them instantly.","只选想改的小节，获取替代和弦与节奏推荐，立即试听修改。"],
+  "f3.p":["피아노·기타 기준으로 어려운 마디를 찾아 이유와 연습 방법을 알려 줘요.","Finds the hardest bars for piano or guitar and tells you why, and how to practice them.","按钢琴或吉他找出最难的小节，告诉你原因和练习方法。"],
+
+  "app.eyebrow":["웹앱 데모","Web app demo","网页应用演示"],
+  "app.h2":["작업실 툴처럼 보이고,<br>친구처럼 설명해요.","Looks like a studio tool.<br>Explains like a friend.","看起来像专业工具，<br>讲起来像朋友。"],
+  "app.title":["MeloMR Studio","MeloMR Studio","MeloMR Studio"],
+  "app.upload":["MIDI·MusicXML 업로드는 프로 기능이며, 데모에는 아직 없어요.","MIDI · MusicXML upload is a Pro feature and isn't in the demo yet.","MIDI · MusicXML 上传为专业版功能，演示中暂未提供。"],
+  "daw.demo":["데모","Demo","演示"],
+  "daw.pos":["위치","Position","位置"],
+  "daw.tempo":["BPM","BPM","BPM"],
+  "daw.key":["조","Key","调"],
+  "daw.toStart":["처음으로","Back to start","回到开头"],
+  "daw.tChords":["코드","Chords","和弦"],
+  "daw.tWave":["미리듣기","Preview","试听"],
+  "daw.synthShort":["합성음","Synth","合成音"],
+  "daw.synth":["파형과 소리는 브라우저에서 만든 간단한 합성음 미리듣기예요. 실제 녹음 파일 분석은 데모에 포함되지 않아요.","The waveform and sound are a simple synth preview made in your browser. Analyzing real recordings isn't part of this demo.","波形和声音是浏览器生成的简单合成试听，本演示不包含真实录音分析。"],
+  "daw.selected":["선택한 마디","Selected bar","所选小节"],
+
+  "pr.eyebrow":["요금제","Pricing","价格"],
+  "pr.h2":["필요한 만큼만 고르세요","Pick only what you need","按需选择"],
+  "pr.p":["모든 가격은 부가세 포함이에요. 공연 준비 기간엔 자동 갱신 없는 3개월 시즌권이 유리해요. ‘예정’ 표시는 데모에 아직 없는 기능이고, 결제는 데모로만 동작해요.","All prices are in KRW and include VAT. For a performance season, the 3-month pass has no auto-renewal. Items marked “Soon” aren't in the demo yet, and checkout runs in demo mode only.","所有价格以韩元计并含增值税。准备演出期间，可选择不自动续费的 3 个月季度套餐。标注“即将推出”的功能尚未包含在演示中，结算仅以演示模式运行。"],
+  "pr.more":["다른 옵션","More options","其他选项"],
+  "tag.soon":["예정","Soon","即将推出"],
+  "pro.f":[["내 곡 분석 무제한","AI 부분 수정 무제한","피아노·기타 난이도 상세","~연습 루프","~MIDI·MusicXML 파일 업로드","~MIDI·악보 PDF 내보내기"],["Unlimited song analysis","Unlimited AI bar edits","Detailed piano & guitar difficulty","~Practice loops","~MIDI · MusicXML upload","~Export MIDI · sheet music PDF"],["自己的歌无限分析","AI 局部修改不限次数","钢琴·吉他详细难度","~练习循环","~MIDI · MusicXML 文件上传","~导出 MIDI · 乐谱 PDF"]],
+  "team.f":[["~프로 기능 × 5명","~공유 프로젝트·코멘트","~합주 파트 나누기"],["~Pro features × 5 people","~Shared projects · comments","~Split parts for ensemble"],["~专业版功能 × 5 人","~共享项目 · 评论","~合奏分配声部"]],
+  "ticket10.f":[["내 곡 5곡 분석","그 곡들은 수정 횟수 제한 없음","30일 안에 사용"],["Analyze 5 of your songs","No edit limit on those songs","Use within 30 days"],["分析 5 首自己的歌","这些歌修改不限次数","30 天内有效"]],
+
+  "help.eyebrow":["결제 · 문의","Payments · Support","付款 · 咨询"],
+  "help.h2":["결제와 문의","Payments & support","付款与咨询"],
+  "help.notice":["이 페이지에서는 실제 결제가 일어나지 않아요. 아래 계좌·전화번호·카카오톡 채널·이메일은 모두 가상 정보이니 입금하거나 연락하지 마세요.","No real payments happen on this page. The account, phone number, KakaoTalk channel, and email below are all fictional, so please don't transfer money or contact them.","本页面不会产生真实付款。以下账户、电话号码、KakaoTalk 频道和邮箱均为虚构信息，请勿汇款或联系。"],
+  "help.payH":["결제 방법","How to pay","付款方式"],
+  "help.ssD":["네이버페이·카드로 결제 → 받은 이용권 코드 등록","Pay with Naver Pay or card → redeem the pass code","Naver Pay·银行卡付款 → 兑换收到的券码"],
+  "help.bankD":["주문 후 24시간 안에 입금 → 확인되면 플랜 열림","Order, transfer within 24 hours → plan opens once confirmed","下单后 24 小时内转账 → 确认后开通"],
+  "help.refund":["결제 후 7일 안에 쓰지 않았다면 전액 환불돼요.","Full refund within 7 days if unused.","付款后 7 天内未使用可全额退款。"],
+  "help.supH":["고객센터","Support","客服"],
+  "help.phone":["전화","Phone","电话"],
+  "help.kakao":["카카오톡","KakaoTalk","KakaoTalk"],
+  "help.email":["이메일","Email","邮箱"],
+  "help.emailV":["예시 주소","Example address","示例地址"],
+  "help.copy":["복사","Copy","复制"],
+  "sup.kakaoHours":["매일 10:00–22:00","Daily 10:00–22:00 KST","每天 10:00–22:00（韩国时间）"],
+  "fab":["문의","Support","咨询"],
+
+  "ord.eyebrow":["내 주문 · 데모","My orders · Demo","我的订单 · 演示"],
+  "ord.h2":["주문과 이용권","Orders & passes","订单与券"],
+  "ord.p":["데모 주문은 이 브라우저에만 저장되고, 어디로도 전송되지 않아요.","Demo orders are stored only in this browser and sent nowhere.","演示订单仅保存在此浏览器中，不会发送到任何地方。"],
+  "faq.eyebrow":["FAQ","FAQ","FAQ"],
+
+  "co.demoBar":["데모 결제예요. 실제로 돈이 나가지 않아요.","This is a demo checkout. No real money is charged.","这是演示结算，不会真实扣款。"],
+  "co.ssBtn":["스마트스토어에서 {p} 결제하기 (데모)","Pay {p} on Smart Store (demo)","在 Smart Store 支付 {p}（演示）"],
+  "co.ssInfo":["실제 서비스라면 멜로MR 스마트스토어 상품 페이지로 이동해요. 데모에서는 이동하지 않고, 아래 시연용 코드로 결제 완료를 체험할 수 있어요.","In a live service this would open the MeloMR Smart Store product page. In the demo nothing opens; use a demo code below to try the completed purchase.","正式服务中会打开 MeloMR Smart Store 商品页。演示中不会跳转，可用下方演示券码体验付款完成。"],
+  "t.ssDemo":["데모: 실제 스토어로 이동하지 않아요. 시연용 코드를 입력해 보세요","Demo: no real store opens. Try a demo code","演示：不会打开真实商店，请输入演示券码"],
+  "dn.sample":["예시 계좌예요. 실제로 입금하지 마세요.","This is a sample account. Don't transfer real money.","此为示例账户，请勿实际汇款。"],
+  "dn.contact":["문의 예시: 전화 {p} · 카카오톡 {k} (모두 가상)","Contact example: phone {p} · KakaoTalk {k} (both fictional)","咨询示例：电话 {p} · KakaoTalk {k}（均为虚构）"],
+  "bank.name":["OO은행 (예시)","OO Bank (sample)","OO 银行（示例）"],
+  "co.demo":["시연용 코드: MELO-PRO1-2026 (프로) · MELO-TEAM-2026 (팀) · MELO-T5-2026 (5곡 이용권)","Demo codes: MELO-PRO1-2026 (Pro) · MELO-TEAM-2026 (Team) · MELO-T5-2026 (5-song pass)","演示券码：MELO-PRO1-2026（专业版）· MELO-TEAM-2026（团队版）· MELO-T5-2026（5 首曲目券）"],
+  "ord.admin":["(시연) 입금 확인 처리","(Demo) Mark as paid","（演示）标记为已到账"],
+
+  "foot.2":["메인 배경 이미지는 ChatGPT로 생성한 AI 이미지입니다. 스마트스토어 연결, 입금 계좌, 전화번호, 카카오톡 채널, 이메일은 모두 데모용 가상 정보입니다.","The main background image was generated with ChatGPT (AI-generated). The Smart Store link, bank account, phone number, KakaoTalk channel, and email are all fictional demo details.","主背景图片由 ChatGPT 生成（AI 生成图片）。Smart Store 链接、收款账户、电话号码、KakaoTalk 频道和邮箱均为演示用虚构信息。"],
+  "plan.ticket10":["5곡 이용권","5-song pass","5 首曲目券"],
+  "ticket10.sub":["구독 없이 필요할 때만 · 곡당 980원","No subscription · ₩980 per song","无需订阅 · 每首 980 韩元"],
+  "team.sub":["동아리·밴드 최대 5명","Clubs and bands, up to 5 people","社团·乐队，最多 5 人"],
+  "cy.season":["시즌 (3개월)","Season (3 months)","季度（3 个月）"],
+  "cy.year":["연간 (2개월 무료)","Yearly (2 months free)","按年（免 2 个月）"],
+  "u.season":[" / 3개월"," / 3 mo"," / 3 个月"],
+  "pr.noRenew":["자동 갱신 없음","no auto-renewal","不自动续费"],
+  "co.seasonOpt":["시즌 3개월 {p}","Season 3 months {p}","季度 3 个月 {p}"],
+  "cyc.season":[" · 시즌 3개월"," · 3-month season"," · 季度 3 个月"],
+  "up.mine":["무료 플랜은 매달 내 곡 1곡까지 분석할 수 있어요. 5곡 이용권이나 프로 플랜으로 더 분석해 보세요.","The free plan analyzes 1 of your songs per month. Get a 5-song pass or Pro to analyze more.","免费版每月可分析 1 首自己的歌。购买 5 首曲目券或专业版即可继续分析。"],
+  "up.ticket":["내 곡 5곡 이용권 {p}","5-song pass {p}","5 首曲目券 {p}"],
+  "a5":["한 팀(동아리·밴드) 최대 5명이 함께 쓰는 플랜이에요(팀 기능은 데모에 아직 없어요). 공연 준비 기간만 필요하면 자동 갱신 없는 3개월 시즌권을 고르세요. 6명 이상이면 학교·학원 라이선스로 문의하세요.","A plan for up to 5 people in one team (club or band); team features aren't in the demo yet. If you only need it for a performance season, pick the 3-month pass with no auto-renewal. For 6 or more, ask about a school or academy license.","供一个团队（社团或乐队）最多 5 人共用的套餐（团队功能尚未包含在演示中）。只在演出准备期间使用的话，可选择不自动续费的 3 个月季度套餐。6 人以上请咨询学校·培训机构授权。"]
+});
+
+/* ===== v7: 간결화 + 로그인·회원가입 + 1일 무료체험 [한국어, English, 中文] ===== */
+Object.assign(L, {
+  "hero.title":["딱 <em>한 마디</em>만,<br>바꾸고 싶었잖아.","You only wanted to change <em>one bar</em>.","你只是想改<em>那一小节</em>而已。"],
+  "hero.lead":["코드를 읽어 주고, 막힌 마디만 고치게 돕고, 어려운 곳을 미리 알려 줘요.","Reads your chords, fixes just the bar you're stuck on, and flags the hard parts.","读懂和弦，只改卡住的小节，提前标出难点。"],
+  "hero.cta":["웹앱 둘러보기","Explore the web app","浏览网页应用"],
+  "hero.demoNote":["결제·고객센터 정보는 가상이에요.","Payment and support details are fictional.","付款与客服信息均为虚构。"],
+  "f1.p":["곡이 왜 그렇게 들리는지 쉬운 말로 알려 줘요.","Why it sounds that way, in plain words.","用通俗的话解释为什么这样好听。"],
+  "f2.p":["고르는 마디만 코드·리듬을 바꿔 바로 들어 봐요.","Swap chords and rhythms in just the bar you pick.","只选一个小节，换和弦和节奏立即试听。"],
+  "f3.p":["어려운 마디와 연습법을 짚어 줘요.","Finds the hard bars and how to practice them.","找出难的小节和练习方法。"],
+  "app.p":["마디를 누르면 설명이 나오고, 바꾸면 바로 들려요.","Tap a bar to understand it. Change it and hear it instantly.","点小节看说明，改完立即试听。"],
+  "app.upload":["MIDI 업로드 · 예정","MIDI upload · Soon","MIDI 上传 · 即将推出"],
+  "daw.synth":["합성음 미리듣기예요. 녹음 파일 분석은 데모에 없어요.","Synth preview. Recording analysis isn't in the demo.","合成音试听，演示不含录音分析。"],
+  "easy.hint":["마디를 한 번 더 누르면 수정 화면으로 가요.","Tap the bar again to edit it.","再点一次进入修改。"],
+  "edit.hint":["바꾼 뒤 ▶로 들어 보세요.","Press ▶ to hear it.","按 ▶ 试听。"],
+  "d.hint":["",""," "],
+
+  "pr.p":["부가세 포함 · ‘예정’은 데모에 아직 없는 기능이에요.","KRW, VAT included · “Soon” means not in the demo yet.","韩元含税 · “即将推出”为演示尚未包含的功能。"],
+  "pro.f":[["내 곡 분석 무제한","AI 수정 무제한","피아노·기타 난이도","~연습 루프","~MIDI 업로드·내보내기"],["Unlimited song analysis","Unlimited AI edits","Piano & guitar difficulty","~Practice loops","~MIDI upload & export"],["无限分析自己的歌","AI 修改不限次数","钢琴·吉他难度","~练习循环","~MIDI 上传·导出"]],
+  "team.f":[["~프로 기능 × 5명","~공유 프로젝트","~합주 파트 나누기"],["~Pro × 5 people","~Shared projects","~Split ensemble parts"],["~专业版 × 5 人","~共享项目","~合奏分配声部"]],
+  "ticket10.f":[["내 곡 5곡 분석","그 곡은 수정 무제한","30일 안에 사용"],["Analyze 5 songs","Unlimited edits on them","Use within 30 days"],["分析 5 首歌","这些歌修改不限","30 天内有效"]],
+  "pro.sub":["취미 작곡가·연주자","Hobby songwriters & players","业余作曲者与演奏者"],
+  "trial.line":["가입하면 <b>1일 동안 프로 기능을 무료</b>로 써 볼 수 있어요. 자동 결제는 없어요.","Sign up and get every Pro feature <b>free for 1 day</b>. No auto-charge.","注册即可<b>免费使用专业版 1 天</b>，不会自动扣费。"],
+  "trial.btn":["1일 무료체험 시작","Start 1-day free trial","开始 1 天免费试用"],
+
+  "help.notice":["실제 결제는 일어나지 않아요. 아래 연락처와 계좌는 모두 가상이니 연락하거나 입금하지 마세요.","No real payments happen here. All contacts and accounts below are fictional, so please don't contact or pay them.","这里不会产生真实付款。以下联系方式与账户均为虚构，请勿联系或汇款。"],
+  "help.ssD":["결제 후 이용권 코드 등록","Pay, then redeem your code","付款后兑换券码"],
+  "help.bankD":["24시간 안에 입금 → 확인 후 열림","Transfer within 24h → opens once confirmed","24 小时内转账 → 确认后开通"],
+  "help.refund":["7일 안에 안 썼다면 전액 환불돼요.","Full refund within 7 days if unused.","7 天内未使用可全额退款。"],
+  "ord.p":["이 브라우저에만 저장돼요.","Saved only in this browser.","仅保存在此浏览器中。"],
+
+  "q1":["무료체험은 어떻게 되나요?","How does the free trial work?","免费试用怎么算？"],
+  "a1":["가입하면 24시간 동안 프로 기능을 모두 써요. 끝나도 자동 결제되지 않아요.","Sign up and use every Pro feature for 24 hours. Nothing is charged when it ends.","注册后 24 小时内可使用全部专业版功能，结束后不会自动扣费。"],
+  "a2":["한 마디에 하나씩 띄어 써요. 예: C G Am F (4~8마디)","One chord per bar, separated by spaces. e.g. C G Am F (4–8 bars)","每小节一个和弦，用空格分隔。例如：C G Am F（4–8 小节）"],
+  "a3":["스마트스토어는 결제 후 코드를 등록하고, 계좌이체는 입금이 확인되면 열려요.","Smart Store: pay, then redeem a code. Bank transfer: opens once the deposit is confirmed.","Smart Store 付款后兑换券码；银行转账确认到账后开通。"],
+  "a4":["결제 후 7일 안에 안 썼다면 전액 환불돼요.","Full refund within 7 days of paying if unused.","付款后 7 天内未使用可全额退款。"],
+
+  "foot.1":["<b>멜로MR</b> · 수업 과제용 데모 (실제 결제 없음)","<b>MeloMR</b> · Class project demo (no real payments)","<b>MeloMR</b> · 课程作业演示（无真实付款）"],
+  "foot.2":["배경 이미지 AI 생성(ChatGPT) · 연락처·계좌·계정은 모두 데모용 가상 정보","Background image AI-generated (ChatGPT) · Contacts, accounts, and sign-ups are demo-only","背景图片由 AI 生成（ChatGPT）· 联系方式、账户与注册均为演示用"],
+  "foot.3":["캐논 진행: 파헬벨, 퍼블릭 도메인","Canon progression: Pachelbel, public domain","卡农进行：帕赫贝尔，公有领域"],
+
+  "nav.login":["로그인","Log in","登录"],
+  "nav.trial":["무료체험","Free trial","免费试用"],
+  "nav.logout":["로그아웃","Log out","退出"],
+  "auth.signup":["회원가입","Sign up","注册"],
+  "auth.login":["로그인","Log in","登录"],
+  "auth.name":["이름","Name","姓名"],
+  "auth.email":["이메일","Email","邮箱"],
+  "auth.pw":["비밀번호","Password","密码"],
+  "auth.pwHint":["8자 이상","At least 8 characters","至少 8 位"],
+  "auth.agree":["이용약관·개인정보 처리방침에 동의해요 (데모)","I agree to the Terms and Privacy Policy (demo)","同意服务条款与隐私政策（演示）"],
+  "auth.signupBtn":["가입하고 1일 무료체험 시작","Sign up & start 1-day trial","注册并开始 1 天试用"],
+  "auth.loginBtn":["로그인","Log in","登录"],
+  "auth.demo":["입력한 정보는 어디에도 전송되지 않고, 비밀번호는 저장하지 않아요. 실제 비밀번호는 쓰지 마세요.","Nothing you enter is sent anywhere, and passwords aren't stored. Don't use a real password.","输入的信息不会发送到任何地方，也不会保存密码。请勿使用真实密码。"],
+  "auth.toLogin":["이미 계정이 있나요? 로그인","Already have an account? Log in","已有账号？登录"],
+  "auth.toSignup":["계정이 없나요? 회원가입","No account? Sign up","没有账号？注册"],
+  "auth.eName":["이름을 입력해 주세요.","Enter your name.","请输入姓名。"],
+  "auth.ePw":["비밀번호는 8자 이상이에요.","Password must be at least 8 characters.","密码至少 8 位。"],
+  "auth.eAgree":["약관에 동의해 주세요.","Please agree to the terms.","请同意条款。"],
+  "auth.eExists":["이미 가입한 이메일이에요. 로그인해 주세요.","That email is already registered. Please log in.","该邮箱已注册，请登录。"],
+  "auth.eNo":["가입된 이메일이 아니에요. 회원가입을 먼저 해 주세요.","No account with that email. Please sign up first.","该邮箱尚未注册，请先注册。"],
+  "t.welcome":["{n}님, 1일 무료체험이 시작됐어요","Welcome, {n}! Your 1-day trial has started","{n}，1 天免费试用已开始"],
+  "t.hello":["{n}님, 다시 오셨네요","Welcome back, {n}","{n}，欢迎回来"],
+  "t.bye":["로그아웃했어요","Logged out","已退出"],
+  "t.needLogin":["가입하면 1일 동안 무료로 써 볼 수 있어요","Sign up to try it free for 1 day","注册即可免费试用 1 天"],
+  "s.guest":["게스트","Guest","访客"],
+  "s.trial":["무료체험 · {h}시간 남음","Trial · {h}h left","试用 · 剩 {h} 小时"],
+  "s.expired":["체험 종료","Trial ended","试用已结束"],
+  "s.tickets":["이용권 {n}곡","{n}-song pass","券 {n} 首"],
+  "up.h":["무료체험이 끝났어요","Your free trial has ended","免费试用已结束"],
+  "up.mine":["계속 쓰려면 프로나 5곡 이용권을 골라 주세요.","Pick Pro or a 5-song pass to keep going.","选择专业版或 5 首曲目券即可继续。"],
+  "up.edit":["계속 수정하려면 프로나 5곡 이용권을 골라 주세요.","Pick Pro or a 5-song pass to keep editing.","选择专业版或 5 首曲目券即可继续修改。"],
+  "my.quota":["무료체험 중이거나 프로·이용권이 있으면 분석할 수 있어요.","Available during the trial, on Pro, or with a pass.","试用期间、专业版或持券即可分析。"]
+});
+
+</script>
+<script>
+/* ===== 여기만 바꾸면 실제 정보로 연결됩니다 (지금은 모두 데모용 가상 정보) ===== */
+const STORE = {
+  smartstoreLive: false,                                            // 실제 스토어를 열면 true
+  smartstoreBase: "https://smartstore.naver.com/your-store",        // 실제 스마트스토어 주소
+  products: { pro_month:"products/0", pro_season:"products/0", pro_year:"products/0", team_month:"products/0", team_season:"products/0", team_year:"products/0", ticket10:"products/0" },
+  bank: { number:"000-0000-0000-00", holder:"멜로MR (예시)" },      // 예시 계좌
+  supportEmail: "help@melomr.example",                              // .example 은 실제로 쓰이지 않는 예시용 도메인
+  phone: "1600-0000",                                               // 가상 번호
+  kakaoId: "@melomr_demo"                                           // 가상 채널
+};
+/* ======================================================================== */
+
+/* ---------- 언어 ---------- */
+const mem = {};
+function load(k,d){try{const v=localStorage.getItem("melomr_"+k);return v?JSON.parse(v):d}catch(e){return k in mem?mem[k]:d}}
+function save(k,v){mem[k]=v;try{localStorage.setItem("melomr_"+k,JSON.stringify(v))}catch(e){}}
+function guessLang(){const n=(navigator.language||"ko").toLowerCase();return n.startsWith("zh")?"zh":n.startsWith("en")?"en":"ko"}
+let lang = load("lang",null) || guessLang(); if(!LANGS.includes(lang)) lang="ko";
+const LI = () => LANGS.indexOf(lang);
+function t(k,v){const e=L[k]; let s = e? (e[LI()] ?? e[0]) : k; if(v&&typeof s==="string") s=s.replace(/\{(\w+)\}/g,(m,x)=> x in v? v[x] : m); return s}
+function st(id,field){return SONG_TXT[id][field][LI()]}
+const LOCALE = {ko:"ko-KR",en:"en-US",zh:"zh-CN"};
+const won = n => lang==="ko"? n.toLocaleString("ko-KR")+"원" : "₩"+n.toLocaleString(LOCALE[lang]);
+const planName = id => t("plan."+id);
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"})[c])}
+function feat(f){return f.startsWith("~")? `${esc(f.slice(1))}<span class="soon">${t("tag.soon")}</span>` : esc(f)}
+
+const PLANS = [
+  {id:"pro", month:9900, season:26900, year:99000, best:true},
+  {id:"team", month:39900, season:107900, year:399000},
+  {id:"ticket10", month:4900, year:4900, once:true}
+];
+
+/* ---------- 상태 (이 브라우저 전용) ---------- */
+const ym = new Date().toISOString().slice(0,7), today=new Date().toISOString().slice(0,10);
+let state = load("state",{plan:"none",tickets:0});
+if(!["pro","team"].includes(state.plan)) state.plan="none";
+delete state.analysis; delete state.custom; delete state.edit;
+let orders = load("orders",[]);
+/* 데모 계정: 이 브라우저에만 저장, 비밀번호는 저장하지 않음 */
+let accounts = load("accounts",{});            // email -> {name, trialEnd}
+let user = load("user",null);                  // 로그인한 email
+const TRIAL_MS = 24*60*60*1000;
+const acct = () => user && accounts[user];
+const trialLeft = () => { const a=acct(); return a? Math.max(0,a.trialEnd-Date.now()) : 0 };
+const isPro = () => state.plan==="pro"||state.plan==="team"||trialLeft()>0;
+function toast(msg){const el=document.getElementById("toast");el.textContent=msg;el.classList.add("show");clearTimeout(toast._t);toast._t=setTimeout(()=>el.classList.remove("show"),2600)}
+
+/* ---------- 음악 엔진 ---------- */
+const NOTE = {C:0,"C#":1,Db:1,D:2,"D#":3,Eb:3,E:4,F:5,"F#":6,Gb:6,G:7,"G#":8,Ab:8,A:9,"A#":10,Bb:10,B:11};
+const NAMES = ["C","C#","D","Eb","E","F","F#","G","Ab","A","Bb","B"];
+const QUAL = {"":[0,4,7],"m":[0,3,7],"7":[0,4,7,10],"maj7":[0,4,7,11],"m7":[0,3,7,10],"sus4":[0,5,7],"add9":[0,4,7,14],"dim":[0,3,6],"m7b5":[0,3,6,10]};
+function parse(ch){const m=ch.match(/^([A-G][#b]?)(.*)$/);return {root:NOTE[m[1]],rootName:m[1],q:m[2]}}
+function chordName(root,q){return NAMES[((root%12)+12)%12]+q}
+const DEG = {0:["I","T"],2:["ii","S"],4:["iii","T"],5:["IV","S"],7:["V","D"],9:["vi","T"],11:["vii°","D"]};
+const ROMAN_UP = {0:"I",2:"II",4:"III",5:"IV",7:"V",9:"VI",11:"VII"};
+function analyze(ch,key){
+  const {root,q}=parse(ch); const iv=(root-key+12)%12;
+  const minorish = q.startsWith("m")&&!q.startsWith("maj");
+  if(q==="7"){
+    if(iv===7) return {rn:"V7",fn:"D",note:t("n.v7")};
+    const target=(iv+5)%12;
+    if(DEG[target]) return {rn:"V7/"+DEG[target][0],fn:"X",note:t("n.sec",{t:DEG[target][0]})};
+  }
+  if(DEG[iv]){
+    const [r,fn]=DEG[iv];
+    const expectMinor=[2,4,9].includes(iv);
+    if(iv===11 ? (q==="dim"||q==="m7b5") : (expectMinor===minorish && q!=="dim" && q!=="m7b5")){
+      let rn=r; if(q.includes("7")) rn+= q==="maj7"?"maj7":"7";
+      if(q==="sus4") rn+="sus4"; if(q==="add9") rn+="add9";
+      return {rn,fn,note:null};
+    }
+    const rn = minorish? r.toLowerCase(): ROMAN_UP[iv];
+    return {rn:rn+(q.replace(/^m/,"")),fn:"X",note:t("n.bor")};
+  }
+  const flat={1:"♭II",3:"♭III",6:"♯IV",8:"♭VI",10:"♭VII"}[iv];
+  return {rn:flat+(q||""),fn:"X",note:t("n.modal")};
+}
+function voicing(ch){const {root,q}=parse(ch);const iv=QUAL[q]||QUAL[""];const base=48+root;return iv.map(i=>base+i).map(n=>n>67?n-12:n)}
+function bassNote(ch){return 36+parse(ch).root}
+/* 한 마디의 음표 이벤트 (박 단위). 소리·피아노롤·파형이 모두 이것을 씁니다 */
+function events(i){
+  const notes=voicing(cur[i]), r=state.rhythm[i], ev=[];
+  if(r==="whole") notes.forEach(n=>ev.push({t:0,d:4,n,v:.07}));
+  if(r==="quarter") for(let b=0;b<4;b++) notes.forEach(n=>ev.push({t:b,d:.9,n,v:.06}));
+  if(r==="arp"){const seq=[...notes,notes[1]+12,notes[0]+12,...notes.slice(1).reverse()];for(let k=0;k<8;k++)ev.push({t:k/2,d:.9,n:seq[k%seq.length],v:.08})}
+  if(r==="sync") [[0,1.4],[1.5,.8],[2.5,.8],[3.5,.5]].forEach(([b,d])=>notes.forEach(n=>ev.push({t:b,d,n,v:.065})));
+  return ev;
+}
+
+const BARRE = new Set(["F","Bm","F#m","B","Bb","C#m","Fmaj7","F#","Gm","Cm","Eb","Ab","Bm7","F#m7","C#m7","Bb7","B7"]);
+function difficulty(chs,inst){
+  return chs.map((c,i)=>{
+    const {root,q}=parse(c); let s=1.5, why=[];
+    if(inst==="guitar"){
+      if(BARRE.has(c)){s+=4;why.push(t("w.barre",{c}))}
+      if(q==="maj7"||q==="m7b5"){s+=1.5;why.push(t("w.seventh"))}
+      if(q==="7"&&!["E","A","D","G","B","C"].includes(NAMES[root])){s+=1;why.push(t("w.dom"))}
+    }else{
+      const acc=voicing(c).filter(n=>[1,3,6,8,10].includes(n%12)).length;
+      if(acc){s+=acc*1.2;why.push(t("w.black",{n:acc}))}
+      if(QUAL[q]&&QUAL[q].length>3){s+=1.8;why.push(t("w.four"))}
+    }
+    if(i>0){const pr=parse(chs[i-1]).root;const d=Math.min((root-pr+12)%12,(pr-root+12)%12);
+      if(d>=5){s+=1.6;why.push(t("w.jump",{a:chs[i-1],b:c}))}}
+    if(state.rhythm[i]==="sync"){s+=1.2;why.push(t("w.sync"))}
+    return {score:Math.min(10,Math.round(s*10)/10),why};
+  });
+}
+
+const SONGS = [
+  {id:"ballad",key:0,bpm:76,sec:[0,4],chords:["C","G","Am","F","C","G","F","G"]},
+  {id:"canon",key:2,bpm:64,sec:[0,4],chords:["D","A","Bm","F#m","G","D","G","A"]},
+  {id:"jazz",key:0,bpm:96,sec:[0,4],chords:["Dm7","G7","Cmaj7","Cmaj7","Em7","A7","Dm7","G7"]}
+];
+function songView(s){
+  if(s.id!=="custom"){
+    const secs=st(s.id,"sections");
+    return {title:st(s.id,"title"),desc:st(s.id,"desc"),sections:s.sec.map((p,i)=>[p,secs[i]]),easy:st(s.id,"easy"),story:st(s.id,"story")};
+  }
+  const k=NAMES[s.key], n=s.chords.length, nd=s.chords.filter(c=>!isDiatonic(c,s.key)).length;
+  return {
+    title: s.name? t("c.title",{t:s.name}) : t("c.defName"),
+    desc:t("c.desc",{k,bpm:s.bpm,n}),
+    sections: n>4? [[0,t("c.first")],[4,t("c.second")]] : [[0,t("c.all")]],
+    easy: t("c.easy1",{k,n,d:n-nd}) + (nd? t("c.easyOut",{x:nd}) : t("c.easyIn")),
+    story: t("c.story",{k,p:s.chords.map(c=>analyze(c,s.key).rn).join(" – ")}) + (s.slash? t("c.slash"):"")
+  };
+}
+function suggestions(ch,key){
+  const {root,q}=parse(ch); const iv=(root-key+12)%12; const out=[];
+  const add=(c,e,term)=>{if(c!==ch&&!out.find(o=>o.c===c))out.push({c,easy:t(e),term:term.startsWith("st.")?t(term):term})};
+  if(iv===0){add(chordName(key+9,"m"),"s.lyrical","st.relmin");add(chordName(key+4,"m"),"s.dreamy","iii");add(chordName(root,"maj7"),"s.urban","Imaj7")}
+  if(iv===5){add(chordName(key+2,"m7"),"s.softer","ii7");add(chordName(key+5,"m"),"s.wistful","st.bor");add(chordName(root,"add9"),"s.open","add9")}
+  if(iv===7){add(chordName(root,"sus4"),"s.hold","sus4");add(chordName(root,"7"),"s.release","V7");add(chordName(key+10,""),"s.rock","♭VII")}
+  if(iv===9){add(chordName(key,""),"s.bright","I");add(chordName(key+4,"7"),"s.pullVi","V7/vi");add(chordName(root,"m7"),"s.smooth","vi7")}
+  if(iv===2){add(chordName(key+5,""),"s.brighter","IV");add(chordName(key+9,"7"),"s.pullFront","V7/ii")}
+  if(iv===4){add(chordName(key,""),"s.stable","I");add(chordName(key+9,"7"),"s.pullNext","V7/ii")}
+  if(q==="7"&&iv!==7){add(chordName(root+6,"7"),"s.slide","st.tri")}
+  if(out.length<3){add(chordName(root,q==="m"||q==="m7"?"m7":"maj7"),"s.color","st.seventh");add(chordName(root,"sus4"),"s.float","sus4");add(chordName(root,""),"s.plain","st.triad")}
+  return out.slice(0,5);
+}
+const RHYTHM_KEYS=["whole","quarter","arp","sync"];
+
+/* ---------- 앱 상태 ---------- */
+let song=SONGS[0], tab="analyze", sel=0, inst="piano", explain="easy";
+state.rhythm=Array(song.chords.length).fill("whole"); let cur=[...song.chords], edited=Array(cur.length).fill(false);
+let audio=null, playing=false, playStart=0, rafId=0, playPos=0;
+let customSong = load("customSong", null);
+if(customSong && !Array.isArray(customSong.sec)) customSong=null;
+
+function statusLabel(){
+  if(state.plan==="pro"||state.plan==="team") return planName(state.plan);
+  if(trialLeft()>0) return t("s.trial",{h:Math.max(1,Math.ceil(trialLeft()/3600000))});
+  return user? t("s.expired") : t("s.guest");
+}
+function updateQuota(){
+  const b=document.getElementById("appPlan"); b.textContent=statusLabel(); b.className="pill"+(isPro()?" pro":"");
+  document.getElementById("tpTickets").textContent= state.tickets&&!isPro()? t("s.tickets",{n:state.tickets}) : "";
+  renderAuth();
+}
+function useCustomQuota(){
+  if(isPro()) return "pro";
+  if(state.tickets>0){state.tickets--;return "ticket"}
+  return false;
+}
+let upKind=null;
+function upsell(kind){upKind=kind;fillUpsell();openModal("upsell")}
+function fillUpsell(){
+  document.getElementById("upMsg").textContent= upKind==="edit"? t("up.edit"):t("up.mine");
+  document.getElementById("upGo").textContent=t("up.go",{p:won(9900)});
+  document.getElementById("upTicket").textContent=t("up.ticket",{p:won(4900)});
+}
+function loadSong(s){
+  stop(); song=s; cur=[...s.chords]; edited=Array(cur.length).fill(false); state.rhythm=Array(cur.length).fill("whole"); sel=0; playPos=0; save("state",state); renderAll();
+}
+function renderSongs(){
+  const el=document.getElementById("songList");el.innerHTML="";
+  const list = customSong? [customSong,...SONGS] : SONGS;
+  list.forEach(s=>{const v=songView(s);const b=document.createElement("button");b.type="button";b.className="song"+(s.id===song.id?" active":"");
+    b.innerHTML=`<b>${esc(v.title)}</b><small>${esc(v.desc)}</small>`;
+    b.onclick=()=>{ if(s.id!==song.id) loadSong(s) };
+    el.appendChild(b)});
+}
+
+/* 쉬운 말 설명 */
+function easyOf(chs,i,key){
+  const c=chs[i], a=analyze(c,key), {root}=parse(c), iv=(root-key+12)%12;
+  if(a.rn.startsWith("V7/")){
+    const tt=(iv+5)%12, tq=[2,4,9].includes(tt)?"m":"", target=chordName(key+tt,tq);
+    const next=chs[i+1]; const hit = next && parse(next).root===(root+5)%12;
+    return {tag:t("esec.tag"), line:t("esec.line",{t:target})+(hit?t("esec.hit",{c:next}):"")};
+  }
+  if(a.fn==="X") return {tag:t("ebor.tag"), line:t("ebor.line")};
+  return {tag:t(`e${iv}.tag`), line:t(`e${iv}.line`)};
+}
+function moments(chs,key){
+  const out=[]; const ivOf=c=>(parse(c).root-key+12)%12;
+  chs.forEach((c,i)=>{
+    const a=analyze(c,key), iv=ivOf(c), prev=chs[i-1];
+    if(a.fn==="X") out.push(t("m.x",{n:i+1,c:esc(c)}));
+    else if(prev && iv===9 && [0,5,7].includes(ivOf(prev)) && analyze(prev,key).fn!=="X") out.push(t("m.sad",{n:i+1,c:esc(c),p:esc(prev)}));
+    else if(prev && iv===0 && ivOf(prev)===7) out.push(t("m.res",{a:i,b:i+1,p:esc(prev),c:esc(c)}));
+  });
+  const last=chs[chs.length-1], liv=ivOf(last);
+  if(liv===7) out.push(t("m.endV",{c:esc(last)}));
+  else if(liv===0) out.push(t("m.endI",{c:esc(last)}));
+  return out.slice(0,4);
+}
+
+/* ---------- DAW 화면 ---------- */
+const FN_COLOR={T:"#7d62f0",S:"#5b6fe6",D:"#c24fd8",X:"#c98a00"};
+const FN_LEG={T:"var(--f-T)",S:"var(--f-S)",D:"var(--f-D)",X:"var(--f-X)"};
+const TH_W=104;
+function renderDaw(){
+  const n=cur.length, v=songView(song), cols=`${TH_W}px repeat(${n},minmax(0,1fr))`;
+  // 눈금자
+  const ruler=document.getElementById("ruler"); ruler.style.gridTemplateColumns=cols;
+  ruler.innerHTML=`<div class="spacer"></div>`+cur.map((c,i)=>{const s=v.sections.find(x=>x[0]===i);return `<div class="rb${i===sel?" sel":""}" data-i="${i}"><span class="sec">${s?esc(s[1]):"&nbsp;"}</span><span>${i+1}</span></div>`}).join("");
+  ruler.querySelectorAll(".rb").forEach(b=>b.onclick=()=>selectBar(+b.dataset.i,true));
+  // 코드 클립
+  document.querySelectorAll(".track").forEach(tr=>tr.style.gridTemplateColumns=`${TH_W}px 1fr`);
+  const lane=document.getElementById("chordLane"); lane.style.gridTemplateColumns=`repeat(${n},minmax(0,1fr))`;
+  const all=cur.flatMap((c,i)=>voicing(c)); const lo=Math.min(...all), hi=Math.max(...all)+12;
+  lane.innerHTML=cur.map((c,i)=>{
+    const a=analyze(c,song.key), e=easyOf(cur,i,song.key);
+    const capL = explain==="easy"? t("fn."+a.fn) : (a.fn==="X"? t("fnTerm.X") : a.fn);
+    const roll=events(i).map(ev=>{const y=Math.max(0,Math.min(27,27-((ev.n-lo)/(hi-lo))*27));return `<i style="left:${ev.t/4*100}%;width:${Math.max(3,ev.d/4*100-1)}%;top:${y}px;background:${FN_COLOR[a.fn]}"></i>`}).join("");
+    return `<button type="button" class="clip c-${a.fn}${i===sel?" sel":""}" data-i="${i}" aria-label="${esc(t("bar.aria",{n:i+1,c}))}">
+      <span class="cap"><span>${capL}</span><span>${i+1}</span></span>
+      <span class="ch">${esc(c)}</span><span class="tg">${explain==="easy"?esc(e.tag):a.rn}</span>
+      ${edited[i]||state.rhythm[i]!=="whole"?'<span class="dot"></span>':""}
+      <span class="roll">${roll}</span></button>`;
+  }).join("");
+  lane.querySelectorAll(".clip").forEach(b=>b.onclick=()=>{const i=+b.dataset.i; if(i===sel&&tab==="analyze"){setTab("edit");return} selectBar(i,true)});
+  document.getElementById("songName").textContent=v.title;
+  // 범례
+  document.getElementById("legend").innerHTML=["T","S","D","X"].map(f=>`<span><i style="background:${FN_LEG[f]}"></i>${t((explain==="easy"?"lg.":"lgt.")+f)}</span>`).join("");
+  // LCD
+  document.getElementById("lcdTempo").textContent=song.bpm;
+  document.getElementById("lcdKey").textContent=NAMES[song.key]+" maj";
+  if(!playing) playPos=sel;
+  setPlayhead(playPos);
+  drawWave();
+}
+function setPlayhead(pos){
+  const n=cur.length;
+  document.getElementById("playhead").style.left=`calc(${TH_W}px + (100% - ${TH_W}px) * ${pos/n})`;
+  const bar=Math.min(n,Math.floor(pos)+1), beat=Math.min(4,Math.floor((pos%1)*4)+1);
+  document.getElementById("lcdPos").textContent=String(bar).padStart(2,"0")+"."+beat;
+}
+function hash(x){const s=Math.sin(x*127.1)*43758.5453;return s-Math.floor(s)}
+function drawWave(){
+  const cv=document.getElementById("wave"); const w=cv.clientWidth, h=cv.clientHeight; if(!w) return;
+  const dpr=Math.min(2,window.devicePixelRatio||1); if(cv.width!==Math.round(w*dpr)){cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr)}
+  const g=cv.getContext("2d"); g.setTransform(dpr,0,0,dpr,0,0); g.clearRect(0,0,w,h);
+  const n=cur.length, bw=w/n, mid=h/2;
+  g.fillStyle="rgba(109,77,255,.09)"; g.fillRect(sel*bw,0,bw,h);
+  const evs=cur.map((c,i)=>events(i));
+  const grad=g.createLinearGradient(0,0,w,0); grad.addColorStop(0,"#6d4dff"); grad.addColorStop(.55,"#9a7bff"); grad.addColorStop(1,"#d264e6");
+  const prog=(playing?playPos:-1)*bw;
+  for(let x=0;x<w;x+=3){
+    const b=Math.min(n-1,Math.floor(x/bw)), tb=(x/bw-b)*4;
+    let amp=Math.exp(-tb*0.5)*0.35; // 베이스
+    for(const e of evs[b]){ if(tb>=e.t){ const dt=tb-e.t; amp+= (dt<=e.d? Math.exp(-dt*1.6) : Math.exp(-e.d*1.6)*Math.exp(-(dt-e.d)*6)) * e.v*4.2 } }
+    amp=Math.min(1,amp)*(0.55+0.45*hash(x*0.37+b));
+    const hh=Math.max(1.5,amp*(mid-6));
+    g.fillStyle = x<prog? grad : "rgba(109,77,255,.32)";
+    g.fillRect(x,mid-hh,2,hh*2);
+  }
+  g.fillStyle="rgba(91,64,214,.12)"; for(let i=1;i<n;i++) g.fillRect(Math.round(i*bw),0,1,h);
+}
+document.getElementById("wave").addEventListener("click",e=>{const r=e.currentTarget.getBoundingClientRect();selectBar(Math.min(cur.length-1,Math.floor((e.clientX-r.left)/r.width*cur.length)),true)});
+window.addEventListener("resize",()=>drawWave());
+function selectBar(i,sound){sel=i; if(sound) previewBar(i); renderDaw(); renderPanel()}
+
+/* ---------- 인스펙터 ---------- */
+function selHead(label){
+  const c=cur[sel], a=analyze(c,song.key), e=easyOf(cur,sel,song.key);
+  return `<div class="sel-chord"><span class="big">${esc(c)}</span><span class="lab">${label} · ${sel+1} · ${explain==="easy"?esc(e.tag):a.rn}</span></div>`;
+}
+function renderPanel(){
+  const p=document.getElementById("panel"), v=songView(song);
+  document.getElementById("playBtn").textContent= playing? "■":"▶";
+  document.getElementById("playBtn").classList.toggle("on",playing);
+  document.getElementById("playBtn").setAttribute("aria-label",playing?t("btn.stop"):t("btn.play"));
+  if(tab==="analyze"){
+    const mode=`<div class="seg" role="group" aria-label="${t("ex.group")}">
+        <button type="button" aria-pressed="${explain==="easy"}" data-ex="easy">${t("ex.easy")}</button>
+        <button type="button" aria-pressed="${explain==="term"}" data-ex="term">${t("ex.term")}</button></div>`;
+    let body;
+    if(explain==="easy"){
+      const ms=moments(cur,song.key);
+      body=`${selHead(t("daw.selected"))}<p>${easyOf(cur,sel,song.key).line}</p>
+        <h4>${t("easy.glance")}</h4><p>${v.easy}</p>
+        ${ms.length?`<h4>${t("easy.moments")}</h4>${ms.map(m=>`<p>· ${m}</p>`).join("")}`:""}
+        <p class="hint" style="margin-top:12px">${t("easy.hint")}</p>`;
+    }else{
+      const colored=cur.map(c=>analyze(c,song.key)).map((a,i)=>a.note?`<p><b>${i+1} · ${esc(cur[i])} (${a.rn})</b> · ${a.note}</p>`:"").join("");
+      body=`${selHead(t("daw.selected"))}<h4>${t("term.title")}</h4><p>${esc(v.story)}</p>${colored}<h4>${t("term.summary")}</h4><p style="color:var(--ink);font-size:13px">${cur.map(c=>analyze(c,song.key).rn).join(" – ")}</p>`;
+    }
+    p.innerHTML=mode+body;
+    p.querySelectorAll("[data-ex]").forEach(b=>b.onclick=()=>{explain=b.dataset.ex;renderDaw();renderPanel()});
+  }
+  if(tab==="edit"){
+    const c=cur[sel], sug=suggestions(c,song.key);
+    p.innerHTML=`${selHead(t("daw.selected"))}
+      <h4>${t("edit.chordH",{n:sel+1})}</h4><div class="opts">${sug.map(s=>`<button type="button" class="opt" data-c="${s.c}"><b>${s.c}</b><span>${esc(s.easy)}</span><small>${esc(s.term)}</small></button>`).join("")}</div>
+      <h4>${t("edit.rhythmH",{n:sel+1})}</h4><div class="rgrid">${RHYTHM_KEYS.map(k=>`<button type="button" class="opt${state.rhythm[sel]===k?" on":""}" data-r="${k}"><span>${t("r."+k)}</span><small>${t("r."+k+".d")}</small></button>`).join("")}</div>
+      <p class="hint" style="margin-top:12px">${t("edit.hint")}</p>`;
+    p.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>{ if(!useEdit())return; cur[sel]=b.dataset.c; edited[sel]=cur[sel]!==song.chords[sel]; previewBar(sel); renderDaw(); renderPanel(); toast(t("t.changed",{n:sel+1,c:cur[sel]}))});
+    p.querySelectorAll("[data-r]").forEach(b=>b.onclick=()=>{ if(!useEdit())return; state.rhythm[sel]=b.dataset.r; previewBar(sel); renderDaw(); renderPanel()});
+  }
+  if(tab==="diff"){
+    const n=cur.length;
+    const d=difficulty(cur,inst); const max=Math.max(...d.map(x=>x.score)); const hi=d.findIndex(x=>x.score===max);
+    const color=s=>s>=7?"var(--rose)":s>=4.5?"var(--orchid)":"var(--lav-300)";
+    const avg=(d.reduce((a,b)=>a+b.score,0)/n).toFixed(1);
+    const guitarLocked = inst==="guitar"&&!isPro();
+    p.innerHTML=`<div class="seg" role="group" aria-label="${t("d.group")}">
+        <button type="button" aria-pressed="${inst==="piano"}" data-inst="piano">${t("d.piano")}</button>
+        <button type="button" aria-pressed="${inst==="guitar"}" data-inst="guitar">${t("d.guitar")}${isPro()?"":t("d.proTag")}</button></div>
+      <p class="hint" style="margin-top:10px">${t("d.meta",{a:avg,n:hi+1})}</p>
+      ${guitarLocked?`<div class="lock"><span>${t("d.lock")}</span><button class="btn btn-primary btn-sm" type="button" data-buy="pro">${t("d.lockBtn")}</button></div>`:`
+      <div class="diff-chart" style="grid-template-columns:repeat(${n},minmax(0,1fr))">${d.map((x,i)=>`<button type="button" class="dcol" data-i="${i}" aria-label="${esc(t("d.aria",{n:i+1,s:x.score}))}"><span class="dval">${x.score}</span><span class="dbar" style="height:${x.score*10}%;background:${color(x.score)};${i===hi?"box-shadow:0 0 0 2px var(--ink)":""}"></span></button>`).join("")}</div>
+      <div class="dlabels" style="grid-template-columns:repeat(${n},minmax(0,1fr))">${cur.map((c,i)=>`<span>${i+1}<br>${esc(c)}</span>`).join("")}</div>
+      <h4>${esc(t("d.title",{n:hi+1,c:cur[hi],s:max}))}</h4><p>${d[hi].why.length?esc(t("d.why",{w:d[hi].why.join(t("d.join"))})):t("d.none")}</p>
+      <p>${t("d.practice",{a:hi+1,b:Math.min(n,hi+2),s:Math.round(song.bpm*0.7),bpm:song.bpm})}${inst==="guitar"?t("d.tipG"):t("d.tipP")}</p>
+      <p class="hint">${t("d.hint")}</p>`}`;
+    p.querySelectorAll("[data-inst]").forEach(b=>b.onclick=()=>{inst=b.dataset.inst;renderPanel()});
+    p.querySelectorAll("[data-buy]").forEach(b=>b.onclick=()=>openCheckout(b.dataset.buy));
+    p.querySelectorAll(".dcol").forEach(b=>b.onclick=()=>selectBar(+b.dataset.i,true));
+  }
+}
+function useEdit(){
+  if(isPro() || (song.id==="custom" && song.viaTicket)) return true;
+  if(!user){openAuth("signup");toast(t("t.needLogin"));return false}
+  upsell("edit"); return false;
+}
+function setTab(tb){tab=tb;document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected",x.dataset.tab===tb));renderPanel()}
+function renderAll(){renderSongs();renderDaw();renderPanel();updateQuota()}
+
+/* ---------- 소리 ---------- */
+function ctx(){if(!audio){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return null;audio=new AC()}if(audio.state==="suspended")audio.resume();return audio}
+const hz=m=>440*Math.pow(2,(m-69)/12);
+function tone(ac,m,tm,dur,vol,type){const o=ac.createOscillator(),g=ac.createGain();o.type=type||"triangle";o.frequency.value=hz(m);
+  g.gain.setValueAtTime(0,tm);g.gain.linearRampToValueAtTime(vol,tm+0.02);g.gain.exponentialRampToValueAtTime(0.0008,tm+dur);o.connect(g).connect(ac.destination);o.start(tm);o.stop(tm+dur+0.05)}
+function scheduleBar(ac,i,t0,beat){
+  tone(ac,bassNote(cur[i]),t0,beat*4,0.16,"sine");
+  events(i).forEach(e=>tone(ac,e.n,t0+e.t*beat,e.d*beat*(e.d>=4?1:1),e.v));
+}
+function previewBar(i){const ac=ctx();if(!ac)return;scheduleBar(ac,i,ac.currentTime+0.03,60/song.bpm*0.75)}
+function stop(){
+  playing=false; cancelAnimationFrame(rafId);
+  document.querySelectorAll(".clip.playing").forEach(b=>b.classList.remove("playing"));
+  if(audio){audio.close();audio=null}
+  const pb=document.getElementById("playBtn"); pb.textContent="▶"; pb.classList.remove("on"); pb.setAttribute("aria-label",t("btn.play"));
+  playPos=sel; setPlayhead(playPos); drawWave();
+}
+function frame(){
+  if(!playing||!audio) return;
+  const beat=60/song.bpm, pos=(audio.currentTime-playStart)/(beat*4);
+  if(pos>=cur.length){stop();return}
+  playPos=Math.max(0,pos); setPlayhead(playPos); drawWave();
+  const bi=Math.floor(playPos); document.querySelectorAll(".clip").forEach(b=>b.classList.toggle("playing",+b.dataset.i===bi));
+  rafId=requestAnimationFrame(frame);
+}
+function play(){
+  const ac=ctx(); if(!ac){toast(t("t.noAudio"));return}
+  playing=true; const beat=60/song.bpm; playStart=ac.currentTime+0.1;
+  cur.forEach((c,i)=>scheduleBar(ac,i,playStart+i*beat*4,beat));
+  const pb=document.getElementById("playBtn"); pb.textContent="■"; pb.classList.add("on"); pb.setAttribute("aria-label",t("btn.stop"));
+  rafId=requestAnimationFrame(frame);
+}
+document.getElementById("playBtn").onclick=()=>{playing?stop():play()};
+document.getElementById("toStart").onclick=()=>{stop();selectBar(0,false)};
+document.getElementById("resetBtn").onclick=()=>{stop();cur=[...song.chords];edited=Array(cur.length).fill(false);state.rhythm=Array(cur.length).fill("whole");renderDaw();renderPanel();toast(t("t.reset"))};
+document.querySelectorAll(".tab").forEach(x=>x.onclick=()=>setTab(x.dataset.tab));
+document.addEventListener("keydown",e=>{
+  if(e.target.closest("input,textarea,select,button,a")||document.querySelector(".modal.open")) return;
+  const r=document.getElementById("app").getBoundingClientRect(); if(r.bottom<0||r.top>innerHeight) return;
+  if(e.code==="Space"){e.preventDefault();playing?stop():play()}
+});
+
+/* ---------- 내 곡 코드 입력 ---------- */
+const CHORD_RE=/^([A-G][#b]?)(maj7|m7b5|m7|sus4|add9|dim|m|7)?$/;
+function normChord(raw){
+  let s=raw.trim(); if(!s) return null;
+  s=s.replace(/♯/g,"#").replace(/♭/g,"b");
+  s=s.charAt(0).toUpperCase()+s.slice(1);
+  let slash=false; if(s.includes("/")){s=s.split("/")[0];slash=true}
+  s=s.replace(/^([A-G][#b]?)(M7|Maj7|maj)$/,"$1maj7").replace(/^([A-G][#b]?)min$/,"$1m").replace(/^([A-G][#b]?)-$/,"$1m").replace(/^([A-G][#b]?)ø$/,"$1m7b5");
+  return CHORD_RE.test(s)?{c:s,slash}:{bad:raw.trim()};
+}
+function parseProgression(text){
+  const toks=text.split(/[\s,|]+/).filter(Boolean);
+  const chords=[],bad=[];let slash=false;
+  toks.forEach(x=>{const r=normChord(x);if(!r)return;if(r.bad)bad.push(r.bad);else{chords.push(r.c);if(r.slash)slash=true}});
+  return {chords,bad,slash};
+}
+function isDiatonic(ch,k){
+  const {root,q}=parse(ch), iv=(root-k+12)%12; if(!DEG[iv]) return false;
+  const minorish=q.startsWith("m")&&!q.startsWith("maj");
+  if(iv===11) return q==="dim"||q==="m7b5";
+  if(q==="7") return iv===7;
+  return [2,4,9].includes(iv)===minorish && q!=="dim" && q!=="m7b5";
+}
+function detectKey(chs){
+  let best=parse(chs[0]).root, bestS=-1;
+  for(let k=0;k<12;k++){
+    let s=0; chs.forEach(c=>{if(isDiatonic(c,k))s+=2});
+    if(parse(chs[0]).root===k) s+=1.5; if(parse(chs[chs.length-1]).root===k) s+=1.5;
+    if(s>bestS){bestS=s;best=k}
+  }
+  return best;
+}
+const KEY_ORDER=[0,7,2,9,4,5,10,3,8,1,6,11];
+function fillKeySelect(){
+  const sel=document.getElementById("myKey"), v=sel.value||"auto";
+  sel.innerHTML=`<option value="auto">${t("my.auto")}</option>`+KEY_ORDER.map(k=>`<option value="${k}">${t("my.keyOpt",{k:NAMES[k]})}</option>`).join("");
+  sel.value=v;
+}
+function previewCustom(){
+  const r=parseProgression(document.getElementById("myChords").value);
+  const box=document.getElementById("myPreview"), err=document.getElementById("myErr");
+  box.innerHTML=r.chords.map((c,i)=>`<span class="chip">${i+1} · ${esc(c)}</span>`).join("")+r.bad.map(b=>`<span class="chip bad">${esc(b)}?</span>`).join("");
+  err.textContent = r.bad.length? t("my.badRead",{b:r.bad.join(", ")}) : (r.chords.length>8? t("my.over8") : "");
+  const ksel=document.getElementById("myKey").value;
+  document.getElementById("myKeyHint").textContent = (r.chords.length>=2 && ksel==="auto")? t("my.autoHint",{k:NAMES[detectKey(r.chords.slice(0,8))]}) : "";
+  return r;
+}
+function openCustom(){
+  const ta=document.getElementById("myChords");
+  if(customSong && !ta.value) ta.value=customSong.chords.join(" ");
+  previewCustom(); openModal("custom"); ta.focus();
+}
+document.getElementById("myChords").addEventListener("input",previewCustom);
+document.getElementById("myKey").addEventListener("change",previewCustom);
+document.getElementById("customForm").onsubmit=e=>{
+  e.preventDefault();
+  const r=previewCustom(), err=document.getElementById("myErr");
+  if(r.bad.length){err.textContent=t("my.errBad",{b:r.bad.join(", ")});return}
+  if(r.chords.length<4){err.textContent=t("my.errFew");return}
+  const bpm=Math.round(+document.getElementById("myBpm").value);
+  if(!(bpm>=40&&bpm<=200)){err.textContent=t("my.errBpm");return}
+  if(!user){closeModal(document.getElementById("custom"));openAuth("signup");toast(t("t.needLogin"));return}
+  const via=useCustomQuota();
+  if(!via){closeModal(document.getElementById("custom"));upsell("mine");return}
+  const chords=r.chords.slice(0,8), ksel=document.getElementById("myKey").value;
+  const key= ksel==="auto"? detectKey(chords) : +ksel;
+  customSong={id:"custom",name:document.getElementById("myTitle").value.trim(),key,bpm,autoKey:ksel==="auto",slash:r.slash,viaTicket:via==="ticket",sec:[0,4],chords};
+  save("customSong",customSong); save("state",state);
+  closeModal(document.getElementById("custom"));
+  explain="easy"; tab="analyze"; document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected",x.dataset.tab==="analyze"));
+  loadSong(customSong);
+  toast(r.slash?t("t.slash"):t("t.mine"));
+  document.getElementById("app").scrollIntoView({behavior:"smooth",block:"start"});
+};
+document.getElementById("addMine").onclick=openCustom;
+
+/* ---------- 요금제 ---------- */
+let cycle="month";
+function priceOf(p){return p.once? p.month : (p[cycle]??p.month)}
+function unitOf(p){return p.id==="free"?"":p.once?t("u.once"):t("u."+cycle)}
+const MONTHS={month:1,season:3,year:12};
+function ctaOf(p,primary){
+  if(p.id==="free") return `<a class="btn btn-ghost" href="#app">${t("pr.free")}</a>`;
+  if(state.plan===p.id) return `<button class="btn btn-ghost" type="button" disabled>${t("pr.mine")}</button>`;
+  return `<button class="btn ${p.best?"btn-primary":"btn-ghost"}" type="button" data-buy="${p.id}">${p.once?t("pr.ticket"):t("pr.buy")}</button>`;
+}
+function renderPlans(){
+  const main=document.getElementById("plansMain");
+  main.innerHTML=PLANS.map(p=>{
+    const feats=t(p.id+".f"), no=L[p.id+".no"]?t(p.id+".no"):[];
+    return `<article class="plan${p.best?" best":""}">
+      <h3>${planName(p.id)}${p.best?` <span class="pill pro">${t("pr.best")}</span>`:""}${state.plan===p.id?` <span class="pill ok">${t("pr.mine")}</span>`:""}</h3>
+      <div class="price">${won(priceOf(p))}<small>${unitOf(p)}</small></div>
+      <p class="sub">${t(p.id+".sub")}${cycle!=="month"&&!p.once&&p.month?` · ${t("pr.perMonth",{p:won(Math.round(p[cycle]/MONTHS[cycle]/10)*10)})}`:""}${cycle==="season"&&!p.once&&p.month?` · ${t("pr.noRenew")}`:""}</p>
+      <ul>${feats.map(f=>`<li>${feat(f)}</li>`).join("")}${no.map(f=>`<li class="no">${esc(f)}</li>`).join("")}</ul>${ctaOf(p,true)}</article>`}).join("");
+  document.querySelectorAll("#pricing [data-buy]").forEach(b=>b.onclick=()=>openCheckout(b.dataset.buy));
+}
+document.querySelectorAll("[data-cycle]").forEach(b=>b.onclick=()=>{cycle=b.dataset.cycle;document.querySelectorAll("[data-cycle]").forEach(x=>x.setAttribute("aria-pressed",x===b));renderPlans()});
+
+/* ---------- 모달 ---------- */
+let lastFocus=null;
+function openModal(id){lastFocus=document.activeElement;const m=document.getElementById(id);m.classList.add("open");const f=m.querySelector("button,input");f&&f.focus()}
+function closeModal(m){m.classList.remove("open");lastFocus&&lastFocus.focus&&lastFocus.focus()}
+document.querySelectorAll(".modal").forEach(m=>{m.addEventListener("click",e=>{if(e.target===m||e.target.closest("[data-close]"))closeModal(m)})});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")document.querySelectorAll(".modal.open").forEach(closeModal)});
+document.getElementById("upGo").onclick=()=>{closeModal(document.getElementById("upsell"));openCheckout("pro")};
+document.getElementById("upTicket").onclick=()=>{closeModal(document.getElementById("upsell"));openCheckout("ticket10")};
+
+/* ---------- 결제창 (데모) ---------- */
+let co={plan:"pro",cycle:"month",method:"smartstore"}, coView="form", coOrder=null, coOkPlan="";
+function coPrice(){const p=PLANS.find(x=>x.id===co.plan);return p.once?p.month:(p[co.cycle]??p.month)}
+function productKey(){return co.plan==="ticket10"?"ticket10":`${co.plan}_${co.cycle}`}
+function openCheckout(plan){if(!user){openAuth("signup",()=>openCheckout(plan));return} co={plan,cycle:PLANS.find(p=>p.id===plan).once?"once":cycle,method:"smartstore"};coView="form";renderCheckout();openModal("checkout")}
+function renderCheckout(){
+  if(coView==="bank") return showBankDone(coOrder);
+  if(coView==="ok") return showDone(coOkPlan);
+  const p=PLANS.find(x=>x.id===co.plan), price=coPrice();
+  const body=document.getElementById("coBody");
+  const keep={};["bkName","bkEmail","bkReceipt","bkReceiptNo","ssCode"].forEach(id=>{const el=document.getElementById(id);if(el)keep[id]=el.value});
+  const keepAgree=document.getElementById("bkAgree")?.checked;
+  body.innerHTML=`
+    <div class="demo-bar"><span class="demo-tag">${t("daw.demo")}</span>${t("co.demoBar")}</div>
+    <div class="summary">
+      <div class="row"><span>${t("co.product")}</span><b>${t("co.productName",{p:planName(p.id)})}</b></div>
+      <div class="row"><span>${t("co.cycle")}</span><span>${p.once?t("co.once"):`<select id="coCycle" aria-label="${t("co.cycle")}" style="background:#fff;border:1px solid var(--line-2);border-radius:8px;padding:4px 8px"><option value="month"${co.cycle==="month"?" selected":""}>${t("co.monthOpt",{p:won(p.month)})}</option><option value="season"${co.cycle==="season"?" selected":""}>${t("co.seasonOpt",{p:won(p.season)})}</option><option value="year"${co.cycle==="year"?" selected":""}>${t("co.yearOpt",{p:won(p.year)})}</option></select>`}</span></div>
+      <div class="row total"><span>${t("co.total")}</span><span class="v">${won(price)}</span></div>
+    </div>
+    <div>
+      <div style="font-size:13px;font-weight:700;margin-bottom:8px" id="mLabel">${t("co.method")}</div>
+      <div class="methods" role="radiogroup" aria-labelledby="mLabel">
+        <button type="button" class="method" role="radio" aria-checked="${co.method==="smartstore"}" data-m="smartstore"><b><span class="nmark">N</span>${t("co.ss")}</b><small>${t("co.ssSub")}</small></button>
+        <button type="button" class="method" role="radio" aria-checked="${co.method==="bank"}" data-m="bank"><b><span class="bmark">₩</span>${t("co.bank")}</b><small>${t("co.bankSub")}</small></button>
+      </div>
+    </div>
+    <div id="coMethod"></div>`;
+  const sel=body.querySelector("#coCycle"); if(sel) sel.onchange=()=>{co.cycle=sel.value;renderCheckout()};
+  body.querySelectorAll("[data-m]").forEach(b=>b.onclick=()=>{co.method=b.dataset.m;renderCheckout()});
+  const m=body.querySelector("#coMethod");
+  if(co.method==="smartstore"){
+    const live=STORE.smartstoreLive, url=`${STORE.smartstoreBase}/${STORE.products[productKey()]}`;
+    m.innerHTML=`<div style="display:flex;flex-direction:column;gap:12px">
+      <p class="hint" style="margin:0;font-size:13px;color:var(--muted)">${t("co.ssInfo")}</p>
+      ${live?`<a class="btn btn-primary" id="ssGo" href="${url}" target="_blank" rel="noopener">${t("co.ssBtn",{p:won(price)})}</a>`:`<button class="btn btn-primary" type="button" id="ssGo">${t("co.ssBtn",{p:won(price)})}</button>`}
+      <div class="field"><label for="ssCode">${t("co.codeL")}</label><input id="ssCode" placeholder="MELO-XXXX-XXXX" autocomplete="off"></div>
+      <div class="err" id="ssErr"></div>
+      <button class="btn btn-ghost" type="button" id="ssRedeem">${t("co.redeem")}</button>
+      <p class="hint" style="margin:0">${t("co.demo")}</p></div>`;
+    if(keep.ssCode) m.querySelector("#ssCode").value=keep.ssCode;
+    m.querySelector("#ssGo").onclick=()=>{addOrder({method:"smartstore",status:"store"}); if(!live) toast(t("t.ssDemo")); else toast(t("t.ssGo"))};
+    m.querySelector("#ssRedeem").onclick=()=>{const r=redeem(m.querySelector("#ssCode").value);m.querySelector("#ssErr").textContent=r.err||"";if(r.ok){coOkPlan=r.plan;coView="ok";showDone(r.plan)}};
+  }else{
+    m.innerHTML=`<form id="bankForm" novalidate style="display:flex;flex-direction:column;gap:12px">
+      <div class="field"><label for="bkName">${t("co.bkName")}</label><input id="bkName" autocomplete="name" placeholder="${t("co.bkNamePh")}"></div>
+      <div class="field"><label for="bkEmail">${t("co.bkEmail")}</label><input id="bkEmail" type="email" autocomplete="email" placeholder="${t("co.bkEmailPh")}"></div>
+      <div class="field"><label for="bkReceipt">${t("co.receipt")}</label><select id="bkReceipt"><option value="none">${t("co.rNone")}</option><option value="personal">${t("co.rPersonal")}</option><option value="biz">${t("co.rBiz")}</option></select></div>
+      <div class="field" id="bkReceiptNoWrap" hidden><label for="bkReceiptNo">${t("co.rNo")}</label><input id="bkReceiptNo" inputmode="numeric" placeholder="${t("co.rNoPh")}"></div>
+      <label class="check"><input type="checkbox" id="bkAgree"> ${t("co.agree")}</label>
+      <div class="err" id="bkErr"></div>
+      <button class="btn btn-primary" type="submit">${t("co.bkBtn",{p:won(price)})}</button></form>`;
+    ["bkName","bkEmail","bkReceipt","bkReceiptNo"].forEach(id=>{if(keep[id]!=null)m.querySelector("#"+id).value=keep[id]});
+    if(keepAgree) m.querySelector("#bkAgree").checked=true;
+    const rc=m.querySelector("#bkReceipt");const syncR=()=>{m.querySelector("#bkReceiptNoWrap").hidden=rc.value==="none"};rc.onchange=syncR;syncR();
+    m.querySelector("#bankForm").onsubmit=e=>{e.preventDefault();
+      const name=m.querySelector("#bkName").value.trim(), email=m.querySelector("#bkEmail").value.trim(), err=m.querySelector("#bkErr");
+      if(!name){err.textContent=t("e.name");return}
+      if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){err.textContent=t("e.email");return}
+      if(rc.value!=="none"&&!/^\d{9,13}$/.test(m.querySelector("#bkReceiptNo").value.replace(/-/g,""))){err.textContent=t("e.receipt");return}
+      if(!m.querySelector("#bkAgree").checked){err.textContent=t("e.agree");return}
+      coOrder=addOrder({method:"bank",status:"wait",name,email}); coView="bank";
+      showBankDone(coOrder);
+    };
+  }
+}
+function fmtDate(ms){return new Date(ms).toLocaleString(LOCALE[lang],{month:"long",day:"numeric",hour:"2-digit",minute:"2-digit"})}
+function showBankDone(o){
+  const body=document.getElementById("coBody");
+  body.innerHTML=`<div class="done">
+    <span class="pill wait" style="align-self:flex-start">${t("st.wait")}</span>
+    <div class="big">${t("dn.h")}</div>
+    <p style="margin:0;color:var(--muted);font-size:14px">${t("dn.msg",{d:fmtDate(o.due),n:esc(o.name)})}</p>
+    <div class="demo-bar"><span class="demo-tag">${t("daw.demo")}</span>${t("dn.sample")}</div>
+    <div class="acct">
+      <div class="row"><span>${t("dn.oid")}</span><span style="font-family:var(--mono)">${o.id}</span></div>
+      <div class="row"><span>${t("dn.amt")}</span><b>${won(o.amount)}</b></div>
+      <div class="row"><span>${t("dn.bank")}</span><span>${t("bank.name")}</span></div>
+      <div class="row"><span>${t("dn.acct")}</span><span class="num">${STORE.bank.number}</span></div>
+      <div class="row"><span>${t("dn.holder")}</span><span>${STORE.bank.holder}</span></div>
+    </div>
+    <a class="btn btn-primary" href="#orders" data-close>${t("dn.orders")}</a>
+    <p class="hint" style="margin:0">${t("dn.contact",{p:STORE.phone,k:STORE.kakaoId})}</p></div>`;
+  renderOrders();
+}
+function showDone(planId){
+  document.getElementById("coBody").innerHTML=`<div class="done"><span class="pill ok" style="align-self:flex-start">${t("ok.badge")} · ${t("daw.demo")}</span><div class="big">${t("ok.h")}</div><p style="margin:0;color:var(--muted)">${t("ok.msg",{l:planName(planId)})}</p><a class="btn btn-primary" href="#app" data-close>${t("ok.btn")}</a></div>`;
+}
+function copy(x){try{navigator.clipboard.writeText(x).then(()=>toast(t("t.copied",{t:x})),()=>toast(t("t.copyFail")))}catch(e){toast(t("t.copyFail"))}}
+
+function addOrder(extra){
+  const d=new Date(), id="DEMO-"+d.toISOString().slice(2,10).replace(/-/g,"")+"-"+Math.random().toString(36).slice(2,6).toUpperCase();
+  const o={id,plan:co.plan,cycle:co.cycle,amount:coPrice(),created:d.getTime(),due:d.getTime()+86400000,...extra};
+  orders.unshift(o);save("orders",orders);renderOrders();return o;
+}
+const CODES={"MELO-PRO1-2026":"pro","MELO-TEAM-2026":"team","MELO-T5-2026":"ticket10"};
+const TICKET_SONGS=5;
+function redeem(raw){
+  const code=raw.trim().toUpperCase();
+  if(!code) return {err:t("code.empty")};
+  const used=load("usedCodes",[]);
+  if(used.includes(code)) return {err:t("code.used")};
+  if(!CODES[code]) return {err:t("code.bad")};
+  const plan=CODES[code];
+  if(plan==="ticket10") state.tickets+=TICKET_SONGS; else state.plan=plan;
+  used.push(code);save("usedCodes",used);save("state",state);
+  orders.unshift({id:"DEMO-SS-"+code.slice(5),plan,amount:PLANS.find(p=>p.id===plan).month,created:Date.now(),method:"smartstore",status:"done"});
+  save("orders",orders);renderAll();renderPlans();renderOrders();toast(t("t.applied",{l:planName(plan)}));
+  return {ok:true,plan};
+}
+function activate(o){o.status="done";if(o.plan==="ticket10")state.tickets+=TICKET_SONGS;else state.plan=o.plan;save("state",state);save("orders",orders);renderAll();renderPlans();renderOrders();toast(t("t.opened",{l:planName(o.plan)}))}
+function renderOrders(){
+  const el=document.getElementById("orderList");
+  if(!orders.length){el.innerHTML=`<div class="empty">${t("ord.empty")}</div>`;return}
+  el.innerHTML=orders.map((o,i)=>{
+    const s=o.status==="done"?`<span class="pill ok">${t("st.done")}</span>`:o.status==="wait"?`<span class="pill wait">${t("st.wait")}</span>`:`<span class="pill">${t("st.store")}</span>`;
+    const via=o.method==="bank"?t("via.bank"):t("via.ss");
+    const act=o.status==="wait"?`<button class="btn btn-ghost btn-sm" type="button" data-admin="${i}" title="${t("ord.adminT")}">${t("ord.admin")}</button>`:"";
+    const cyc=["year","month","season"].includes(o.cycle)?t("cyc."+o.cycle):"";
+    return `<div class="order"><span class="oid">${o.id}</span><span>${planName(o.plan)}${cyc}</span><span>${won(o.amount)}</span><span style="color:var(--muted)">${via}</span><div class="sp">${s}${act}</div></div>`}).join("");
+  el.querySelectorAll("[data-admin]").forEach(b=>b.onclick=()=>activate(orders[+b.dataset.admin]));
+}
+document.getElementById("codeForm").onsubmit=e=>{e.preventDefault();if(!user){openAuth("login");return}const r=redeem(document.getElementById("codeInput").value);document.getElementById("codeErr").textContent=r.err||"";if(r.ok)document.getElementById("codeInput").value=""};
+
+/* ---------- 고객센터 (가상 정보) ---------- */
+function renderSupport(){
+  document.getElementById("supPhone").textContent=STORE.phone;
+  document.getElementById("supKakao").textContent=STORE.kakaoId;
+  document.getElementById("supKakaoHours").textContent=t("sup.kakaoHours");
+  document.getElementById("supEmail").textContent=STORE.supportEmail;
+}
+document.getElementById("supCopyPhone").onclick=()=>copy(STORE.phone);
+document.getElementById("supCopyKakao").onclick=()=>copy(STORE.kakaoId);
+
+/* ---------- 로그인 · 회원가입 (데모) ---------- */
+let authMode="signup", authNext=null;
+function renderAuth(){
+  const el=document.getElementById("authArea");
+  if(user&&acct()){
+    el.innerHTML=`<span class="who">${esc(acct().name)}</span><span class="pill${isPro()?" pro":""}">${statusLabel()}</span><button class="btn btn-ghost btn-sm" type="button" id="logoutBtn">${t("nav.logout")}</button>`;
+    el.querySelector("#logoutBtn").onclick=()=>{user=null;save("user",null);toast(t("t.bye"));renderAll();renderPlans()};
+  }else{
+    el.innerHTML=`<button class="btn btn-ghost btn-sm" type="button" id="loginBtn">${t("nav.login")}</button><button class="btn btn-primary btn-sm" type="button" id="trialBtn">${t("nav.trial")}</button>`;
+    el.querySelector("#loginBtn").onclick=()=>openAuth("login");
+    el.querySelector("#trialBtn").onclick=()=>openAuth("signup");
+  }
+}
+function setAuthMode(m){
+  authMode=m;
+  document.querySelectorAll("[data-auth]").forEach(b=>b.setAttribute("aria-selected",b.dataset.auth===m));
+  document.getElementById("authTitleText").textContent=t(m==="signup"?"auth.signup":"auth.login");
+  document.getElementById("fName").hidden=m!=="signup"; document.getElementById("fAgree").hidden=m!=="signup";
+  document.getElementById("auPw").autocomplete=m==="signup"?"new-password":"current-password";
+  document.getElementById("auSubmit").textContent=t(m==="signup"?"auth.signupBtn":"auth.loginBtn");
+  document.getElementById("auSwitch").textContent=t(m==="signup"?"auth.toLogin":"auth.toSignup");
+  document.getElementById("auErr").textContent="";
+}
+function openAuth(m,next){authNext=next||null;setAuthMode(m);openModal("auth");document.getElementById(m==="signup"?"auName":"auEmail").focus()}
+document.querySelectorAll("[data-auth]").forEach(b=>b.onclick=()=>setAuthMode(b.dataset.auth));
+document.getElementById("auSwitch").onclick=()=>setAuthMode(authMode==="signup"?"login":"signup");
+document.getElementById("authForm").onsubmit=e=>{
+  e.preventDefault();
+  const err=document.getElementById("auErr"), name=document.getElementById("auName").value.trim();
+  const email=document.getElementById("auEmail").value.trim().toLowerCase(), pw=document.getElementById("auPw").value;
+  if(authMode==="signup"&&!name){err.textContent=t("auth.eName");return}
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){err.textContent=t("e.email");return}
+  if(pw.length<8){err.textContent=t("auth.ePw");return}
+  if(authMode==="signup"){
+    if(!document.getElementById("auAgree").checked){err.textContent=t("auth.eAgree");return}
+    if(accounts[email]){err.textContent=t("auth.eExists");setAuthMode("login");document.getElementById("auEmail").value=email;return}
+    accounts[email]={name,trialEnd:Date.now()+TRIAL_MS}; save("accounts",accounts);
+    user=email; save("user",user); toast(t("t.welcome",{n:name}));
+  }else{
+    if(!accounts[email]){err.textContent=t("auth.eNo");return}
+    user=email; save("user",user); toast(t("t.hello",{n:accounts[email].name}));
+  }
+  document.getElementById("auPw").value="";
+  closeModal(document.getElementById("auth")); renderAll(); renderPlans();
+  const nx=authNext; authNext=null; if(nx) nx();
+};
+document.querySelectorAll("[data-trial]").forEach(b=>b.onclick=()=>{
+  if(!user) return openAuth("signup");
+  document.getElementById(trialLeft()>0?"app":"pricing").scrollIntoView({behavior:"smooth"});
+});
+setInterval(()=>{ if(user) updateQuota() },60000);
+
+/* ---------- 내비 ---------- */
+const nav=document.getElementById("nav");
+function navState(){nav.classList.toggle("solid",scrollY>40)}
+addEventListener("scroll",navState,{passive:true}); navState();
+
+/* ---------- 언어 적용 ---------- */
+function applyLang(){
+  document.documentElement.lang=HTML_LANG[lang];
+  document.title=t("doc.title");
+  document.querySelectorAll("[data-i18n]").forEach(el=>{el.innerHTML=t(el.dataset.i18n)});
+  document.querySelectorAll("[data-i18n-ph]").forEach(el=>{el.placeholder=t(el.dataset.i18nPh)});
+  document.querySelectorAll("[data-i18n-aria]").forEach(el=>{el.setAttribute("aria-label",t(el.dataset.i18nAria))});
+  document.querySelectorAll("[data-i18n-alt]").forEach(el=>{el.alt=t(el.dataset.i18nAlt)});
+  document.querySelectorAll("[data-lang]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.lang===lang));
+  fillKeySelect(); renderSupport(); renderAll(); renderPlans(); renderOrders();
+  if(document.getElementById("custom").classList.contains("open")) previewCustom();
+  if(document.getElementById("checkout").classList.contains("open")) renderCheckout();
+  if(document.getElementById("upsell").classList.contains("open")) fillUpsell();
+  if(document.getElementById("auth").classList.contains("open")) setAuthMode(authMode);
+}
+document.querySelectorAll("[data-lang]").forEach(b=>b.onclick=()=>{lang=b.dataset.lang;save("lang",lang);applyLang()});
+
+/* 시작 */
+applyLang();
+
+</script>
+</body>
+</html>
